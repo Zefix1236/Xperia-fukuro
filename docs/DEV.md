@@ -141,6 +141,7 @@ dotnet restore 'PCL Community Edition.slnx' \
 - 这样只把缺失的包下载到工作区，已有包从系统缓存只读复用。
 - `/tmp` 在每次命令之间会清空，脚本里不要跨命令依赖 `/tmp` 文件；用 `$PWD/.run/tmp`。
 - `dconf will not work properly`、`MESA/ZINK/EGL` 警告是沙箱无写权限/无 GPU 导致，普通桌面会话不会出现（或表现不同）。
+- 本机访问 GitHub 的 git 端点时，HTTP/2 的 `git-upload-pack` 偶发卡住（`git push` / `git fetch` 无输出直到超时）；加 `-c http.version=HTTP/1.1` 即可，例如 `git -c http.version=HTTP/1.1 push origin main`。
 
 ## 8. 常见错误
 
