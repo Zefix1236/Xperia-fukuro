@@ -351,3 +351,6 @@ MaskFiles/
 
 # 本地发布产物
 /dist/
+
+# 本地示例/参考资料目录，不入库
+/EXAMPLES/
