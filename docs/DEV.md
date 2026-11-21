@@ -68,13 +68,16 @@ dotnet build   PCL.Launcher/PCL.Launcher.csproj -c Debug -r win-x64 -p:Platform=
 dotnet test PCL.Core.Test/PCL.Core.Test.csproj -c Debug
 ```
 
-- 实测：**487 个用例，480 通过，7 跳过，0 失败**，约 52 秒。
+- 实测：**490 个用例，483 通过，7 跳过，0 失败**，约 40–55 秒（2026-11-21 上游同步后）。
 - 跳过的用例依赖 Windows 特性或外网（Toast、文件名规则、CNG、Minecraft 服务器查询）。
-- **不要在测试时设置 `PCL_DATA_DIR`**：`GameFoldersTest.ApplySelectedFolderExpandsPlaceholderAndIgnoresEmpty` 会因此失败（测试假设数据目录默认在可执行文件旁）。需要可写目录时改 `XDG_CONFIG_HOME`、`TMPDIR`。
+- **不要在测试时设置 `PCL_DATA_DIR`**：`GameFoldersTest.ApplySelectedFolderExpandsPlaceholderAndIgnoresEmpty` 会因此失败（测试假设数据目录默认在可执行文件旁）。需要可写目录时改 `XDG_CONFIG_HOME`、`XDG_DATA_HOME`、`XDG_CACHE_HOME`、`TMPDIR`（`Paths` 静态构造会创建 `<本地数据>/PCLCE_Debug`，只设 `XDG_CONFIG_HOME` 不够）。
 - 测试会启动 Avalonia/生命周期的一部分服务；在只读沙箱里需要：
 
 ```bash
-XDG_CONFIG_HOME="$PWD/.run/test-config" TMPDIR="$PWD/.run/tmp" \
+XDG_CONFIG_HOME="$PWD/.run/test-config" \
+XDG_DATA_HOME="$PWD/.run/test-data" \
+XDG_CACHE_HOME="$PWD/.run/test-cache" \
+TMPDIR="$PWD/.run/tmp" \
   dotnet test PCL.Core.Test/PCL.Core.Test.csproj -c Debug
 ```
 
@@ -150,7 +153,7 @@ dotnet restore 'PCL Community Edition.slnx' \
 | `CS1617: /langversion 的选项"15.0"无效` | SDK 10 | 装 SDK 11，见第 2 节 |
 | `NETSDK1127: 未安装目标包 Microsoft.NETCore.App` | 用 SDK 10 还原后又用 SDK 11 构建（或反之） | 用同一个 SDK 重新 `restore` |
 | `Read-only file system : '/home/<user>/.nuget/...'` | 沙箱只读 | 见第 7 节 |
-| 测试进程崩溃在 `Paths` 静态构造 | `~/.config` 不可写 | `XDG_CONFIG_HOME` 指到可写目录 |
+| 测试进程崩溃在 `Paths` 静态构造 | `~/.config`、`~/.local/share` 不可写 | `XDG_CONFIG_HOME`、`XDG_DATA_HOME`（连同 `XDG_CACHE_HOME`）指到可写目录 |
 | `GameFoldersTest...` 断言失败 | 设置了 `PCL_DATA_DIR` | 测试时不要设 |
 | 窗口不出现、只有 `dconf`/MESA 警告 | 无显示会话/无 GPU | 在真实桌面会话运行；或 `PCL_FORCE_X11=1` |
 | `Dependency injection failed: rpc-property@128` | 上游 RPC 属性注册警告 | 目前不影响启动，属已知警告（见 `docs/DECISIONS.md`） |
