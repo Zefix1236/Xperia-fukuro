@@ -94,6 +94,17 @@
 - 仓库里也没有 `Plain Craft Launcher 2/` 目录（Avalonia 迁移后项目改为 `PCL.Launcher/`、`PCL.Launcher.Core/`）；
 - 本次只能以仓库内文件和历史提交为准，无法独立确认上游原文是否被改过（只能确认当前两份文件与 `upstream/dev` 相同、来自上游提交）。
 
+### 3.6.1 新增字体：Zen Maru Gothic Medium（SIL OFL 1.1）
+
+- 用途：标题栏自绘 logo 控件 `PCL.Launcher/UI/Controls/Branding/XperiaFukuroLogo.cs` 的九个字形。
+- 文件：`PCL.Launcher/Assets/Fonts/ZenMaruGothic-Medium.ttf`（3.8 MB，完整字体，未子集化）；
+  同目录 `ZenMaruGothic-OFL.txt` 是许可证原文。
+- 来源：Google Fonts 官方仓库（`google/fonts` 的 `ofl/zenmarugothic/ZenMaruGothic-Medium.ttf`）。
+- 授权：OFL-1.1 允许随软件嵌入与再分发；发布时保留 `ZenMaruGothic-OFL.txt`，不单独售卖字体，
+  改名后的衍生字体也不能使用保留字体名（Reserved Font Name）。
+- 字体族名：`Zen Maru Gothic`（name ID 16），字重 500（Medium），name ID 1 为 `Zen Maru Gothic Medium`。
+- 体积：完整 CJK 字库 3.8 MB；如只保留 logo 用到的 9 个字形，可子集化到几十 KB（待用户决定）。
+
 ### 3.7 第三方依赖
 
 直接 NuGet 依赖 36 个（详见各 `csproj`），主要有：Avalonia 12.1.6、Microsoft.Extensions.* 11.0.0、Sentry 6.6.0、SQLitePCLRaw、Dapper、LiteDB、SharpZipLib、protobuf-net、Polly、YamlDotNet、CommunityToolkit.Mvvm、MSTest 4.5.3 等。

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>15.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>LogoDemo</AssemblyName>
+        <RootNamespace>LogoDemo</RootNamespace>
+        <Description>XperiaFukuroLogo 的独立演示窗口（不参与主解决方案构建）</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="12.1.6" />
+        <PackageReference Include="Avalonia.Desktop" Version="12.1.6" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- 控件源码直接链接进来，保证演示与 PCL.Launcher 里的是同一份实现。 -->
+        <Compile Include="..\PCL.Launcher\UI\Controls\Branding\*.cs" Link="Branding\%(Filename)%(Extension)" />
+        <!-- 字体在这个程序集里也要有一份，avares 路径才会解析到。 -->
+        <AvaloniaResource Include="..\PCL.Launcher\Assets\Fonts\ZenMaruGothic-Medium.ttf"
+                          Link="Assets\Fonts\ZenMaruGothic-Medium.ttf" />
+    </ItemGroup>
+</Project>
