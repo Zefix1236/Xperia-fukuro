@@ -62,7 +62,6 @@
                                                Margin="16,0,0,0"
                                                FontSize="24"
                                                Foreground="White"
-                                               Accent="#CFE8FF"
                                                FollowPointer="False"
                                                IsVisible="False"
                                                IsHitTestVisible="False" />

@@ -113,6 +113,6 @@ export NUGET_PACKAGES=~/Projects/Xperia-fukuro/.local-nuget/packages
 
 - 标题栏集成已完成（见上）。`LogoBrand` 的 `Margin` 是 16（控件内边距 3 + 外边距 16 = 视觉 19，
   与原来的 PCL 字标对齐）。要调起始位置只改这个 Margin。
-- 标题栏背景是流动渐变，logo 用白色 + 浅蓝 `Accent="#CFE8FF"`。
+- 标题栏背景是流动渐变，X 与 く 统一用白色（`Accent` 也留空走默认白色；早先试过 `#CFE8FF`，实测发灰、像半透明，已弃用）。
 - 如果以后要"启动时播一次再收起"或循环播放，在这里加：`TitleBar` 里 `Loaded` 后调 `LogoBrand.Expand()`
   延时再 `Collapse()`；控件侧不用改。

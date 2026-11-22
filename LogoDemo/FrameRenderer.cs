@@ -16,7 +16,7 @@ internal static class FrameRenderer
     {
         Directory.CreateDirectory(directory);
 
-        var accent = new SolidColorBrush(Color.Parse("#7FD3FF"));
+        var accent = Brushes.White;
         var control = new XperiaFukuroLogo
         {
             FontSize = 96d,
@@ -60,7 +60,7 @@ internal static class FrameRenderer
     private static int RenderTitleBarStripes(string directory, double scale)
     {
         var failures = 0;
-        var accent = new SolidColorBrush(Color.Parse("#CFE8FF"));
+        var accent = Brushes.White;
         var gradient = new LinearGradientBrush
         {
             StartPoint = new RelativePoint(0d, 0.5d, RelativeUnit.Relative),
@@ -122,7 +122,7 @@ internal static class FrameRenderer
         {
             FontSize = 96d,
             Foreground = Brushes.White,
-            Accent = new SolidColorBrush(Color.Parse("#7FD3FF"))
+            Accent = Brushes.White
         };
         control.Measure(Size.Infinity);
         control.Arrange(new Rect(control.DesiredSize));

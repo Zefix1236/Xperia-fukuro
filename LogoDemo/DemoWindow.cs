@@ -11,7 +11,7 @@ internal sealed class DemoWindow : Window
 {
     private static readonly IBrush PageBackground = new SolidColorBrush(Color.Parse("#0D1526"));
 
-    private static readonly IBrush AccentBrush = new SolidColorBrush(Color.Parse("#7FD3FF"));
+    private static readonly IBrush AccentBrush = Brushes.White;
 
     private static readonly IBrush MutedBrush = new SolidColorBrush(Color.Parse("#8FB6E6"));
 
@@ -75,7 +75,7 @@ internal sealed class DemoWindow : Window
         {
             FontSize = 24d,
             Foreground = Brushes.White,
-            Accent = new SolidColorBrush(Color.Parse("#CFE8FF")),
+            Accent = Brushes.White,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(16, 0, 0, 0),
