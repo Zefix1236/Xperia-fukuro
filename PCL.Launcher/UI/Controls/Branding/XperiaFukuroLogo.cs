@@ -158,44 +158,47 @@ public class XperiaFukuroLogo : Control
         var positionProgress = _playhead.PositionProgress;
         var remaining = 1d - _playhead.OpacityProgress;
 
-        // 七个字形先画，位于 X 与 く 的下层；边平移边淡出。
+        // 七个字形先画，位于 X 与 く 的下层；边平移边淡出，ふ / ろ 移动中保持横向压缩。
         if (foreground is not null && remaining > 0.001d)
         {
             using (context.PushOpacity(remaining))
             {
                 foreach (var glyph in layout.FadingGlyphs)
-                {
-                    using (context.PushTransform(Matrix.CreateTranslation(
-                               ContentPadding + glyph.X + glyph.CollapseDx * positionProgress,
-                               ContentPadding + glyph.Y)))
-                    {
-                        context.DrawGeometry(foreground, null, glyph.Geometry);
-                    }
-                }
+                    DrawGlyph(context, glyph, foreground, glyph.CollapseDx * positionProgress);
             }
         }
 
-        // X 不动。
-        if (foreground is not null)
-        {
-            var anchor = layout.Anchor;
-            using (context.PushTransform(Matrix.CreateTranslation(
-                       ContentPadding + anchor.X, ContentPadding + anchor.Y)))
-            {
-                context.DrawGeometry(foreground, null, anchor.Geometry);
-            }
-        }
+        // X 不动，但始终按 XStretch 横向拉伸（缩放原点在它自己的排版原点）。
+        if (foreground is not null) DrawGlyph(context, layout.Anchor, foreground, 0d);
 
-        // く 只做水平平移，始终使用强调色，不参与淡出。
+        // く：自绘 V 形折线，只做水平平移，始终使用强调色，不参与淡出。
         if (accent is not null)
         {
-            var kana = layout.Accent;
+            var chevron = layout.Chevron;
+            var pen = new Pen(accent, layout.StrokeThickness, lineCap: PenLineCap.Round, lineJoin: PenLineJoin.Round);
             using (context.PushTransform(Matrix.CreateTranslation(
-                       ContentPadding + kana.X + kana.CollapseDx * positionProgress,
-                       ContentPadding + kana.Y)))
+                       ContentPadding + chevron.X + chevron.CollapseDx * positionProgress,
+                       ContentPadding + chevron.Y)))
             {
-                context.DrawGeometry(accent, null, kana.Geometry);
+                context.DrawGeometry(null, pen, chevron.Geometry);
             }
+        }
+    }
+
+    private static void DrawGlyph(DrawingContext context, LogoGlyph glyph, IBrush brush, double offsetX)
+    {
+        using (context.PushTransform(Matrix.CreateTranslation(
+                   ContentPadding + glyph.X + offsetX, ContentPadding + glyph.Y)))
+        {
+            if (glyph.ScaleX == 1d)
+            {
+                context.DrawGeometry(brush, null, glyph.Geometry);
+                return;
+            }
+
+            // 先缩放（原点在字形自己的排版原点），再整体平移 —— 由外层 PushTransform 保证顺序。
+            using (context.PushTransform(Matrix.CreateScale(glyph.ScaleX, 1d)))
+                context.DrawGeometry(brush, null, glyph.Geometry);
         }
     }
 

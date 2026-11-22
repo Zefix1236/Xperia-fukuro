@@ -153,30 +153,94 @@ internal static class SelfTest
 
     private static void CheckLayout()
     {
-        var control = new XperiaFukuroLogo { FontSize = 48d };
+        const double main = 48d;
+        var control = new XperiaFukuroLogo { FontSize = main };
         var layout = control.CurrentLayout;
         Check("排版生成成功", layout is not null);
         if (layout is null) return;
 
-        Check("九个字形 = X + く + 七个淡出字形",
-            layout.Anchor.Text == "X" && layout.Accent.Text == "く" && layout.FadingGlyphs.Count == 7,
-            $"anchor {layout.Anchor.Text}，accent {layout.Accent.Text}，fading {layout.FadingGlyphs.Count}");
+        var stroke = layout.StrokeThickness;
+        var anchor = layout.Anchor;
+        var chevron = layout.Chevron;
+        var fu = layout.FadingGlyphs.First(glyph => glyph.Text == "ふ");
+        var ro = layout.FadingGlyphs.First(glyph => glyph.Text == "ろ");
+        var p = layout.FadingGlyphs.First(glyph => glyph.Text == "P");
+
+        Check("九个字形 = X + く（自绘）+ 七个淡出字形",
+            anchor.Text == "X" && chevron.Text == "く" && layout.FadingGlyphs.Count == 7,
+            $"anchor {anchor.Text}，chevron {chevron.Text}，fading {layout.FadingGlyphs.Count}");
         Check("宽高为正", layout.Width > 0d && layout.Height > 0d,
             $"{layout.Width:F2} × {layout.Height:F2}");
 
-        var expectedAccentLeft = layout.AnchorInk.Right - 0.08d * 48d;
-        Check("く 收起目标 = X 墨迹右边缘 − 0.08em",
-            Math.Abs(layout.AccentTargetLeft - expectedAccentLeft) < 1e-9d,
-            $"目标 {layout.AccentTargetLeft:F4}，期望 {expectedAccentLeft:F4}");
-        Check("く 平移后左边缘等于目标",
-            Math.Abs(layout.Accent.InkBounds.Left + layout.Accent.CollapseDx - expectedAccentLeft) < 1e-9d,
-            $"实际 {layout.Accent.InkBounds.Left + layout.Accent.CollapseDx:F4}");
+        // ---- 拉伸 / 压缩 ----
+        Check("X 墨迹宽 = 原始宽 × XStretch",
+            Math.Abs(anchor.InkBounds.Width - anchor.RawInk.Width * LogoLayout.XStretch) < 1e-9d,
+            $"{anchor.InkBounds.Width:F4} vs {anchor.RawInk.Width * LogoLayout.XStretch:F4}");
+        Check("X 墨迹高不变",
+            Math.Abs(anchor.InkBounds.Height - anchor.RawInk.Height) < 1e-9d);
+        Check("ふ 墨迹宽 = 原始宽 × KanaSqueeze",
+            Math.Abs(fu.InkBounds.Width - fu.RawInk.Width * LogoLayout.KanaSqueeze) < 1e-9d);
+        Check("ろ 墨迹宽 = 原始宽 × KanaSqueeze",
+            Math.Abs(ro.InkBounds.Width - ro.RawInk.Width * LogoLayout.KanaSqueeze) < 1e-9d);
 
-        var fadeTarget = layout.AnchorInk.Left + layout.AnchorInk.Width * 0.33d;
-        var fadeOk = layout.FadingGlyphs.All(glyph =>
-            Math.Abs(glyph.InkBounds.Left + glyph.CollapseDx - fadeTarget) < 1e-9d);
-        Check("七个字形收起后左边缘都落在 X 内部 33%", fadeOk, $"目标 {fadeTarget:F4}");
+        // ---- 字距 ----
+        var expectedP = layout.XAdvance * LogoLayout.XStretch + LogoLayout.LatinTrackingEm * main;
+        Check("P 原点 − X 原点 = 0.05×主字号 + (XStretch−1)×X advance",
+            Math.Abs((p.X - anchor.X) - expectedP) < 1e-9d,
+            $"{p.X - anchor.X:F4} vs {expectedP:F4}");
+        Check("ふ → く 墨迹间隙 = GapFuKu × 主字号",
+            Math.Abs((chevron.InkBounds.Left - fu.InkBounds.Right) - LogoLayout.GapFuKu * main) < 1e-9d,
+            $"{chevron.InkBounds.Left - fu.InkBounds.Right:F4}");
+        Check("く → ろ 墨迹间隙 = GapKuRo × 主字号",
+            Math.Abs((ro.InkBounds.Left - chevron.InkBounds.Right) - LogoLayout.GapKuRo * main) < 1e-9d,
+            $"{ro.InkBounds.Left - chevron.InkBounds.Right:F4}");
 
+        // ---- 自绘 く 的几何 ----
+        var centerWidth = anchor.InkBounds.Width - stroke;
+        var centerHeight = anchor.InkBounds.Height - stroke;
+        var armWidth = centerWidth / 2d * LogoLayout.ChevronHeightRatio;
+        var armHeight = centerHeight * LogoLayout.ChevronHeightRatio;
+        Check("く 的整体尺寸 w = Wc + S",
+            Math.Abs(layout.ChevronWidth - (armWidth + stroke)) < 1e-9d,
+            $"w {layout.ChevronWidth:F4} vs {armWidth + stroke:F4}");
+        Check("く 的整体尺寸 h = Hc + S",
+            Math.Abs(layout.ChevronHeight - (armHeight + stroke)) < 1e-9d,
+            $"h {layout.ChevronHeight:F4} vs {armHeight + stroke:F4}");
+        var chevronPen = new Pen(Brushes.White, stroke, lineCap: PenLineCap.Round, lineJoin: PenLineJoin.Round);
+        Console.WriteLine($"  く Geometry.Bounds = {chevron.Geometry.Bounds}");
+        Console.WriteLine($"  く GetRenderBounds = {chevron.Geometry.GetRenderBounds(chevronPen)}");
+        Console.WriteLine($"  く 显式墨迹（本地）= (0, 0, {layout.ChevronWidth:F4}, {layout.ChevronHeight:F4})");
+        Check("く 的墨迹与自绘结果一致",
+            Math.Abs(chevron.InkBounds.Width - layout.ChevronWidth) < 1e-6d &&
+            Math.Abs(chevron.InkBounds.Height - layout.ChevronHeight) < 1e-6d);
+        Check("く 的两条臂与 X 右半边斜线斜率一致（平行）",
+            Math.Abs(armHeight / 2d / armWidth - centerHeight / centerWidth) < 1e-9d,
+            $"臂 {armHeight / 2d / armWidth:F4}，X {centerHeight / centerWidth:F4}");
+        Check("く 的垂直中心 = X 墨迹的垂直中心",
+            Math.Abs(chevron.InkBounds.Center.Y - anchor.InkBounds.Center.Y) < 1e-9d,
+            $"{chevron.InkBounds.Center.Y:F4} vs {anchor.InkBounds.Center.Y:F4}");
+
+        // ---- 收起目标 ----
+        var cosAlpha = 1d / Math.Sqrt(1d + layout.ChevronTanAlpha * layout.ChevronTanAlpha);
+        var expectedCollapsedVertex = anchor.InkBounds.Center.X + 2d * stroke * LogoLayout.NestGapRatio / cosAlpha;
+        Check("收起顶点 = X 墨迹中心 + 2S×NestGapRatio/cosα",
+            Math.Abs(layout.ChevronCollapsedVertexX - expectedCollapsedVertex) < 1e-9d,
+            $"{layout.ChevronCollapsedVertexX:F4} vs {expectedCollapsedVertex:F4}");
+        Check("收起时 く 与 X 的垂直间距 = S × NestGapRatio",
+            Math.Abs((layout.ChevronCollapsedVertexX - anchor.InkBounds.Center.X) * cosAlpha
+                     - 2d * stroke * LogoLayout.NestGapRatio) < 1e-9d);
+        Check("展开顶点 = く 左边缘 + S/2",
+            Math.Abs(layout.ChevronExpandedVertexX - (chevron.InkBounds.Left + stroke / 2d)) < 1e-9d);
+
+        var pileOk = layout.FadingGlyphs.All(glyph => Math.Abs(glyph.X + glyph.CollapseDx - layout.PileX) < 1e-9d);
+        Check("七个字形收起后原点都等于 pile", pileOk, $"pile {layout.PileX:F4}");
+        Check("pile = X 原点 + X advance × XStretch × 0.33",
+            Math.Abs(layout.PileX - (anchor.X + layout.XAdvance * LogoLayout.XStretch * LogoLayout.CollapseInsideX)) < 1e-9d);
+        Check("淡出字形收起时不越过 X 左边缘",
+            layout.FadingGlyphs.All(glyph =>
+                glyph.X + glyph.CollapseDx + glyph.ScaleX * glyph.RawInk.Left >= anchor.InkBounds.Left - 1e-9d));
+
+        // ---- 尺寸与内边距 ----
         control.Measure(Size.Infinity);
         var expandedSize = control.DesiredSize;
         control.SeekFrame(LogoPlayhead.CollapsedFrame);
@@ -185,22 +249,23 @@ internal static class SelfTest
         var collapsedSize = control.DesiredSize;
 
         var padding = XperiaFukuroLogo.ContentPadding * 2d;
-        // Avalonia 的布局会把 DesiredSize 向上取整到整像素，所以允许 1 DIP 误差。
         Check("控件尺寸 = 排版尺寸 + 四周内边距（整像素取整）",
             Math.Abs(expandedSize.Width - (layout.Width + padding)) <= 1d &&
             Math.Abs(expandedSize.Height - (layout.Height + padding)) <= 1d,
             $"{expandedSize.Width:F2} × {expandedSize.Height:F2}，排版 {layout.Width:F2} × {layout.Height:F2}");
         Check("收起后控件尺寸不变",
             Math.Abs(expandedSize.Width - collapsedSize.Width) < 1e-9d &&
-            Math.Abs(expandedSize.Height - collapsedSize.Height) < 1e-9d,
-            $"{expandedSize.Width:F2} × {expandedSize.Height:F2} → {collapsedSize.Width:F2} × {collapsedSize.Height:F2}");
+            Math.Abs(expandedSize.Height - collapsedSize.Height) < 1e-9d);
 
         var typeface = new Typeface(XperiaFukuroLogo.ZenMaruGothic, FontStyle.Normal, FontWeight.Medium);
         var resolved = FontManager.Current.TryGetGlyphTypeface(typeface, out var glyphTypeface);
         Check("字体解析到 Zen Maru Gothic", resolved, resolved ? glyphTypeface?.FamilyName ?? "未知" : "解析失败");
 
-        Console.WriteLine($"  X 墨迹：{layout.AnchorInk}");
-        Console.WriteLine($"  く 墨迹（展开）：{layout.Accent.InkBounds}");
+        Console.WriteLine($"  常量：S={stroke / main:F4}em，NestGapRatio={LogoLayout.NestGapRatio}，" +
+                          $"ChevronHeightRatio={LogoLayout.ChevronHeightRatio}，XStretch={LogoLayout.XStretch}，" +
+                          $"KanaSqueeze={LogoLayout.KanaSqueeze}，GapFuKu={LogoLayout.GapFuKu}，GapKuRo={LogoLayout.GapKuRo}");
+        Console.WriteLine($"  X 墨迹：{anchor.InkBounds}");
+        Console.WriteLine($"  く 墨迹（展开）：{chevron.InkBounds}");
         Console.WriteLine($"  排版尺寸：{layout.Width:F2} × {layout.Height:F2}");
     }
 }

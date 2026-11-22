@@ -157,7 +157,7 @@ internal sealed class DemoWindow : Window
                 },
                 new TextBlock
                 {
-                    Text = "九个字形 X P E R I A ふ く ろ；收起后只留 X 和 く。大 logo 悬停展开、移出收起；下面那条模拟标题栏是整条悬停触发。",
+                    Text = "九个字形 X P E R I A ふ < ろ；收起后只留 X 和自绘的 < 。大 logo 悬停展开、移出收起；下面那条模拟标题栏是整条悬停触发。",
                     FontSize = 13,
                     Foreground = MutedBrush,
                     TextWrapping = TextWrapping.Wrap

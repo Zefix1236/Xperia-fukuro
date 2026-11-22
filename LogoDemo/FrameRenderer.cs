@@ -50,6 +50,7 @@ internal static class FrameRenderer
         Console.WriteLine($"  画布 {pixelSize.Width}×{pixelSize.Height}（{size.Width:F2}×{size.Height:F2} DIP @ {scale:0}x）");
 
         failures += RenderTitleBarStripes(directory, scale);
+        failures += RenderHiRes(directory, accent);
         if (failures > 0) Console.WriteLine($"  有 {failures} 帧渲染为空");
 
         return failures;
@@ -148,6 +149,41 @@ internal static class FrameRenderer
         }
 
         Console.WriteLine($"  序列 {frameCount} 帧，{pixelSize.Width}×{pixelSize.Height}，输出 {directory}");
+        return failures;
+    }
+
+    /// <summary>按用户要求的高倍率（字号 240）渲染收起态与展开态，用于目视核对。</summary>
+    private static int RenderHiRes(string directory, IBrush accent)
+    {
+        var control = new XperiaFukuroLogo
+        {
+            FontSize = 240d,
+            Foreground = Brushes.White,
+            Accent = accent
+        };
+        control.Measure(Size.Infinity);
+        control.Arrange(new Rect(control.DesiredSize));
+
+        const double scale = 1.5d;
+        var size = control.DesiredSize;
+        var pixelSize = new PixelSize(
+            Math.Max(1, (int)Math.Ceiling(size.Width * scale)),
+            Math.Max(1, (int)Math.Ceiling(size.Height * scale)));
+
+        var failures = 0;
+        foreach (var (frame, name) in new[] { (0d, "hi-expanded"), (18d, "hi-collapsed") })
+        {
+            control.SeekFrame(frame);
+            using var bitmap = new RenderTargetBitmap(pixelSize, new Vector(96d * scale, 96d * scale));
+            bitmap.Render(control);
+
+            var path = Path.Combine(directory, $"{name}.png");
+            bitmap.Save(path);
+            var length = new FileInfo(path).Length;
+            if (length <= 0) failures++;
+            Console.WriteLine($"  {name,-16} {length,8} bytes  {pixelSize.Width}×{pixelSize.Height}");
+        }
+
         return failures;
     }
 }
