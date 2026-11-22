@@ -109,23 +109,18 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             return;
         }
 
-        if (_isSelectStage)
+        if (!_isSelectStage)
+            return;
+
+        // 在列表阶段：只做无动画同步，列表条目参与入场动画；配置阶段则保留离开时的样子。
+        _isEnteringPage = true;
+        try
         {
-            // 已经在列表阶段：只做无动画同步，避免多余的滑入。
-            _isEnteringPage = true;
-            try
-            {
-                ShowSelectStage();
-            }
-            finally
-            {
-                _isEnteringPage = false;
-            }
-        }
-        else
-        {
-            // 从配置页返回：与原版一致，列表容器滑入，同时页面级连锁渐显并行播放。
             ShowSelectStage();
+        }
+        finally
+        {
+            _isEnteringPage = false;
         }
     }
 
