@@ -36,6 +36,9 @@ public class XperiaFukuroLogo : Control
     public static readonly StyledProperty<IBrush?> AccentProperty =
         AvaloniaProperty.Register<XperiaFukuroLogo, IBrush?>(nameof(Accent), Brushes.White);
 
+    /// <summary>内容四周的内边距，避免抗锯齿边缘被控件边界裁掉。</summary>
+    internal const double ContentPadding = 3d;
+
     private readonly LogoPlayhead _playhead = new();
 
     private LogoLayout? _layout;
@@ -106,7 +109,9 @@ public class XperiaFukuroLogo : Control
     protected override Size MeasureOverride(Size availableSize)
     {
         var layout = EnsureLayout();
-        return layout is null ? default : new Size(layout.Width, layout.Height);
+        return layout is null
+            ? default
+            : new Size(layout.Width + ContentPadding * 2d, layout.Height + ContentPadding * 2d);
     }
 
     /// <inheritdoc />
@@ -141,8 +146,9 @@ public class XperiaFukuroLogo : Control
             {
                 foreach (var glyph in layout.FadingGlyphs)
                 {
-                    using (context.PushTransform(
-                               Matrix.CreateTranslation(glyph.X + glyph.CollapseDx * positionProgress, glyph.Y)))
+                    using (context.PushTransform(Matrix.CreateTranslation(
+                               ContentPadding + glyph.X + glyph.CollapseDx * positionProgress,
+                               ContentPadding + glyph.Y)))
                     {
                         context.DrawGeometry(foreground, null, glyph.Geometry);
                     }
@@ -154,7 +160,8 @@ public class XperiaFukuroLogo : Control
         if (foreground is not null)
         {
             var anchor = layout.Anchor;
-            using (context.PushTransform(Matrix.CreateTranslation(anchor.X, anchor.Y)))
+            using (context.PushTransform(Matrix.CreateTranslation(
+                       ContentPadding + anchor.X, ContentPadding + anchor.Y)))
             {
                 context.DrawGeometry(foreground, null, anchor.Geometry);
             }
@@ -164,8 +171,9 @@ public class XperiaFukuroLogo : Control
         if (accent is not null)
         {
             var kana = layout.Accent;
-            using (context.PushTransform(
-                       Matrix.CreateTranslation(kana.X + kana.CollapseDx * positionProgress, kana.Y)))
+            using (context.PushTransform(Matrix.CreateTranslation(
+                       ContentPadding + kana.X + kana.CollapseDx * positionProgress,
+                       ContentPadding + kana.Y)))
             {
                 context.DrawGeometry(accent, null, kana.Geometry);
             }

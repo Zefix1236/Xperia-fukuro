@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Media;
 using PCL.UI.Controls.Branding;
 
@@ -175,6 +176,24 @@ internal static class SelfTest
         var fadeOk = layout.FadingGlyphs.All(glyph =>
             Math.Abs(glyph.InkBounds.Left + glyph.CollapseDx - fadeTarget) < 1e-9d);
         Check("七个字形收起后左边缘都落在 X 内部 33%", fadeOk, $"目标 {fadeTarget:F4}");
+
+        control.Measure(Size.Infinity);
+        var expandedSize = control.DesiredSize;
+        control.SeekFrame(LogoPlayhead.CollapsedFrame);
+        control.InvalidateMeasure();
+        control.Measure(Size.Infinity);
+        var collapsedSize = control.DesiredSize;
+
+        var padding = XperiaFukuroLogo.ContentPadding * 2d;
+        // Avalonia 的布局会把 DesiredSize 向上取整到整像素，所以允许 1 DIP 误差。
+        Check("控件尺寸 = 排版尺寸 + 四周内边距（整像素取整）",
+            Math.Abs(expandedSize.Width - (layout.Width + padding)) <= 1d &&
+            Math.Abs(expandedSize.Height - (layout.Height + padding)) <= 1d,
+            $"{expandedSize.Width:F2} × {expandedSize.Height:F2}，排版 {layout.Width:F2} × {layout.Height:F2}");
+        Check("收起后控件尺寸不变",
+            Math.Abs(expandedSize.Width - collapsedSize.Width) < 1e-9d &&
+            Math.Abs(expandedSize.Height - collapsedSize.Height) < 1e-9d,
+            $"{expandedSize.Width:F2} × {expandedSize.Height:F2} → {collapsedSize.Width:F2} × {collapsedSize.Height:F2}");
 
         var typeface = new Typeface(XperiaFukuroLogo.ZenMaruGothic, FontStyle.Normal, FontWeight.Medium);
         var resolved = FontManager.Current.TryGetGlyphTypeface(typeface, out var glyphTypeface);
