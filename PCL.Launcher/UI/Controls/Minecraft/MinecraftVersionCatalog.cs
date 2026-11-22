@@ -19,6 +19,8 @@ internal sealed class MinecraftVersionCatalog(
     /// <summary>最近一次构建列表时使用的版本数组；数据未变化时不应重建。</summary>
     private JsonArray? _builtVersions;
 
+    private readonly HashSet<string> _installedVersions = new(StringComparer.OrdinalIgnoreCase);
+
     public LoadState State => GameDownload.dlClientListLoader.State;
 
     public string? Error => GameDownload.dlClientListLoader.Error?.Message;
@@ -112,11 +114,15 @@ internal sealed class MinecraftVersionCatalog(
         {
             _items.Clear();
             host.Children.Clear();
+            var installed = DownloadVersionList.GetInstalledVersionNames();
+            _installedVersions.Clear();
+            foreach (var name in installed)
+                _installedVersions.Add(name);
             if (GameDownload.dlClientListLoader.output.Value?["versions"] is JsonArray
                 {
                     Count: > 0
                 } versions)
-                DownloadVersionList.Build(host, versions, onSelect, mode, _items);
+                DownloadVersionList.Build(host, versions, onSelect, mode, _items, _installedVersions);
         }
         catch (Exception ex)
         {
@@ -139,6 +145,11 @@ internal sealed class MinecraftVersionCatalog(
             return;
         }
 
+        var installed = DownloadVersionList.GetInstalledVersionNames();
+        _installedVersions.Clear();
+        foreach (var name in installed)
+            _installedVersions.Add(name);
+
         if (_items.Count == 0)
             return;
         if (GameDownload.dlClientListLoader.output.Value?["versions"] is not JsonArray versions)
@@ -146,7 +157,6 @@ internal sealed class MinecraftVersionCatalog(
 
         try
         {
-            var installed = DownloadVersionList.GetInstalledVersionNames();
             foreach (var node in versions)
             {
                 if (node is not JsonObject version)
