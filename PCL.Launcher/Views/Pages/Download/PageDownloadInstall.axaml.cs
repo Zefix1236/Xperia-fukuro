@@ -30,6 +30,7 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     private bool _instanceNameEdited;
     /// <summary>当前是否显示“选择版本”阶段，仅用于判断进入页面时是否需要播放列表滑入。</summary>
     private bool _isSelectStage = true;
+    private bool _versionPreselected;
     /// <summary>正在执行导航同步：此期间不播放页面内的阶段切换动画。</summary>
     private bool _isEnteringPage;
     private bool _startingInstall;
@@ -85,8 +86,25 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     /// <summary>页面级入场动画开始前同步阶段，确保列表条目参与连锁渐显。</summary>
     private void SyncStageBeforeEnterAnimation()
     {
-        if (PageRouter.Current.Parameter is JsonObject)
+        if (PageRouter.Current.Parameter is JsonObject version)
+        {
+            if (PageState == PageStates.Empty)
+            {
+                _isEnteringPage = true;
+                try
+                {
+                    SelectVersion(version);
+                }
+                finally
+                {
+                    _isEnteringPage = false;
+                }
+
+                _versionPreselected = true;
+            }
+
             return;
+        }
 
         if (_isSelectStage)
         {
@@ -124,6 +142,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
 
     private void SyncOnNavigatedTo(PageParameter? parameter)
     {
+        if (parameter is not JsonObject)
+            _versionPreselected = false;
+
         PanBack?.ScrollToHome();
         _selector.Activate();
         GameFolders.McFolderListLoader.PreviewFinish -= _folderLoaderHandler;
@@ -134,7 +155,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             {
                 _waitingVersionName = null;
                 VersionList.Activate();
-                SelectVersion(version);
+                if (!_versionPreselected)
+                    SelectVersion(version);
+                _versionPreselected = false;
                 break;
             }
 

@@ -35,7 +35,7 @@
 
 | 文件 | 改动 | 原因 | 标记位置 |
 | --- | --- | --- | --- |
-| `PCL.Launcher/Views/Pages/Download/PageDownloadInstall.axaml.cs` | 阶段同步提前到 `PageEnter`；导航期间不播放阶段动画；带版本参数导航时保留配置阶段 | 原版进入页面时先回到版本列表，列表才能参与连锁渐显 | 文件头 `// FORK:` |
+| `PCL.Launcher/Views/Pages/Download/PageDownloadInstall.axaml.cs` | 阶段同步提前到 `PageEnter`；导航期间不播放阶段动画；带版本参数导航时在入场动画枚举前预选版本，使配置阶段参与连锁渐显 | 原版进入页面时先回到版本列表，列表才能参与连锁渐显 | 文件头 `// FORK:` |
 | `PCL.Launcher/UI/Controls/Minecraft/MinecraftVersionCatalog.cs` | `Activate()` 在版本数据未变化时不再 `Rebuild()`，但会重算已安装标记；加载中保留旧条目时不把新数组记为已构建 | 重建会替换正在播放入场动画的条目；目录停用期间安装状态可能变化 | 文件头 `// FORK:` |
 | `PCL.Launcher/UI/Controls/Containers/MyPageRight.cs` | 入场动画枚举前统一复位后代控件透明度 | 同名动画替换后控件停在中间透明度 | 文件头 `// FORK:` |
 
