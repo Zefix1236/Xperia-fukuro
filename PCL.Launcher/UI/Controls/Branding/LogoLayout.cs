@@ -56,6 +56,13 @@ internal sealed class LogoLayout
     /// <summary>收起时七个字形平移进 X 内部的位置（× X 拉伸后的 advance）。</summary>
     internal const double CollapseInsideX = 0.33d;
 
+    /// <summary>
+    ///     X 两条斜线的实际交叉点比墨迹框中心高出的比例（× X 墨迹高）。
+    ///     圆角字形的 X 墨迹框不完全对称，按墨迹中心放 く 会让两条臂的间隙一紧一松；
+    ///     这个系数由嵌入的 Zen Maru Gothic Medium 实测（240px 下约 0.0234）。
+    /// </summary>
+    internal const double ChevronTipOffsetRatio = 0.0234d;
+
     private LogoLayout(LogoGlyph anchor, LogoGlyph chevron, List<LogoGlyph> fadingGlyphs,
         double width, double height, double strokeThickness, double fontSize,
         double xAdvance, double pileX, double chevronExpandedVertexX, double chevronCollapsedVertexX,
@@ -198,8 +205,8 @@ internal sealed class LogoLayout
             new Rect(0d, 0d, chevronWidth, chevronHeight))
         {
             X = fu.InkBounds.Right + GapFuKu * mainSize,
-            // 垂直：く 的中心对齐 X 墨迹的垂直中心，不参与假名的上提。
-            Y = xInk.Center.Y - chevronHeight / 2d
+            // 垂直：尖角对齐 X 两条斜线的交叉点（比墨迹中心略高），不参与假名的上提。
+            Y = xInk.Center.Y - chevronHeight / 2d - ChevronTipOffsetRatio * xInk.Height
         };
 
         // 6) ろ：假名字号 + 横向压缩，左墨迹边缘挨着 く 的右墨迹边缘。
