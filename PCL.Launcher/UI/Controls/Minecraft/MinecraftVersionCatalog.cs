@@ -102,7 +102,6 @@ internal sealed class MinecraftVersionCatalog(
             && host.Children.Count > 0)
         {
             IsRebuildPending = false;
-            _builtVersions = CurrentVersions();
             RaiseStateChanged();
             return;
         }
