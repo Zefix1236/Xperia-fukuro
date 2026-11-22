@@ -59,10 +59,11 @@ internal sealed class LogoLayout
     /// <summary>
     ///     く 的垂直位置相对 X 墨迹框中心的上移量（× X 墨迹高）。
     ///     两个目标互相冲突：尖角对齐 X 斜线交叉点 → 臂间隙均匀但上下留白不均；
-    ///     对齐墨迹框中心 → 留白相等但下部间隙偏紧。实测交叉点在框中心上方 0.0234 × 高，
-    ///     这里取一半，把两种偏差各减半（间隙差 14% → 7%，留白差 1.58 → 0.79 DIP @48px）。
+    ///     对齐墨迹框中心 → 留白相等但下部间隙偏紧。实测交叉点在框中心上方 0.0234 × 高。
+    ///     优先保证两条臂的间隙均匀（用户 2026-11-22 反馈下半臂贴得更近），所以取满值；
+    ///     代价是 く 在 X 墨迹框内偏上（48px 下留白 0.23 / 1.81 DIP，24px 下 0.12 / 0.90）。
     /// </summary>
-    internal const double ChevronTipOffsetRatio = 0.0117d;
+    internal const double ChevronTipOffsetRatio = 0.0234d;
 
     private LogoLayout(LogoGlyph anchor, LogoGlyph chevron, List<LogoGlyph> fadingGlyphs,
         double width, double height, double strokeThickness, double fontSize,
