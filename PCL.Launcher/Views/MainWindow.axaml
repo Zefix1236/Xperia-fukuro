@@ -18,6 +18,7 @@
         CanResize="True"
         TransparencyBackgroundFallback="{DynamicResource ColorBrushBackground}"
         Title="Plain Craft Launcher Community Edition ">
+    <!-- FORK: 侧栏底色与阴影对齐原版 PCL -->
     <Grid x:Name="PanRoot"
           Background="Transparent">
         <ui:MyDropShadow Color="#21000000"
@@ -47,7 +48,7 @@
                             HorizontalAlignment="Left"
                             Background="{DynamicResource ColorBrushTransparentBackground}"
                             IsHitTestVisible="False"
-                            BoxShadow="4 0 6 0 #0A000000" />
+                            BoxShadow="4 0 4 0 #0A000000" />
                     <Grid x:Name="PanMain"
                           Grid.Row="1"
                           ColumnDefinitions="Auto,*">

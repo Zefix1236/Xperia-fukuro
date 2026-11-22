@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- FORK: 新增原版侧栏底色 ColorBrushSidebar -->
     <SolidColorBrush x:Key="ColorBrushRedLight">#ff4c4c</SolidColorBrush>
     <SolidColorBrush x:Key="ColorBrushRedDark">#ce2111</SolidColorBrush>
     <SolidColorBrush x:Key="ColorBrushError">#e74c3c</SolidColorBrush>
@@ -9,4 +10,6 @@
     <SolidColorBrush x:Key="ColorBrushInfo">#000000</SolidColorBrush>
     <SolidColorBrush x:Key="ColorBrushDebug">#95a5a6</SolidColorBrush>
     <Color x:Key="ColorObjectMsgBoxShadow">#3c3c3c</Color>
+    <!-- 主页左栏底色：对齐原版 PCL 的 #F1FFFFFF（94.5% 白） -->
+    <SolidColorBrush x:Key="ColorBrushSidebar">#F1FFFFFF</SolidColorBrush>
 </ResourceDictionary>
