@@ -17,7 +17,7 @@
         <!-- 控件源码直接链接进来，保证演示与 PCL.Launcher 里的是同一份实现。 -->
         <Compile Include="..\PCL.Launcher\UI\Controls\Branding\*.cs" Link="Branding\%(Filename)%(Extension)" />
         <!-- 字体在这个程序集里也要有一份，avares 路径才会解析到。 -->
-        <AvaloniaResource Include="..\PCL.Launcher\Assets\Fonts\ZenMaruGothic-Medium.ttf"
-                          Link="Assets\Fonts\ZenMaruGothic-Medium.ttf" />
+        <AvaloniaResource Include="..\PCL.Launcher\Assets\Fonts\ZenMaruGothic-Medium.subset.ttf"
+                          Link="Assets\Fonts\ZenMaruGothic-Medium.subset.ttf" />
     </ItemGroup>
 </Project>

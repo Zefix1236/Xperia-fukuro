@@ -14,7 +14,7 @@
 | `PCL.Launcher/UI/Controls/Branding/XperiaFukuroLogo.cs` | 自绘控件，继承 `Control`；四个 StyledProperty：`FontSize` / `FontFamily` / `Foreground` / `Accent`；`FontSize`、`FontFamily` 变化触发重新排版 |
 | `PCL.Launcher/UI/Controls/Branding/LogoLayout.cs` | 九个字形的静态排版与收起目标（按 `Geometry.Bounds` 算） |
 | `PCL.Launcher/UI/Controls/Branding/LogoPlayhead.cs` | 播放头：`frame` 0..18、30 单位/秒、cubic-bezier(0.77, 0, 0.175, 1) 二分 24 次 |
-| `PCL.Launcher/Assets/Fonts/ZenMaruGothic-Medium.ttf` | Zen Maru Gothic Medium（3.8 MB，OFL-1.1），同目录 `ZenMaruGothic-OFL.txt` |
+| `PCL.Launcher/Assets/Fonts/ZenMaruGothic-Medium.subset.ttf` | Zen Maru Gothic Medium 的 9 字形子集（3 KB，OFL-1.1），同目录 `ZenMaruGothic-OFL.txt`；完整字体 3.8 MB，子集化命令记在 `docs/LICENSE-NOTES.md` |
 | `LogoDemo/` | 独立演示项目（不在 `.slnx` 里），链接控件源码、内嵌同一份字体；`--selftest` 自测、`--frames=<dir>` 渲染静帧 |
 
 行为：
@@ -50,7 +50,7 @@
 
 - 没有接进 `TitleBar.axaml`：等用户定"启动播一次 / 悬停重播 / 循环"之后再改（改上游文件要加 `// FORK:` 标记并登记 `docs/FORK-PATCHES.md`）。
 - 规格里几处含糊（0.33 的基准、"30 帧/秒"的含义、く 的垂直位置等），见交给设计对话的问题清单。
-- 字体完整包 3.8 MB；如果嫌大可以子集化成 9 个字形（约几十 KB），需要用户决定。
+- 字体已按用户要求子集化到 9 个字形（3 KB）；以后加字必须重新生成，否则缺字回退系统字体。
 - 触摸切换的初始态是收起，第一次点按展开。
 - 没有键盘焦点与 AutomationPeer。
 
