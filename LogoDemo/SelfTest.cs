@@ -216,7 +216,7 @@ internal static class SelfTest
         Check("く 的两条臂与 X 右半边斜线斜率一致（平行）",
             Math.Abs(armHeight / 2d / armWidth - centerHeight / centerWidth) < 1e-9d,
             $"臂 {armHeight / 2d / armWidth:F4}，X {centerHeight / centerWidth:F4}");
-        Check("く 的尖角 = X 斜线交叉点（墨迹中心上方 ChevronTipOffsetRatio × X 墨迹高）",
+        Check("く 的中心 = X 墨迹中心上方 ChevronTipOffsetRatio × X 墨迹高（折中值）",
             Math.Abs(chevron.InkBounds.Center.Y
                      - (anchor.InkBounds.Center.Y - LogoLayout.ChevronTipOffsetRatio * anchor.InkBounds.Height)) < 1e-9d,
             $"く中心 {chevron.InkBounds.Center.Y:F4}，X 中心 {anchor.InkBounds.Center.Y:F4}");

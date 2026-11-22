@@ -57,11 +57,12 @@ internal sealed class LogoLayout
     internal const double CollapseInsideX = 0.33d;
 
     /// <summary>
-    ///     X 两条斜线的实际交叉点比墨迹框中心高出的比例（× X 墨迹高）。
-    ///     圆角字形的 X 墨迹框不完全对称，按墨迹中心放 く 会让两条臂的间隙一紧一松；
-    ///     这个系数由嵌入的 Zen Maru Gothic Medium 实测（240px 下约 0.0234）。
+    ///     く 的垂直位置相对 X 墨迹框中心的上移量（× X 墨迹高）。
+    ///     两个目标互相冲突：尖角对齐 X 斜线交叉点 → 臂间隙均匀但上下留白不均；
+    ///     对齐墨迹框中心 → 留白相等但下部间隙偏紧。实测交叉点在框中心上方 0.0234 × 高，
+    ///     这里取一半，把两种偏差各减半（间隙差 14% → 7%，留白差 1.58 → 0.79 DIP @48px）。
     /// </summary>
-    internal const double ChevronTipOffsetRatio = 0.0234d;
+    internal const double ChevronTipOffsetRatio = 0.0117d;
 
     private LogoLayout(LogoGlyph anchor, LogoGlyph chevron, List<LogoGlyph> fadingGlyphs,
         double width, double height, double strokeThickness, double fontSize,
