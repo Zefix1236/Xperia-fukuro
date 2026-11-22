@@ -31,6 +31,7 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     /// <summary>当前是否显示“选择版本”阶段，仅用于判断进入页面时是否需要播放列表滑入。</summary>
     private bool _isSelectStage = true;
     private bool _versionPreselected;
+    private JsonObject? _appliedNavigationVersion;
     /// <summary>正在执行导航同步：此期间不播放页面内的阶段切换动画。</summary>
     private bool _isEnteringPage;
     private bool _startingInstall;
@@ -88,7 +89,8 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     {
         if (PageRouter.Current.Parameter is JsonObject version)
         {
-            if (PageState == PageStates.Empty)
+            if (PageState == PageStates.Empty
+                && !ReferenceEquals(_appliedNavigationVersion, version))
             {
                 _isEnteringPage = true;
                 try
@@ -100,6 +102,7 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
                     _isEnteringPage = false;
                 }
 
+                _appliedNavigationVersion = version;
                 _versionPreselected = true;
             }
 
@@ -155,8 +158,13 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             {
                 _waitingVersionName = null;
                 VersionList.Activate();
-                if (!_versionPreselected)
+                if (!_versionPreselected
+                    && !ReferenceEquals(_appliedNavigationVersion, version))
+                {
                     SelectVersion(version);
+                }
+
+                _appliedNavigationVersion ??= version;
                 _versionPreselected = false;
                 break;
             }
