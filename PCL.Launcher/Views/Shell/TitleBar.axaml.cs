@@ -38,6 +38,9 @@ public partial class TitleBar : UserControl
         PanTitleMain.RenderTransform = new TranslateTransform();
         PanInnerTitle.RenderTransform = new TranslateTransform();
         PanTitleMain.SizeChanged += (_, _) => ApplyTitleLeftClamp();
+        // FORK: 悬停区域是整条标题栏，由外层驱动 logo 展开 / 收起
+        PanTitle.PointerEntered += OnPanTitlePointerEntered;
+        PanTitle.PointerExited += OnPanTitlePointerExited;
         RefreshTitleAppearance();
 
         ThemeService.ColorThemeChanged += _OnColorThemeChanged;
@@ -47,6 +50,18 @@ public partial class TitleBar : UserControl
             ThemeService.ColorThemeChanged -= _OnColorThemeChanged;
             ThemeService.ColorModeChanged -= _OnColorModeChanged;
         };
+    }
+
+    // FORK: 整条标题栏悬停时展开品牌字标
+    private void OnPanTitlePointerEntered(object? sender, PointerEventArgs e)
+    {
+        if (e.Pointer.Type == PointerType.Mouse && LogoBrand.IsVisible) LogoBrand.Expand();
+    }
+
+    // FORK: 指针离开整条标题栏时收起
+    private void OnPanTitlePointerExited(object? sender, PointerEventArgs e)
+    {
+        if (e.Pointer.Type == PointerType.Mouse && LogoBrand.IsVisible) LogoBrand.Collapse();
     }
 
     private bool CanAnimateShell =>
@@ -85,12 +100,15 @@ public partial class TitleBar : UserControl
     public void RefreshTitleAppearance()
     {
         var type = EffectiveTitleType();
-        ShapeTitleLogo.IsVisible = type == 1;
+        // FORK: 默认标题类型改用自绘品牌字标，不再显示 PCL 字标
+        ShapeTitleLogo.IsVisible = false;
+        LogoBrand.IsVisible = type == 1;
         ShapeHMCLTitleLogo.IsVisible = type == 4;
         BtnTitleHelp.IsVisible = type == 4;
         LabTitleLogo.IsVisible = type == 2;
         ImageTitleLogo.IsVisible = type == 3;
-        if (type != 4) CELogo.IsVisible = type != 0;
+        // FORK: 默认标题类型的 CE 徽标也一并让位给品牌字标
+        if (type != 4) CELogo.IsVisible = type is not (0 or 1);
 
         if (type == 2) LabTitleLogo.Text = Config.Preference.WindowTitleCustomText;
         if (type == 3)

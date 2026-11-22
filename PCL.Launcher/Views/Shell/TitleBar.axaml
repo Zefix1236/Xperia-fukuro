@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="using:PCL.UI.Controls"
              xmlns:loc="using:PCL.Core.UI"
+             xmlns:branding="using:PCL.UI.Controls.Branding"
              x:Class="PCL.Views.Shell.TitleBar">
     <Grid x:Name="PanTitle"
           Height="48"
@@ -53,6 +54,17 @@
                                       Margin="7"
                                       IsVisible="False"
                                       IsHitTestVisible="False" />
+                    <!-- FORK: 默认标题类型用自绘品牌字标取代 PCL 字标与 CE 徽标；悬停由整条标题栏驱动 -->
+                    <branding:XperiaFukuroLogo x:Name="LogoBrand"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,0,0"
+                                               FontSize="24"
+                                               Foreground="White"
+                                               Accent="#CFE8FF"
+                                               FollowPointer="False"
+                                               IsVisible="False"
+                                               IsHitTestVisible="False" />
                 </Grid>
                 <Border x:Name="CELogo"
                         Grid.Column="1"

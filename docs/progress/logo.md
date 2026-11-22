@@ -51,7 +51,10 @@
 
 ## 未完成 / 待确认
 
-- 没有接进 `TitleBar.axaml`：等用户定"启动播一次 / 悬停重播 / 循环"之后再改（改上游文件要加 `// FORK:` 标记并登记 `docs/FORK-PATCHES.md`）。
+- 已经接进 `TitleBar.axaml`：默认标题类型（type 1）显示品牌字标，PCL 字标与 CE 徽标让位；
+  **悬停触发区域是整条标题栏**（`PanTitle` 的 `PointerEntered` / `PointerExited` 驱动），控件自身设了
+  `FollowPointer="False"`、`IsHitTestVisible="False"`，不影响标题栏拖动。改动已登记 `docs/FORK-PATCHES.md`。
+- 播放行为仍是"悬停展开、移开收起"，没有做启动时播一次或循环；要加时改 `TitleBar` 里的两处事件即可。
 - 规格里几处含糊（0.33 的基准、"30 帧/秒"的含义、く 的垂直位置等），见交给设计对话的问题清单。
 - 字体已按用户要求子集化到 9 个字形（3 KB）；以后加字必须重新生成，否则缺字回退系统字体。
 - 触摸切换的初始态是收起，第一次点按展开。
@@ -75,7 +78,8 @@ export NUGET_PACKAGES=~/Projects/Xperia-fukuro/.local-nuget/packages
 
 ## 交接
 
-- 标题栏集成时：`TitleBar.axaml` 里 type == 1 的分支把 `ShapeTitleLogo` + `CELogo` 换成
-  `<branding:XperiaFukuroLogo FontSize="24" ... />`，并加 `xmlns:branding`；`RefreshTitleAppearance`
-  里把 `CELogo.IsVisible` 改成 `false`。改动记进 `docs/FORK-PATCHES.md`。
-- 标题栏背景是流动渐变，logo 要用浅色；`Accent` 建议给一个偏亮的蓝。
+- 标题栏集成已完成（见上）。`LogoBrand` 的 `Margin` 是 16（控件内边距 3 + 外边距 16 = 视觉 19，
+  与原来的 PCL 字标对齐）。要调起始位置只改这个 Margin。
+- 标题栏背景是流动渐变，logo 用白色 + 浅蓝 `Accent="#CFE8FF"`。
+- 如果以后要"启动时播一次再收起"或循环播放，在这里加：`TitleBar` 里 `Loaded` 后调 `LogoBrand.Expand()`
+  延时再 `Collapse()`；控件侧不用改。

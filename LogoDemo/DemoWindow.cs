@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using PCL.UI.Controls.Branding;
@@ -69,6 +70,17 @@ internal sealed class DemoWindow : Window
             Child = big
         };
 
+        // 模拟真实标题栏：悬停区域是整条 48px 高的条，不是 logo 自己。
+        var titleLogo = new XperiaFukuroLogo
+        {
+            FontSize = 24d,
+            Foreground = Brushes.White,
+            Accent = new SolidColorBrush(Color.Parse("#CFE8FF")),
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(16, 0, 0, 0),
+            FollowPointer = false
+        };
         var titleBarPreview = new Border
         {
             Height = 48,
@@ -78,25 +90,25 @@ internal sealed class DemoWindow : Window
             {
                 Children =
                 {
-                    new XperiaFukuroLogo
-                    {
-                        FontSize = 24d,
-                        Foreground = Brushes.White,
-                        Accent = new SolidColorBrush(Color.Parse("#CFE8FF")),
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(19, 0, 0, 0)
-                    },
+                    titleLogo,
                     new TextBlock
                     {
-                        Text = "标题栏 24px 预览",
-                        Margin = new Thickness(300, 0, 0, 0),
+                        Text = "整条标题栏悬停都展开",
+                        Margin = new Thickness(240, 0, 0, 0),
                         VerticalAlignment = VerticalAlignment.Center,
                         FontSize = 13,
                         Foreground = new SolidColorBrush(Color.Parse("#D8EBFF"))
                     }
                 }
             }
+        };
+        titleBarPreview.PointerEntered += (_, e) =>
+        {
+            if (e.Pointer.Type == PointerType.Mouse) titleLogo.Expand();
+        };
+        titleBarPreview.PointerExited += (_, e) =>
+        {
+            if (e.Pointer.Type == PointerType.Mouse) titleLogo.Collapse();
         };
 
         var sizes = new StackPanel
@@ -145,7 +157,7 @@ internal sealed class DemoWindow : Window
                 },
                 new TextBlock
                 {
-                    Text = "九个字形 X P E R I A ふ く ろ；收起后只留 X 和 く。悬停展开、移出收起，触摸或笔点按切换。",
+                    Text = "九个字形 X P E R I A ふ く ろ；收起后只留 X 和 く。大 logo 悬停展开、移出收起；下面那条模拟标题栏是整条悬停触发。",
                     FontSize = 13,
                     Foreground = MutedBrush,
                     TextWrapping = TextWrapping.Wrap

@@ -36,6 +36,9 @@ public class XperiaFukuroLogo : Control
     public static readonly StyledProperty<IBrush?> AccentProperty =
         AvaloniaProperty.Register<XperiaFukuroLogo, IBrush?>(nameof(Accent), Brushes.White);
 
+    public static readonly StyledProperty<bool> FollowPointerProperty =
+        AvaloniaProperty.Register<XperiaFukuroLogo, bool>(nameof(FollowPointer), true);
+
     /// <summary>内容四周的内边距，避免抗锯齿边缘被控件边界裁掉。</summary>
     internal const double ContentPadding = 3d;
 
@@ -79,6 +82,22 @@ public class XperiaFukuroLogo : Control
         get => GetValue(AccentProperty);
         set => SetValue(AccentProperty, value);
     }
+
+    /// <summary>
+    ///     是否由控件自身的指针事件驱动展开 / 收起。放进标题栏这类由外层统一处理悬停的场景时设为
+    ///     <c>false</c>，改用 <see cref="Expand" /> / <see cref="Collapse" /> 驱动。
+    /// </summary>
+    public bool FollowPointer
+    {
+        get => GetValue(FollowPointerProperty);
+        set => SetValue(FollowPointerProperty, value);
+    }
+
+    /// <summary>展开成九个字形。</summary>
+    public void Expand() => SetExpanded(true);
+
+    /// <summary>收起到 X 与 く。</summary>
+    public void Collapse() => SetExpanded(false);
 
     /// <summary>是否已完全展开（播放头在 0 帧附近）。</summary>
     public bool IsExpanded => _playhead.Frame <= LogoPlayhead.ExpandedFrame + 1e-6d;
@@ -184,15 +203,15 @@ public class XperiaFukuroLogo : Control
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
-        // 触摸没有悬停，只有鼠标（和带悬停的笔）走这条路径。
-        if (e.Pointer.Type == PointerType.Mouse) SetExpanded(true);
+        // 触摸没有悬停，只有鼠标（和带悬停的笔）走这条路径；外层统一处理时关掉。
+        if (FollowPointer && e.Pointer.Type == PointerType.Mouse) SetExpanded(true);
     }
 
     /// <inheritdoc />
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
-        if (e.Pointer.Type == PointerType.Mouse) SetExpanded(false);
+        if (FollowPointer && e.Pointer.Type == PointerType.Mouse) SetExpanded(false);
     }
 
     /// <inheritdoc />
