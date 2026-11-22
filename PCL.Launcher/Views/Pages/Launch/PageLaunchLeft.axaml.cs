@@ -11,6 +11,8 @@ using PCL.Views.Shell;
 using Rectangle = Avalonia.Controls.Shapes.Rectangle;
 using LaunchPageKind = PCL.PageLaunchLeftViewModel.LaunchPageKind;
 
+// FORK: 登录方式单选与登录子页切换，对齐原版 PCL
+
 namespace PCL.Views.Pages.Launch;
 
 /// <summary>
@@ -33,6 +35,9 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
     private readonly Rectangle _progressFinished;
     private double _actualUsedHeight = double.NaN;
     private double _actualUsedWidth = double.NaN;
+    private bool _isSyncingLoginTypeRadios;
+    private MyRadioButton? _radioLoginTypeMs;
+    private MyRadioButton? _radioLoginTypeOffline;
 
     private bool _isInfoHeightAnimating;
     private bool _isInfoWidthAnimating;
@@ -49,6 +54,8 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
         _panLaunch = this.FindControl<Grid>("PanLaunch")!;
         _panLaunching = this.FindControl<Grid>("PanLaunching")!;
         _panLogin = this.FindControl<Grid>("PanLogin")!;
+        _radioLoginTypeMs = this.FindControl<MyRadioButton>("RadioLoginTypeMs");
+        _radioLoginTypeOffline = this.FindControl<MyRadioButton>("RadioLoginTypeOffline");
         _panLaunchingInfo = this.FindControl<Grid>("PanLaunchingInfo")!;
         _panLaunchingHint = this.FindControl<Grid>("PanLaunchingHint")!;
         _btnLaunch = this.FindControl<MyButton>("BtnLaunch")!;
@@ -274,7 +281,7 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
         AnimationService.Run(
             new List<IAnimation>
             {
-                new OpacityAnimation(_panInput, -_panInput.Opacity, 110, ease: new FluentEaseIn()),
+                new OpacityAnimation(_panInput, -_panInput.Opacity, 110, 50, new FluentEaseIn()),
                 new ScaleTransformAnimation(_panInput, 1.2d - GetScale(_panInput).ScaleX, 160),
                 new OpacityAnimation(_panLaunching, 1d - _panLaunching.Opacity, 150, 100),
                 new ScaleTransformAnimation(
@@ -398,6 +405,7 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
     public void RefreshPage(bool anim, GameLaunch.McLoginType targetLoginType = default)
     {
         var kind = ViewModel.ResolveLoginPageKind(targetLoginType);
+        ApplyLoginTypeRadios();
 
         if (_loginPageCurrent == kind)
         {
@@ -417,7 +425,6 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
         {
             LaunchPageKind.Auth => new PageLoginAuth(),
             LaunchPageKind.Ms => new PageLoginMs(),
-            LaunchPageKind.Profile => new PageLoginProfile(),
             LaunchPageKind.ProfileSkin => new PageLoginProfileSkin(),
             LaunchPageKind.Offline => new PageLoginOffline(),
             LaunchPageKind.None or _ => throw new ArgumentOutOfRangeException(
@@ -428,7 +435,11 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
 
         if (page is ILoginPage_Bindable bindable)
         {
-            bindable.BackRequested += () => RefreshPage(true);
+            bindable.BackRequested += () =>
+            {
+                ViewModel.ResetLoginType();
+                RefreshPage(true);
+            };
             bindable.LoginTypeRequested += type => RefreshPage(true, type);
             bindable.RefreshRequested += () =>
             {
@@ -572,6 +583,34 @@ public partial class PageLaunchLeft : MyPageLeft, IShellShortcutTarget
                     translate.Y = 0d;
                     break;
             }
+    }
+
+    private void ApplyLoginTypeRadios()
+    {
+        _isSyncingLoginTypeRadios = true;
+        try
+        {
+            var type = ViewModel.CurrentLoginType;
+            if (_radioLoginTypeMs is not null)
+                _radioLoginTypeMs.Checked = type == GameLaunch.McLoginType.Ms;
+            if (_radioLoginTypeOffline is not null)
+                _radioLoginTypeOffline.Checked = type == GameLaunch.McLoginType.Legacy;
+        }
+        finally
+        {
+            _isSyncingLoginTypeRadios = false;
+        }
+    }
+
+    private void RadioLoginType_Check(MyRadioButton sender, bool raiseByMouse)
+    {
+        if (!raiseByMouse || _isSyncingLoginTypeRadios)
+            return;
+        var type = ReferenceEquals(sender, _radioLoginTypeOffline)
+            ? GameLaunch.McLoginType.Legacy
+            : GameLaunch.McLoginType.Ms;
+        ViewModel.SelectLoginType(type);
+        RefreshPage(true);
     }
 
     private void OnAuthlibServerDropped(string server)

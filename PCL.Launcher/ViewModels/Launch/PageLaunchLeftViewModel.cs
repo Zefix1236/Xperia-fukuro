@@ -13,6 +13,8 @@ using PCL.Network;
 using PCL.Views.Pages.Homepage;
 using PCL.Views.Shell;
 
+// FORK: 登录方式单选与账户徽标状态，对齐原版 PCL
+
 namespace PCL;
 
 /// <summary>启动页左栏的视图模型：实例状态、账号状态与启动按钮状态机。</summary>
@@ -24,7 +26,6 @@ public partial class PageLaunchLeftViewModel : ViewModelBase
         None,
         Auth,
         Ms,
-        Profile,
         ProfileSkin,
         Offline
     }
@@ -80,13 +81,10 @@ public partial class PageLaunchLeftViewModel : ViewModelBase
             var profile = ProfileService.Current;
             return profile?.ProfileType switch
             {
-                ProfileType.Offline => Lang.Text("Launch.Account.Type.Offline"),
-                ProfileType.Microsoft => Lang.Text("Launch.Account.Type.Microsoft"),
+                ProfileType.Offline => Lang.Text("Launch.Home.AccountBadge.Offline"),
+                ProfileType.Microsoft => Lang.Text("Launch.Home.AccountBadge.Microsoft"),
                 ProfileType.Authlib or ProfileType.YggdrasilConnect =>
-                    Lang.Text("Launch.Account.Type.ThirdParty")
-                    + (string.IsNullOrEmpty(profile.ServerName)
-                        ? ""
-                        : " / " + profile.ServerName),
+                    Lang.Text("Launch.Account.Type.Authlib"),
                 _ => ""
             };
         }
@@ -97,8 +95,10 @@ public partial class PageLaunchLeftViewModel : ViewModelBase
     public string LaunchingProgressText => Lang.Number(ShowProgress, "P2");
 
     public string LaunchingStageText =>
-        _launchingStageLoader?.DisplayName
-        ?? Lang.Text("Common.Action.Initialize");
+        IsLaunched
+            ? Lang.Text("Launch.Status.Completed")
+            : _launchingStageLoader?.DisplayName
+              ?? Lang.Text("Common.Action.Initialize");
 
     public string LaunchingTitleText =>
         IsShowingLaunching && ShowProgress >= 1d
@@ -198,28 +198,103 @@ public partial class PageLaunchLeftViewModel : ViewModelBase
         IsMoreButtonVisible = currentState == 3 && instanceButtonVisible;
     }
 
+    /// <summary>用户显式选择的登录方式；null 表示跟随上次使用的档案。</summary>
+    private GameLaunch.McLoginType? _selectedLoginType;
+
+    [ObservableProperty] public partial string AccountBadgeIconKey { get; set; } =
+        "lucide/shield-check";
+
+    [ObservableProperty] public partial string AccountBadgeText { get; set; } = string.Empty;
+
+    [ObservableProperty] public partial bool IsAccountBadgeVisible { get; set; }
+
+    [ObservableProperty] public partial bool IsLoginTypeSelectorVisible { get; set; }
+
+    /// <summary>当前生效的登录方式：显式选择优先，其次跟随上次使用的档案，最后回落正版。</summary>
+    public GameLaunch.McLoginType CurrentLoginType
+    {
+        get
+        {
+            if (_selectedLoginType is { } selected)
+                return selected;
+            var last = ProfileService.LastUsedProfile;
+            return last >= 0 && last < ProfileService.Profiles.Count
+                ? ToLoginType(ProfileService.Profiles[last].ProfileType)
+                : GameLaunch.McLoginType.Ms;
+        }
+    }
+
+    /// <summary>把档案类型换算成原版 PCL 的登录方式。</summary>
+    public static GameLaunch.McLoginType ToLoginType(ProfileType profileType)
+    {
+        return profileType switch
+        {
+            ProfileType.Offline => GameLaunch.McLoginType.Legacy,
+            ProfileType.Authlib or ProfileType.YggdrasilConnect => GameLaunch.McLoginType.Auth,
+            _ => GameLaunch.McLoginType.Ms
+        };
+    }
+
+    /// <summary>用户在“正版 / 离线”之间切换登录方式。</summary>
+    public void SelectLoginType(GameLaunch.McLoginType type)
+    {
+        _selectedLoginType = type;
+        if (ProfileService.Current is { } current && ToLoginType(current.ProfileType) != type)
+            ProfileService.Select(null);
+        RefreshLoginZone();
+    }
+
+    /// <summary>从登录表单返回时恢复“跟随档案”的选择。</summary>
+    public void ResetLoginType() => _selectedLoginType = null;
+
+    /// <summary>同步左栏顶部的登录方式单选与账户类型徽标。</summary>
+    public void RefreshLoginZone()
+    {
+        var profile = ProfileService.Current;
+        if (profile is not null)
+            _selectedLoginType = ToLoginType(profile.ProfileType);
+
+        var loginType = CurrentLoginType;
+        var thirdParty = loginType == GameLaunch.McLoginType.Auth;
+        // 原版在“正版或离线”模式下无论是否已登录都显示单选，只有锁定登录方式时才显示徽标。
+        IsLoginTypeSelectorVisible = !thirdParty;
+        IsAccountBadgeVisible = thirdParty;
+        (AccountBadgeIconKey, AccountBadgeText) = ("lucide/network",
+            profile is not null && !string.IsNullOrEmpty(profile.ServerName)
+                ? profile.ServerName
+                : Lang.Text("Launch.Home.AccountBadge.ThirdParty"));
+    }
+
     /// <summary>根据当前账号与目标登录类型决定登录子视图。</summary>
     public LaunchPageKind ResolveLoginPageKind(GameLaunch.McLoginType targetLoginType = default)
     {
         if (targetLoginType != default)
-            return targetLoginType switch
-            {
-                GameLaunch.McLoginType.Ms => LaunchPageKind.Ms,
-                GameLaunch.McLoginType.Auth => LaunchPageKind.Auth,
-                GameLaunch.McLoginType.Legacy => LaunchPageKind.Offline,
-                _ => LaunchPageKind.Profile
-            };
+            _selectedLoginType = targetLoginType;
 
         if (ProfileService.Current is not null)
         {
             if (_launchButtonAction == LaunchButtonAction.Launch)
                 IsLaunchButtonEnabled = true;
-            return LaunchPageKind.ProfileSkin;
+        }
+        else if (_launchButtonAction != LaunchButtonAction.Download)
+        {
+            IsLaunchButtonEnabled = false;
         }
 
-        if (_launchButtonAction != LaunchButtonAction.Download)
-            IsLaunchButtonEnabled = false;
-        return LaunchPageKind.Profile;
+        var loginType = CurrentLoginType;
+        RefreshLoginZone();
+
+        // 已登录且当前登录方式就是该档案的类型时，展示皮肤卡；其余情况展示对应的表单。
+        if (ProfileService.Current is { } profile
+            && ToLoginType(profile.ProfileType) == loginType)
+            return LaunchPageKind.ProfileSkin;
+
+        return loginType switch
+        {
+            GameLaunch.McLoginType.Auth => LaunchPageKind.Auth,
+            GameLaunch.McLoginType.Legacy => LaunchPageKind.Offline,
+            _ => LaunchPageKind.Ms
+        };
     }
 
     /// <summary>进入启动中界面，重置进度状态。</summary>

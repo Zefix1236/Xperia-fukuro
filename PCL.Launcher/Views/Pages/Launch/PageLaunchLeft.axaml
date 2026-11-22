@@ -2,12 +2,14 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:vm="using:PCL"
                xmlns:ui="using:PCL.UI.Controls"
+               xmlns:icons="using:PCL.UI.Controls.SvgIcon"
                xmlns:media="using:Avalonia.Media"
                xmlns:loc="using:PCL.Core.UI"
                x:DataType="vm:PageLaunchLeftViewModel"
                x:CompileBindings="True"
                x:Class="PCL.Views.Pages.Launch.PageLaunchLeft"
                Width="300">
+    <!-- FORK: 顶部登录方式单选与账户徽标对齐原版 PCL -->
     <Grid x:Name="PanInput"
           RenderTransformOrigin="0.5,0.5"
           RowDefinitions="Auto,*,Auto,Auto,20"
@@ -15,6 +17,61 @@
         <Grid.RenderTransform>
             <ScaleTransform />
         </Grid.RenderTransform>
+
+        <!-- 登录后：账户类型徽标（正版 / 离线 / 第三方） -->
+        <Grid x:Name="PanTypeOne"
+              Grid.Row="0"
+              Grid.ColumnSpan="5"
+              Margin="20,24,20,-4"
+              IsVisible="{Binding IsAccountBadgeVisible}">
+            <Border MinHeight="27"
+                    MaxHeight="27"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource ColorBrushSemiTransparent}"
+                    CornerRadius="13">
+                <StackPanel Orientation="Horizontal">
+                    <icons:SvgIcon Width="16"
+                                   Height="16"
+                                   Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Icon="{Binding AccountBadgeIconKey}"
+                                   IconBrush="{DynamicResource ColorBrush3}" />
+                    <TextBlock Margin="15,0,12,0"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               Foreground="{DynamicResource ColorBrush3}"
+                               Text="{Binding AccountBadgeText}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- 未登录：正版 / 离线 两种登录方式 -->
+        <Grid x:Name="PanType"
+              Grid.Row="0"
+              Grid.ColumnSpan="5"
+              Margin="20,22,20,0"
+              ColumnDefinitions="*,Auto,Auto,*"
+              IsVisible="{Binding IsLoginTypeSelectorVisible}">
+            <ui:MyRadioButton x:Name="RadioLoginTypeMs"
+                              Grid.Column="1"
+                              Margin="4,0"
+                              Padding="2,0"
+                              ColorType="Highlight"
+                              GroupName="LaunchLoginType"
+                              SvgIcon="lucide/shield-check"
+                              Text="{loc:Loc Launch.Home.LoginType.Microsoft}"
+                              Check="RadioLoginType_Check" />
+            <ui:MyRadioButton x:Name="RadioLoginTypeOffline"
+                              Grid.Column="2"
+                              Margin="4,0"
+                              Padding="2,0"
+                              ColorType="Highlight"
+                              GroupName="LaunchLoginType"
+                              SvgIcon="lucide/link-2-off"
+                              Text="{loc:Loc Launch.Home.LoginType.Offline}"
+                              Check="RadioLoginType_Check" />
+        </Grid>
 
         <Grid x:Name="PanLogin"
               Grid.Row="1"
@@ -59,7 +116,7 @@
                      Command="{Binding SelectInstanceCommand}"
                      IsEnabled="{Binding IsInstanceButtonEnabled}"
                      IsVisible="{Binding IsInstanceButtonVisible}"
-                     Text="{loc:Loc Launch.Home.SelectInstance}" />
+                     Text="{loc:Loc Launch.Home.SelectVersion}" />
         <ui:MyButton x:Name="BtnMore"
                      Grid.Row="3"
                      Grid.Column="3"
@@ -69,7 +126,7 @@
                      TextPadding="36,0"
                      Command="{Binding OpenInstanceSettingsCommand}"
                      IsVisible="{Binding IsMoreButtonVisible}"
-                     Text="{loc:Loc Launch.Home.InstanceSettings}" />
+                     Text="{loc:Loc Launch.Home.VersionSettings}" />
     </Grid>
 
     <Grid x:Name="PanLaunching"
