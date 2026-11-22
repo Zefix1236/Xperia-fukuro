@@ -7,6 +7,8 @@ using PCL.Core.Minecraft.Profile.Models;
 using PCL.Core.ViewModel;
 using PCL.Views.Pages.Launch;
 
+// FORK: 去掉账号类型行，对齐原版皮肤卡
+
 namespace PCL;
 
 /// <summary>当前档案卡片的视图模型：档案信息、皮肤地址加载与档案相关菜单命令。</summary>
@@ -15,11 +17,6 @@ public partial class PageLoginProfileSkinViewModel : ViewModelBase
     private int _loadRevision;
 
     [ObservableProperty] public partial string ProfileName { get; set; } = string.Empty;
-
-    public string ProfileTypeText =>
-        ProfileService.Current is { } profile
-            ? LaunchLoginHelper.GetProfileInfo(profile)
-            : string.Empty;
 
     [ObservableProperty] public partial bool EditVisible { get; set; }
 
@@ -56,13 +53,11 @@ public partial class PageLoginProfileSkinViewModel : ViewModelBase
             EditVisible = false;
             IsSkinLoading = false;
             SkinAddress = "";
-            OnPropertyChanged(nameof(ProfileTypeText));
             return;
         }
 
         HasProfile = true;
         ProfileName = profile.UserName;
-        OnPropertyChanged(nameof(ProfileTypeText));
         EditVisible = profile.ProfileType is not ProfileType.Offline;
         HasCape = profile.ProfileType is not ProfileType.Offline;
         IsSkinLoading = true;

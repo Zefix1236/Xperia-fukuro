@@ -1594,7 +1594,7 @@
     <sys:String x:Key="Launch.Account.Microsoft.LoginFailed.Title">正版登录尝试失败</sys:String>
     <sys:String x:Key="Launch.Account.Microsoft.LoginFailed.WithDetail">正版登录验证失败。&#xA;&#xA;原始错误信息：&#xA;{0}</sys:String>
     <sys:String x:Key="Launch.Account.Microsoft.Purchase">»  购买正版</sys:String>
-    <sys:String x:Key="Launch.Account.Microsoft.Start">开始正版验证</sys:String>
+    <sys:String x:Key="Launch.Account.Microsoft.Start">登录</sys:String>
     <sys:String x:Key="Launch.Account.Microsoft.Website">»  前往官网</sys:String>
 
     <!-- Launch.Account.Offline -->
@@ -1604,6 +1604,8 @@
     <sys:String x:Key="Launch.Account.Offline.InvalidPlayerId.Message">你输入的玩家 ID 不符合标准（3 - 16 位，只可以包含英文字母、数字与下划线），可能导致部分版本的游戏无法启动或发生错误。&#xA;强烈建议使用规范的玩家 ID！&#xA;如果你坚持，仍然可以继续创建档案。</sys:String>
     <sys:String x:Key="Launch.Account.Offline.InvalidPlayerId.Title">玩家 ID 不符合规范</sys:String>
     <sys:String x:Key="Launch.Account.Offline.InvalidUuid">UUID 不符合要求：{0}</sys:String>
+    <sys:String x:Key="Launch.Account.Offline.NameHint">玩家名如果包含英文、数字、下划线以外的内容，可能会无法进入 Minecraft 1.18 以后的世界！</sys:String>
+    <sys:String x:Key="Launch.Account.Offline.NameFieldHint">游戏用户名</sys:String>
     <sys:String x:Key="Launch.Account.Offline.PlayerId">玩家 ID</sys:String>
     <sys:String x:Key="Launch.Account.Offline.PlayerId.ToolTip">3 - 16 位，只可以包含英文字母、数字与下划线</sys:String>
     <sys:String x:Key="Launch.Account.Offline.Uuid.Custom.Input.ToolTip">应为 32 位 16 进制字符串，不含连字符</sys:String>
@@ -1672,22 +1674,33 @@
     <sys:String x:Key="Launch.Account.ProfileSkin.EditProfile">修改信息</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.EditUsername">修改玩家名</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.PasswordUnsupported">当前档案不支持修改密码！</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshSkin">刷新头像</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.SaveSkin">保存皮肤</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshSkin">刷新皮肤</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.SaveSkin">保存皮肤文件</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.SkinUnsupported">当前档案不支持修改皮肤！</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshCapeList">刷新披风列表</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RedeemCdkey">使用 CDKEY 兑换奖励</sys:String>
+    <sys:String x:Key="Launch.Account.Type.Authlib">Authlib-Injector</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.SkinsAndCapes">皮肤与披风</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.SwitchProfile">选择档案</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.SwitchProfile">切换账号</sys:String>
 
+    <!-- FORK: 登录页文案对齐原版 PCL -->
     <!-- Launch.Home -->
 
+    <sys:String x:Key="Launch.Home.AccountBadge.Microsoft">正版登录</sys:String>
+    <sys:String x:Key="Launch.Home.AccountBadge.Offline">离线登录</sys:String>
+    <sys:String x:Key="Launch.Home.AccountBadge.ThirdParty">第三方登录</sys:String>
     <sys:String x:Key="Launch.Home.Button.Download">下载游戏</sys:String>
     <sys:String x:Key="Launch.Home.Button.Launch">启动游戏</sys:String>
     <sys:String x:Key="Launch.Home.Button.Loading">正在加载</sys:String>
     <sys:String x:Key="Launch.Home.Instance.InstallingCannotLaunch">当前实例正在安装，无法启动！</sys:String>
     <sys:String x:Key="Launch.Home.Instance.InstallingCannotSetup">当前实例正在安装，暂无法进行实例设置！</sys:String>
     <sys:String x:Key="Launch.Home.Instance.Loading">正在加载中，请稍候</sys:String>
-    <sys:String x:Key="Launch.Home.Instance.NotFound">未找到可用的游戏实例</sys:String>
+    <sys:String x:Key="Launch.Home.Instance.NotFound">未找到可用的游戏版本</sys:String>
     <sys:String x:Key="Launch.Home.InstanceSettings">实例设置</sys:String>
+    <sys:String x:Key="Launch.Home.LoginType.Microsoft">正版</sys:String>
+    <sys:String x:Key="Launch.Home.LoginType.Offline">离线</sys:String>
+    <sys:String x:Key="Launch.Home.SelectVersion">版本选择</sys:String>
+    <sys:String x:Key="Launch.Home.VersionSettings">版本设置</sys:String>
     <sys:String x:Key="Launch.Home.SelectInstance">实例选择</sys:String>
     <sys:String x:Key="Launch.Home.VersionList.Loading">正在加载版本列表，请稍候</sys:String>
 
@@ -1804,7 +1817,7 @@
     <sys:String x:Key="Launch.Status.DownloadLibs">下载支持</sys:String>
     <sys:String x:Key="Launch.Status.DownloadSpeed">下载速度</sys:String>
     <sys:String x:Key="Launch.Status.LaunchProgress">启动进度</sys:String>
-    <sys:String x:Key="Launch.Status.LoginMethod">验证方式</sys:String>
+    <sys:String x:Key="Launch.Status.LoginMethod">登录方式</sys:String>
     <sys:String x:Key="Launch.Status.MicrosoftLogin">正版验证</sys:String>
     <sys:String x:Key="Launch.Status.Title.ExportingScript">正在导出启动脚本</sys:String>
     <sys:String x:Key="Launch.Status.Title.Launched">已启动游戏</sys:String>

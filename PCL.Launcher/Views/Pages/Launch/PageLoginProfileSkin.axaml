@@ -7,9 +7,10 @@
              x:DataType="vm:PageLoginProfileSkinViewModel"
              x:CompileBindings="True"
              x:Class="PCL.Views.Pages.Launch.PageLoginProfileSkin">
+    <!-- FORK: 去掉账号类型行，字号与高度对齐原版 -->
     <Grid ColumnDefinitions="34,*,34">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="75" />
             <RowDefinition Height="Auto"
                            MinHeight="30" />
             <RowDefinition Height="*" />
@@ -25,15 +26,8 @@
             <TextBlock x:Name="TextName"
                        Margin="8,0"
                        HorizontalAlignment="Center"
-                       FontSize="16"
+                       FontSize="17"
                        Text="{Binding ProfileName}"
-                       TextTrimming="CharacterEllipsis" />
-            <TextBlock x:Name="TextType"
-                       Margin="8,4,8,5"
-                       HorizontalAlignment="Center"
-                       FontSize="12"
-                       Foreground="{DynamicResource ColorBrushGray4}"
-                       Text="{Binding ProfileTypeText}"
                        TextTrimming="CharacterEllipsis" />
         </StackPanel>
 
@@ -42,6 +36,7 @@
                    Grid.Column="1"
                    Margin="0,8,0,0"
                    HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
                    CornerRadius="5"
                    Opacity="0">
             <StackPanel Margin="10,3,9,3"

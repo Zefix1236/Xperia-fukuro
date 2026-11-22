@@ -1556,6 +1556,8 @@
     <sys:String x:Key="Launch.Account.Offline.InvalidPlayerId.Message">Your username does not meet the standard (3 - 16 characters, letters, numbers, and underscores only), which may cause some game versions to fail to launch or encounter errors.&#xA;It is strongly recommended to use a standard username!&#xA;If you insist on using this username, you can continue.</sys:String>
     <sys:String x:Key="Launch.Account.Offline.InvalidPlayerId.Title">Invalid username</sys:String>
     <sys:String x:Key="Launch.Account.Offline.InvalidUuid">UUID does not meet requirements: {0}</sys:String>
+    <sys:String x:Key="Launch.Account.Offline.NameHint">Names containing characters other than letters, digits and underscores may fail to join worlds in Minecraft 1.18 and later!</sys:String>
+    <sys:String x:Key="Launch.Account.Offline.NameFieldHint">Game username</sys:String>
     <sys:String x:Key="Launch.Account.Offline.PlayerId">Username</sys:String>
     <sys:String x:Key="Launch.Account.Offline.PlayerId.ToolTip">3 - 16 characters, letters, numbers, and underscores only</sys:String>
     <sys:String x:Key="Launch.Account.Offline.Uuid.Custom.Input.ToolTip">Must be a 32-character hexadecimal string without hyphens</sys:String>
@@ -1624,22 +1626,33 @@
     <sys:String x:Key="Launch.Account.ProfileSkin.EditProfile">Edit profile</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.EditUsername">Edit username</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.PasswordUnsupported">This profile does not support changing the password!</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshSkin">Refresh</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.SaveSkin">Save skin</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshSkin">Refresh skin</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.SaveSkin">Save skin file</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.SkinUnsupported">This profile does not support changing the skin!</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RefreshCapeList">Refresh cape list</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.RedeemCdkey">Redeem with a CDKEY</sys:String>
+    <sys:String x:Key="Launch.Account.Type.Authlib">Authlib-Injector</sys:String>
     <sys:String x:Key="Launch.Account.ProfileSkin.SkinsAndCapes">Skins and capes</sys:String>
-    <sys:String x:Key="Launch.Account.ProfileSkin.SwitchProfile">Switch accounts</sys:String>
+    <sys:String x:Key="Launch.Account.ProfileSkin.SwitchProfile">Switch account</sys:String>
 
+    <!-- FORK: 登录页文案对齐原版 PCL -->
     <!-- Launch.Home -->
 
+    <sys:String x:Key="Launch.Home.AccountBadge.Microsoft">Microsoft login</sys:String>
+    <sys:String x:Key="Launch.Home.AccountBadge.Offline">Offline login</sys:String>
+    <sys:String x:Key="Launch.Home.AccountBadge.ThirdParty">Third-party login</sys:String>
     <sys:String x:Key="Launch.Home.Button.Download">Download</sys:String>
     <sys:String x:Key="Launch.Home.Button.Launch">Launch</sys:String>
     <sys:String x:Key="Launch.Home.Button.Loading">Loading</sys:String>
     <sys:String x:Key="Launch.Home.Instance.InstallingCannotLaunch">The current instance is being installed and cannot be launched!</sys:String>
     <sys:String x:Key="Launch.Home.Instance.InstallingCannotSetup">The current instance is being installed and cannot be configured!</sys:String>
     <sys:String x:Key="Launch.Home.Instance.Loading">Loading, please wait</sys:String>
-    <sys:String x:Key="Launch.Home.Instance.NotFound">No instance available</sys:String>
+    <sys:String x:Key="Launch.Home.Instance.NotFound">No version available</sys:String>
     <sys:String x:Key="Launch.Home.InstanceSettings">Properties</sys:String>
+    <sys:String x:Key="Launch.Home.LoginType.Microsoft">Microsoft</sys:String>
+    <sys:String x:Key="Launch.Home.LoginType.Offline">Offline</sys:String>
+    <sys:String x:Key="Launch.Home.SelectVersion">Select version</sys:String>
+    <sys:String x:Key="Launch.Home.VersionSettings">Version settings</sys:String>
     <sys:String x:Key="Launch.Home.SelectInstance">Selection</sys:String>
     <sys:String x:Key="Launch.Home.VersionList.Loading">Getting version list...</sys:String>
 

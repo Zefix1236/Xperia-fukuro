@@ -12,6 +12,8 @@ using PCL.Navigation;
 using PCL.UI.Controls;
 using PCL.UI.Install;
 
+// FORK: 阶段同步提前到入场动画枚举前，见 docs/FORK-PATCHES.md
+
 namespace PCL.Views.Pages.Download;
 
 /// <summary>
@@ -26,6 +28,10 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     private readonly bool _uiBuilt;
     private readonly PageDownloadInstallViewModel _vm = new();
     private bool _instanceNameEdited;
+    /// <summary>当前是否显示“选择版本”阶段，仅用于判断进入页面时是否需要播放列表滑入。</summary>
+    private bool _isSelectStage = true;
+    /// <summary>正在执行导航同步：此期间不播放页面内的阶段切换动画。</summary>
+    private bool _isEnteringPage;
     private bool _startingInstall;
     private bool _updatingInstanceName;
     private JsonObject? _version;
@@ -66,6 +72,7 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             UpdateLocation();
         };
         TextInstanceName.KeyDown += OnInstanceNameKeyDown;
+        PageEnter += SyncStageBeforeEnterAnimation;
         BtnReselect.Click += (_, _) => ShowSelectStage();
         BtnStart.Click += (_, _) => _ = StartInstallAsync();
 
@@ -75,7 +82,44 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
         ShowSelectStage();
     }
 
+    /// <summary>页面级入场动画开始前同步阶段，确保列表条目参与连锁渐显。</summary>
+    private void SyncStageBeforeEnterAnimation()
+    {
+        if (_isSelectStage)
+        {
+            // 已经在列表阶段：只做无动画同步，避免多余的滑入。
+            _isEnteringPage = true;
+            try
+            {
+                ShowSelectStage();
+            }
+            finally
+            {
+                _isEnteringPage = false;
+            }
+        }
+        else
+        {
+            // 从配置页返回：与原版一致，列表容器滑入，同时页面级连锁渐显并行播放。
+            ShowSelectStage();
+        }
+    }
+
     public override void OnNavigatedTo(PageParameter? parameter)
+    {
+        // 页面入场动画由 MyPageRight 统一负责；导航期间只同步阶段状态，不播放页面内的滑入动画。
+        _isEnteringPage = true;
+        try
+        {
+            SyncOnNavigatedTo(parameter);
+        }
+        finally
+        {
+            _isEnteringPage = false;
+        }
+    }
+
+    private void SyncOnNavigatedTo(PageParameter? parameter)
     {
         PanBack?.ScrollToHome();
         _selector.Activate();
@@ -104,7 +148,6 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             {
                 _waitingVersionName = null;
                 VersionList.Activate();
-                ShowSelectStage();
                 break;
             }
         }
@@ -179,7 +222,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
 
     private void ShowSelectStage()
     {
-        var animate = ContainerAnimation.CanAnimate(this)
+        _isSelectStage = true;
+        var animate = !_isEnteringPage
+            && ContainerAnimation.CanAnimate(this)
             && PanSelectStage?.IsLoaded == true
             && PanConfigStage?.IsLoaded == true;
         _vm.IsConfigStageVisible = false;
@@ -228,7 +273,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
 
     private void ShowConfigStage()
     {
-        var animate = ContainerAnimation.CanAnimate(this)
+        _isSelectStage = false;
+        var animate = !_isEnteringPage
+            && ContainerAnimation.CanAnimate(this)
             && PanSelectStage?.IsLoaded == true
             && PanConfigStage?.IsLoaded == true;
         PanSelectStage?.IsVisible = false;

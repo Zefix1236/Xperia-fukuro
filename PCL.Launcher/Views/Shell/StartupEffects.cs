@@ -12,6 +12,8 @@ using PCL.Core.Utils.OS;
 using PCL.UI;
 using PCL.UI.Controls;
 
+// FORK: 窗口开场与启动中切换的延迟/缓动对齐原版
+
 namespace PCL.Views.Shell;
 
 public sealed class StartupEffects(
@@ -87,17 +89,19 @@ public sealed class StartupEffects(
         AnimationService.Run(
             new List<IAnimation>
             {
-                new OpacityAnimation(window, target, 250),
+                new OpacityAnimation(window, target, 250, 100),
                 new DoubleAnimation(
                     value => translate.Y += value,
                     -translate.Y,
                     600,
-                    ease: new BackEaseWithPowerOut(EasePower.Weak)),
+                    100,
+                    new BackEaseWithPowerOut(EasePower.Weak)),
                 new DoubleAnimation(
                     value => rotate.Angle += value,
                     -rotate.Angle,
                     500,
-                    ease: new BackEaseWithPowerOut(EasePower.Weak)),
+                    100,
+                    new BackEaseWithPowerOut(EasePower.Weak)),
                 new ActionAnimation(
                     () =>
                     {

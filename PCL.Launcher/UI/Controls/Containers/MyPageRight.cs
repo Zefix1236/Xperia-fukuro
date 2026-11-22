@@ -5,6 +5,8 @@ using Avalonia.Threading;
 using PCL.Navigation;
 using PCL.Views.Pages;
 
+// FORK: 入场动画前复位被中断动画留下的透明度，见 docs/FORK-PATCHES.md
+
 namespace PCL.UI.Controls;
 
 /// <summary>
@@ -787,6 +789,8 @@ public class MyPageRight : Decorator, IPageView, IPageRightContainer
                     control.IsHitTestVisible = true;
                 if (control.RenderTransform is TranslateTransform)
                     control.RenderTransform = null;
+                // 清掉上一次被中断的动画留下的透明度；隐藏控件之后被显示时不至于停在半透明状态（#卡顿）。
+                control.Opacity = 1d;
             }
 
             foreach (var control in GetAllAnimControls(element))

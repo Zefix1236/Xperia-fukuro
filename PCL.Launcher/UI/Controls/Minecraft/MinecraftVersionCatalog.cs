@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using PCL.Views.Pages.Download;
 
+// FORK: 版本数据未变化时不重建列表，见 docs/FORK-PATCHES.md
+
 namespace PCL.UI.Controls.Minecraft;
 
 internal sealed class MinecraftVersionCatalog(
@@ -13,6 +15,9 @@ internal sealed class MinecraftVersionCatalog(
     private readonly Dictionary<string, MyListItem> _items = new(StringComparer.OrdinalIgnoreCase);
 
     private bool _active;
+
+    /// <summary>最近一次构建列表时使用的版本数组；数据未变化时不应重建。</summary>
+    private JsonArray? _builtVersions;
 
     public LoadState State => GameDownload.dlClientListLoader.State;
 
@@ -38,7 +43,16 @@ internal sealed class MinecraftVersionCatalog(
         GameDownload.dlClientListLoader.PreviewFinish += OnVersionListPreviewFinish;
         GameDownload.dlClientListLoader.OnStateChangedUi += OnVersionListStateChanged;
         GameFolders.McFolderListLoader.PreviewFinish += OnFolderListPreviewFinish;
-        Rebuild();
+        // 数据未变化时保持现有条目：页面进入时重建会替换正在播放入场动画的条目，导致连锁渐显失效。
+        if (HasVersions && ReferenceEquals(CurrentVersions(), _builtVersions))
+            RaiseStateChanged();
+        else
+            Rebuild();
+    }
+
+    private static JsonArray? CurrentVersions()
+    {
+        return GameDownload.dlClientListLoader.output.Value?["versions"] as JsonArray;
     }
 
     public void Deactivate()
@@ -83,6 +97,7 @@ internal sealed class MinecraftVersionCatalog(
             && host.Children.Count > 0)
         {
             IsRebuildPending = false;
+            _builtVersions = CurrentVersions();
             RaiseStateChanged();
             return;
         }
@@ -107,6 +122,7 @@ internal sealed class MinecraftVersionCatalog(
             host.Children.Clear();
         }
 
+        _builtVersions = CurrentVersions();
         Rebuilt?.Invoke();
         RaiseStateChanged();
     }

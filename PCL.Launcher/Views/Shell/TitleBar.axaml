@@ -4,11 +4,12 @@
              xmlns:loc="using:PCL.Core.UI"
              xmlns:branding="using:PCL.UI.Controls.Branding"
              x:Class="PCL.Views.Shell.TitleBar">
+    <!-- FORK: 标题栏底色对齐原版 ColorObject4 -->
     <Grid x:Name="PanTitle"
           Height="48"
           Background="Transparent">
         <controls:AnimatedBackgroundGrid x:Name="TitleBackground"
-                                         BackgroundBrush="{DynamicResource ColorBrush3}"
+                                         BackgroundBrush="{DynamicResource ColorBrush4}"
                                          IsHitTestVisible="False" />
         <Grid x:Name="PanTitleMain"
               ColumnDefinitions="1*,Auto,1*">

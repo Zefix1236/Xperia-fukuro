@@ -1,152 +1,143 @@
 using Avalonia.Controls;
-using PCL.Core.App.Localization;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using PCL.Core.Minecraft.Profile;
 using PCL.Core.Minecraft.Profile.Models;
-using PCL.Core.UI.Dialogs;
-using PCL.Core.UI.Hints;
-using PCL.Core.Utils.Validate;
 using PCL.UI.Controls;
+
+// FORK: 按原版 PageLoginLegacy 重写（红提示 + 头像 + 用户名）
 
 namespace PCL.Views.Pages.Launch;
 
 /// <summary>
-///     离线档案创建视图：填写玩家名并选择 UUID 标准，创建后由启动页左栏切换到档案皮肤视图。
+///     离线登录视图（对齐原版 PCL 的 PageLoginLegacy）：提示、皮肤预览与可编辑用户名下拉；
+///     选中已有离线档案直接切换，输入新名字后回车创建档案。
 /// </summary>
 public partial class PageLoginOffline : LoginPageBase
 {
-    private readonly MyButton _btnBack;
-    private readonly MyButton _btnLogin;
-    private readonly MyRadioBox _radioUuidCustom;
-    private readonly MyRadioBox _radioUuidLegacy;
-    private readonly MyRadioBox _radioUuidStandard;
-    private readonly MyTextBox _textUuid;
-    private readonly TextBlock _textUuidTitle;
+    /// <summary>没有输入名字时显示的默认皮肤（Steve）。</summary>
+    private static readonly string DefaultSkinAddress =
+        LaunchLoginHelper.GetOfflineSkinAddress(new string('0', 32));
 
-    private readonly PageLoginOfflineViewModel _viewModel = new();
-    private UuidMode _mode = UuidMode.Standard;
-    private bool _syncingMode;
+    private readonly List<McProfile> _accounts = [];
+    private readonly MyComboBox _comboName;
+    private readonly MyHint _hintChinese;
+    private readonly MySkin _skin;
+    private bool _isSyncing;
 
     public PageLoginOffline()
     {
         InitializeComponent();
-        DataContext = _viewModel;
-        _textUuid = this.FindControl<MyTextBox>("TextUuid")!;
-        _textUuidTitle = this.FindControl<TextBlock>("TextUuidTitle")!;
-        _radioUuidStandard = this.FindControl<MyRadioBox>("RadioUuidStandard")!;
-        _radioUuidLegacy = this.FindControl<MyRadioBox>("RadioUuidLegacy")!;
-        _radioUuidCustom = this.FindControl<MyRadioBox>("RadioUuidCustom")!;
-        _btnBack = this.FindControl<MyButton>("BtnBack")!;
-        _btnLogin = this.FindControl<MyButton>("BtnLogin")!;
 
-        _radioUuidStandard.Checked = true;
-        _radioUuidStandard.Check += (_, _) => SetMode(UuidMode.Standard);
-        _radioUuidLegacy.Check += (_, _) => SetMode(UuidMode.Legacy);
-        _radioUuidCustom.Check += (_, _) => SetMode(UuidMode.Custom);
-        _btnBack.Click += (_, _) => RequestBack();
-        _btnLogin.Click += (_, _) => _ = LoginAsync();
+        _comboName = this.FindControl<MyComboBox>("ComboName")!;
+        _hintChinese = this.FindControl<MyHint>("HintChinese")!;
+        _skin = this.FindControl<MySkin>("Skin")!;
+
+        _comboName.SelectionChanged += (_, _) => OnAccountSelected();
+        _comboName.TextChanged += (_, _) => OnNameChanged();
+        _comboName.AddHandler(
+            KeyDownEvent,
+            OnComboKeyDown,
+            RoutingStrategies.Tunnel);
+
+        RefreshAccounts();
     }
 
     public override void Reload()
     {
-        SetMode(_mode);
+        RefreshAccounts();
     }
 
-    private void SetMode(UuidMode mode)
+    private void RefreshAccounts()
     {
-        if (_syncingMode)
-            return;
-        _syncingMode = true;
+        _isSyncing = true;
         try
         {
-            _mode = mode;
-            _radioUuidStandard.Checked = mode == UuidMode.Standard;
-            _radioUuidLegacy.Checked = mode == UuidMode.Legacy;
-            _radioUuidCustom.Checked = mode == UuidMode.Custom;
-            var showCustomUuid = mode == UuidMode.Custom;
-            _textUuidTitle.IsVisible = showCustomUuid;
-            _textUuid.IsVisible = showCustomUuid;
+            _accounts.Clear();
+            _accounts.AddRange(
+                ProfileService.Profiles.Where(profile => profile.ProfileType == ProfileType.Offline));
+            _comboName.ItemsSource = _accounts.Select(profile => profile.UserName).ToList();
+            _comboName.SelectedIndex = -1;
+            _comboName.Text = "";
         }
         finally
         {
-            _syncingMode = false;
+            _isSyncing = false;
         }
+
+        UpdateSkinAndHint(string.Empty);
     }
 
-    private async Task LoginAsync()
+    private void OnAccountSelected()
     {
-        try
+        if (_isSyncing)
+            return;
+        var index = _comboName.SelectedIndex;
+        if (index < 0 || index >= _accounts.Count)
+            return;
+
+        var profile = _accounts[index];
+        UpdateSkinAndHint(profile.UserName);
+        if (ReferenceEquals(ProfileService.Current, profile))
+            return;
+        ProfileService.Select(profile);
+        RequestRefresh();
+    }
+
+    private void OnNameChanged()
+    {
+        if (_isSyncing)
+            return;
+        UpdateSkinAndHint(_comboName.Text ?? string.Empty);
+    }
+
+    private void OnComboKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter)
+            return;
+        e.Handled = true;
+        CommitName();
+    }
+
+    /// <summary>输入新名字后回车：已有同名档案则切换，否则按标准 UUID 创建。</summary>
+    private void CommitName()
+    {
+        var name = (_comboName.Text ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(name))
+            return;
+
+        var existing = _accounts.FirstOrDefault(
+            profile => string.Equals(profile.UserName, name, StringComparison.Ordinal));
+        if (existing is not null)
         {
-            var username = _viewModel.UserName;
-            if (!new RegexValidator("^[A-z0-9_]{3,16}$")
-                    .Validate(username)
-                    .IsValid)
-            {
-                var result = await DialogService.Instance.ShowAsync(
-                    new TextDialogRequest
-                    {
-                        Title = Lang.Text("Launch.Account.Offline.InvalidPlayerId.Title"),
-                        Content = Lang.Text("Launch.Account.Offline.InvalidPlayerId.Message"),
-                        Buttons = DialogButtons.ContinueCancel,
-                        IsWarn = true
-                    });
-                if (result.Button == 2)
-                    return;
-            }
-
-            string userUuid;
-            if (_mode == UuidMode.Custom)
-            {
-                var uuidInput = _viewModel.Uuid.Replace("-", "");
-                var uuidValidateResult = await new RegexValidator("^[a-fA-F0-9]{32}$")
-                    .ValidateAsync(uuidInput);
-                if (!uuidValidateResult.IsValid)
-                {
-                    HintService.Show(
-                        Hints.Error(
-                            Lang.Text("Launch.Account.Offline.InvalidUuid", uuidValidateResult)));
-                    return;
-                }
-
-                userUuid = uuidInput;
-            }
-            else if (_mode == UuidMode.Legacy)
-            {
-                userUuid = LaunchLoginHelper.GetOfflineUuid(username, isLegacy: true);
-            }
-            else
-            {
-                userUuid = LaunchLoginHelper.GetOfflineUuid(username);
-            }
-
-            ProfileService.Add(
-                new McProfile
-                {
-                    ProfileType = ProfileType.Offline,
-                    Uuid = userUuid,
-                    UserName = username,
-                    Description = "",
-                    AccessToken = userUuid,
-                    ClientToken = userUuid,
-                    ProfileId = Guid.NewGuid().ToString("N")
-                });
-            ProfileService.IsCreatingProfile = false;
-            HintService.Show(Hints.Success(Lang.Text("Launch.Account.Profile.Created")));
+            ProfileService.Select(existing);
             RequestRefresh();
+            return;
         }
-        catch (Exception ex)
-        {
-            LauncherCommon.Log(
-                ex,
-                Lang.Text("Launch.Account.Profile.Error.Write"),
-                LauncherLogLevel.Feedback,
-                userSummary: Lang.Text("Launch.Account.Profile.Error.Write"));
-        }
+
+        var uuid = LaunchLoginHelper.GetOfflineUuid(name);
+        ProfileService.Add(
+            new McProfile
+            {
+                ProfileType = ProfileType.Offline,
+                Uuid = uuid,
+                UserName = name,
+                Description = "",
+                AccessToken = uuid,
+                ClientToken = uuid,
+                ProfileId = Guid.NewGuid().ToString("N")
+            });
+        RequestRefresh();
     }
 
-    private enum UuidMode
+    private void UpdateSkinAndHint(string name)
     {
-        Standard,
-        Legacy,
-        Custom
+        var trimmed = name.Trim();
+        _skin.Address = string.IsNullOrEmpty(trimmed)
+            ? DefaultSkinAddress
+            : LaunchLoginHelper.GetOfflineSkinAddress(LaunchLoginHelper.GetOfflineUuid(trimmed));
+
+        _hintChinese.IsVisible = trimmed.Any(
+            character => !char.IsAsciiLetterOrDigit(character) && character != '_');
     }
 }

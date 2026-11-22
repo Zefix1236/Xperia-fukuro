@@ -2,6 +2,8 @@ using System.ComponentModel;
 using Avalonia.Controls;
 using PCL.UI.Controls;
 
+// FORK: 去掉账号类型行，菜单/tooltip 文案对齐原版
+
 namespace PCL.Views.Pages.Launch;
 
 /// <summary>
@@ -101,19 +103,27 @@ public partial class PageLoginProfileSkin : LoginPageBase
             "Launch.Account.ProfileSkin.ChangeSkin",
             "lucide/shirt",
             () => ViewModel.ChangeSkinCommand.Execute(null));
+        AddItem(
+            "Launch.Account.ProfileSkin.RefreshSkin",
+            "lucide/refresh-cw",
+            () => ViewModel.RefreshSkinCommand.Execute(null));
         _menuSave = AddItem(
             "Launch.Account.ProfileSkin.SaveSkin",
             "lucide/download",
             () => ViewModel.SaveSkinCommand.Execute(null));
         _menuSave.IsEnabled = ViewModel.CanSave;
         AddItem(
-            "Launch.Account.ProfileSkin.RefreshSkin",
-            "lucide/refresh-cw",
-            () => ViewModel.RefreshSkinCommand.Execute(null));
-        AddItem(
             "Launch.Account.ProfileSkin.ChangeCape",
             "lucide/shirt",
             () => ViewModel.ChangeCapeCommand.Execute(null));
+        AddItem(
+            "Launch.Account.ProfileSkin.RefreshCapeList",
+            "lucide/refresh-cw",
+            () => ViewModel.ChangeCapeCommand.Execute(null));
+        AddItem(
+            "Launch.Account.ProfileSkin.RedeemCdkey",
+            "lucide/key-round",
+            () => LauncherUi.Interaction?.OpenWebsite("https://www.minecraft.net/zh-hans/redeem"));
 
         _btnSkin.ContextMenu = new ContextMenu
         {
