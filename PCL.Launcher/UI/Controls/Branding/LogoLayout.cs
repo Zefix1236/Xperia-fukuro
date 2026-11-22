@@ -44,8 +44,8 @@ internal sealed class LogoLayout
     /// <summary>收起态 く 与 X 的笔画间隙（× S）。</summary>
     internal const double NestGapRatio = 1.0d;
 
-    /// <summary>く 的高度比例（两条臂的张角）。</summary>
-    internal const double ChevronHeightRatio = 1.0d;
+    /// <summary>く 的高度比例（两条臂的张角）。Wc 与 Hc 同步缩放，所以斜率不受影响。</summary>
+    internal const double ChevronHeightRatio = 0.93d;
 
     /// <summary>X（以及由 X 推算的 く）的横向拉伸。</summary>
     internal const double XStretch = 1.21d;
