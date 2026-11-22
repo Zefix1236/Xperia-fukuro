@@ -45,9 +45,14 @@ internal sealed class MinecraftVersionCatalog(
         GameFolders.McFolderListLoader.PreviewFinish += OnFolderListPreviewFinish;
         // 数据未变化时保持现有条目：页面进入时重建会替换正在播放入场动画的条目，导致连锁渐显失效。
         if (HasVersions && ReferenceEquals(CurrentVersions(), _builtVersions))
+        {
+            RefreshInstalledMarks();
             RaiseStateChanged();
+        }
         else
+        {
             Rebuild();
+        }
     }
 
     private static JsonArray? CurrentVersions()
