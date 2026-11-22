@@ -85,6 +85,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     /// <summary>页面级入场动画开始前同步阶段，确保列表条目参与连锁渐显。</summary>
     private void SyncStageBeforeEnterAnimation()
     {
+        if (PageRouter.Current.Parameter is JsonObject)
+            return;
+
         if (_isSelectStage)
         {
             // 已经在列表阶段：只做无动画同步，避免多余的滑入。
