@@ -15,11 +15,11 @@
 - 新建 `Flasher.Core`：目录、match/service/manifest 解析、Sony 客户端、分块下载、ETag=MD5 校验、Range 续传、合并、磁盘预检。
 - 新建 `Flasher.Core.Test`：16 个用例（目录、解析、客户端、分块、合并、下载管理）。
 - 下载页 UI：下载页左栏新增「固件」分组 →「固件下载」；机型/型号选择、查询版本、文件勾选、保存目录、进度、取消。
-- 已验证：match 8 台设备全部 200；Gen2 URL ≥21 小时有效；42 个 chunk 全部 206；完整下载 1 个 100 MiB 块且 MD5=ETag；CUSTOMER_ID/E_LABEL 实际下载成功。
+- 已验证：match 8 台设备全部 200；Gen2 URL ≥21 小时有效；42 个 chunk 全部 206；完整下载 1 个 100 MiB 块且 MD5=ETag；`Flasher.Core` 真实下载 CUSTOMER_ID（462 B）与 E_LABEL（1,877,177 B）成功。
 
 ## 未完成 / 未验证
 
-- 下载按钮的 UI 端到端只验证到文件列表；未在 UI 里实际点「开始下载」（core 已用 fake server 与真实小文件验证）。
+- 下载按钮的 UI 端到端只验证到文件列表；未在 UI 里实际点「开始下载」。core 已用 fake server 与真实 service 验证，UI 只是调用同一组 `SonyApiClient` / `DownloadManager`。
 - 完整 4.4 GB APP_SW 下载 + 42 块合并未跑过（磁盘当前只剩 13 G，峰值约 8.8 G）。
 - ZIP64 解包（`super` 5,047,777,792 B）未实测；首版只下载 ZIP。
 - 10 VIII 的 4 个变体缺 SPC；老机型（III 之前）没有 SPC 表。
