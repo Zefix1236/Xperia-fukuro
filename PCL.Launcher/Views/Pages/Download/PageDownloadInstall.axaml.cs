@@ -112,6 +112,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
         if (!_isSelectStage)
             return;
 
+        if (PageState != PageStates.Empty)
+            return;
+
         // 在列表阶段：只做无动画同步，列表条目参与入场动画；配置阶段则保留离开时的样子。
         _isEnteringPage = true;
         try
