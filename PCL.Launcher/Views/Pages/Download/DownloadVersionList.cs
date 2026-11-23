@@ -7,6 +7,8 @@ using PCL.Core.App.Localization;
 using PCL.Core.Minecraft;
 using PCL.UI.Controls;
 
+// FORK: 已安装集合可由调用方传入，供虚拟化条目创建时查询最新标记，见 docs/FORK-PATCHES.md
+
 namespace PCL.Views.Pages.Download;
 
 /// <summary>版本条目的动作模式。</summary>
@@ -31,7 +33,8 @@ internal static class DownloadVersionList
         JsonArray versions,
         Action<JsonObject>? onSelect,
         DownloadVersionListMode mode = DownloadVersionListMode.Install,
-        IDictionary<string, MyListItem>? itemMap = null)
+        IDictionary<string, MyListItem>? itemMap = null,
+        IReadOnlySet<string>? installedSet = null)
     {
         var dictionary = CategoryOrder.ToDictionary(
             category => category,
@@ -52,7 +55,7 @@ internal static class DownloadVersionList
                     .OrderByDescending(McVersionClassifier.GetReleaseTime)
             ];
 
-        var installed = GetInstalledVersionNames();
+        var installed = installedSet ?? GetInstalledVersionNames();
         panMain.Children.Clear();
 
         var latestVersions = GetLatestVersions(dictionary);

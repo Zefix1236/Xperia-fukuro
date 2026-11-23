@@ -1,0 +1,1855 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-23",
+  "sources": [
+    {
+      "name": "Sony ESS product/v2",
+      "url": "https://app.swup.update.sony.net/ess-distribution/public/api/product/v2",
+      "fetchedAt": "2026-11-23",
+      "note": "产品、型号、HW 变体、TAC；不含 SPC"
+    },
+    {
+      "name": "XDA community SPC list",
+      "url": "https://xdaforums.com/t/tool-xperifirm-xperia-firmware-downloader-v5-8-1.2834142/page-152#post-90753534",
+      "author": "1ynxy",
+      "date": "2026-10-04",
+      "note": "modern devices 的 SPC 与 customisation 名称"
+    }
+  ],
+  "products": [
+    {
+      "productId": "a4695c79-c54a-4ecf-9a90-5333a1855931",
+      "productCode": "PDX-213",
+      "marketingName": "Xperia 10 III",
+      "series": "10",
+      "generation": "III",
+      "updatePlatformKey": "LENA",
+      "models": [
+        {
+          "modelId": "1a312897-fbad-4bf1-9610-fbed68bb962c",
+          "modelName": "A102SO",
+          "hwVariantId": "fd0a7304-0f23-4e5b-aa66-df2b8f4aa2b4",
+          "eos": false,
+          "tacs": [
+            "35968370"
+          ],
+          "aliases": "",
+          "customisationName": "A102SO_YMOBILE_JP",
+          "spcs": [
+            "43040314",
+            "43040315",
+            "43040316",
+            "43040317",
+            "43040320"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "f21f4bfa-8340-4412-bd24-68eb7cf15635",
+          "modelName": "SO-52B",
+          "hwVariantId": "cd8e5f80-2078-4669-83ce-63edd9d8499e",
+          "eos": false,
+          "tacs": [
+            "35197739"
+          ],
+          "aliases": "",
+          "customisationName": "SO-52B_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040298",
+            "43040299",
+            "43040300",
+            "43040301",
+            "43040302",
+            "43040303",
+            "43040304",
+            "43040305",
+            "43040441",
+            "43040442"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "e1119620-e284-4298-926e-42a68bf4dd62",
+          "modelName": "SOG04",
+          "hwVariantId": "57122f51-7cdb-493b-a56c-1e3a166f06b0",
+          "eos": false,
+          "tacs": [
+            "35473786"
+          ],
+          "aliases": "",
+          "customisationName": "SOG04_KDDI-UQ",
+          "spcs": [
+            "43040306",
+            "43040307",
+            "43040308",
+            "43040309",
+            "43040310",
+            "43040311",
+            "43040312",
+            "43040313",
+            "43040514",
+            "43040515",
+            "43040516",
+            "43040517",
+            "43040518",
+            "43040519",
+            "43040520",
+            "43040521"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "b042a92b-d252-4af4-911a-013ce220e9e4",
+          "modelName": "XQ-BT44",
+          "hwVariantId": "85d29633-babb-4e29-84f2-c9851d0ad5fd",
+          "eos": false,
+          "tacs": [
+            "35082626"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BT44_MVNO_JP",
+          "spcs": [
+            "43040326",
+            "43040327",
+            "43040328",
+            "43040329"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "307fe9e0-bdfe-48e1-bd6b-1c7b34b0073b",
+          "modelName": "XQ-BT52",
+          "hwVariantId": "51396681-df6d-4f15-b017-b893ad10e818",
+          "eos": false,
+          "tacs": [
+            "35428779"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BT52_CUSTOMIZED_EEA",
+          "spcs": [
+            "43040213",
+            "43040334",
+            "43040335",
+            "43040336",
+            "43040338",
+            "43040339",
+            "43040340",
+            "43040591",
+            "43040592",
+            "43040593",
+            "43040594"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "92490172-5ffd-44fe-9e8c-0b0aa448c5ce",
+      "productCode": "PDX-214",
+      "marketingName": "Xperia 5 III",
+      "series": "5",
+      "generation": "III",
+      "updatePlatformKey": "SAGAMI",
+      "models": [
+        {
+          "modelId": "22c5aa76-b161-472b-b5a1-8626cb67273f",
+          "modelName": "A103SO",
+          "hwVariantId": "045d8294-b4fa-4c66-bb3a-ae3cef9c921d",
+          "eos": false,
+          "tacs": [
+            "35780985"
+          ],
+          "aliases": "",
+          "customisationName": "A103SO_SoftBank_JP",
+          "spcs": [
+            "43040557",
+            "43040559",
+            "43040560",
+            "43040561",
+            "43040563",
+            "43040564"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "1f153007-a22f-42f6-a3c8-83ceacb27936",
+          "modelName": "SO-53B",
+          "hwVariantId": "4faf8905-c954-4088-80ad-3c987359d503",
+          "eos": false,
+          "tacs": [
+            "35527394"
+          ],
+          "aliases": "",
+          "customisationName": "SO-53B_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040541",
+            "43040542",
+            "43040543",
+            "43040544",
+            "43040545",
+            "43040546",
+            "43040547",
+            "43040548"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "46a707b7-e40d-446d-98af-38780a24d88b",
+          "modelName": "SOG05",
+          "hwVariantId": "c74238a0-75d6-44c2-bbb6-bbe4d0e165ac",
+          "eos": false,
+          "tacs": [
+            "35861831"
+          ],
+          "aliases": "",
+          "customisationName": "SOG05_KDDI_JP",
+          "spcs": [
+            "43040549",
+            "43040550",
+            "43040551",
+            "43040552",
+            "43040553",
+            "43040554",
+            "43040555",
+            "43040556"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "25f89a62-35db-44a5-929d-1a1927f7a697",
+          "modelName": "XQ-BQ42",
+          "hwVariantId": "5eade65d-c4c6-4fe0-8624-4ec63c0aff70",
+          "eos": false,
+          "tacs": [
+            "35572848"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BQ42_Customized_JP",
+          "spcs": [
+            "43040565",
+            "43040566",
+            "43040567"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "fb8ce485-1ae5-4bed-bfa8-1b4278eb5617",
+          "modelName": "XQ-BQ52",
+          "hwVariantId": "2ce8022d-0f83-477f-ac0a-8392dda61d33",
+          "eos": false,
+          "tacs": [
+            "35498795"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BQ52_Customized_EEA",
+          "spcs": [
+            "43040384",
+            "43040385",
+            "43040386",
+            "43040387",
+            "43040388",
+            "43040570"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "f32d4a90-4b3b-4797-be06-b032499c4503",
+          "modelName": "XQ-BQ62",
+          "hwVariantId": "1975ed29-04b2-4f57-9947-cdd7203b82a7",
+          "eos": false,
+          "tacs": [
+            "35553558"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BQ62_Customized_US",
+          "spcs": [
+            "43040414",
+            "43040415"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "c9bcd9cb-29d2-4c6c-9e06-af45bafc8e94",
+          "modelName": "XQ-BQ72",
+          "hwVariantId": "665f3f28-8dc2-498f-b532-a92d5adb6702",
+          "eos": false,
+          "tacs": [
+            "35493043"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BQ72_Customized_SEA",
+          "spcs": [
+            "43040427"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "d346a60f-2f39-4f7a-b9c3-682518671f21",
+      "productCode": "PDX-215",
+      "marketingName": "Xperia 1 III",
+      "series": "1",
+      "generation": "III",
+      "updatePlatformKey": "SAGAMI",
+      "models": [
+        {
+          "modelId": "d61f23ed-cc96-4d65-b286-2dbf5080723c",
+          "modelName": "A101SO",
+          "hwVariantId": "bf582f68-c059-4b85-b7fa-8b9eb8a9406a",
+          "eos": false,
+          "tacs": [
+            "35088339"
+          ],
+          "aliases": "",
+          "customisationName": "A101SO_SoftBank_JP",
+          "spcs": [
+            "43040229",
+            "43040231",
+            "43040232"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "7332f144-befa-4809-93e6-178aae291a75",
+          "modelName": "SO-51B",
+          "hwVariantId": "74e303d3-7288-45a5-b672-be51673cb632",
+          "eos": false,
+          "tacs": [
+            "35782335"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51B_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040217",
+            "43040218",
+            "43040219",
+            "43040220",
+            "43040221",
+            "43040222"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "7ffb742d-ef5a-4f01-ab1b-4171f67d8596",
+          "modelName": "SOG03",
+          "hwVariantId": "9f923db9-56bd-4dd6-b8d9-f7c88873a35a",
+          "eos": false,
+          "tacs": [
+            "35655840"
+          ],
+          "aliases": "",
+          "customisationName": "SOG03_KDDI_JP",
+          "spcs": [
+            "43040223",
+            "43040225",
+            "43040226"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "c31f2feb-e84e-4af8-a817-1d069c5eac80",
+          "modelName": "XQ-BC42",
+          "hwVariantId": "82a6b200-da1b-4405-bfaf-67170609989c",
+          "eos": false,
+          "tacs": [
+            "35671845"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BC42_Customized_JP",
+          "spcs": [
+            "43040238",
+            "43040239",
+            "43040240",
+            "43040571"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "39d3de79-e0ad-45f3-886f-3bf638c9a19e",
+          "modelName": "XQ-BC52",
+          "hwVariantId": "8adcb882-cfdf-49e6-8d4e-06af0481cbf1",
+          "eos": false,
+          "tacs": [
+            "35084938"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BC52_EE_UK",
+          "spcs": [
+            "43040256"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "c3ee184c-34db-4371-bd6e-d8c1fa1ada70",
+          "modelName": "XQ-BC62",
+          "hwVariantId": "4c4fadde-419a-4c70-9f15-f7847e1841d8",
+          "eos": false,
+          "tacs": [
+            "35242794"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BC62_Customized_US",
+          "spcs": [
+            "43040274",
+            "43040276"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "6ef0588b-c8d6-415d-bd26-9c48bd665e48",
+          "modelName": "XQ-BC72",
+          "hwVariantId": "da0986ff-429c-409d-8a17-e7debdc74bfa",
+          "eos": false,
+          "tacs": [
+            "35292034"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-BC72_Customized_TW",
+          "spcs": [
+            "43040289",
+            "43040290",
+            "43040291",
+            "43040292",
+            "43040294",
+            "43040574"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "ef04596b-e008-4936-8582-376be0ebe7ac",
+      "productCode": "PDX-223",
+      "marketingName": "Xperia 1 IV",
+      "series": "1",
+      "generation": "IV",
+      "updatePlatformKey": "NAGARA",
+      "models": [
+        {
+          "modelId": "41daa559-7a25-4458-b972-6d51a8d70606",
+          "modelName": "A201SO",
+          "hwVariantId": "c9b8328e-7619-48af-b1c6-76dbc789ca35",
+          "eos": false,
+          "tacs": [
+            "35581048"
+          ],
+          "aliases": "",
+          "customisationName": "A201SO_SoftBank_JP",
+          "spcs": [
+            "43040611",
+            "43040614",
+            "43040976"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "334e6011-3cd7-4417-93eb-6466fad5ab01",
+          "modelName": "SO-51C",
+          "hwVariantId": "27c2b362-d82d-49b4-acfc-e92294f0e0bd",
+          "eos": false,
+          "tacs": [
+            "35056843"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51C_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040596",
+            "43040597",
+            "43040598",
+            "43040599",
+            "43040600",
+            "43040601"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "d47203f8-0551-43ac-9877-4aef61e57e15",
+          "modelName": "SOG06",
+          "hwVariantId": "3dfdc5f1-7079-445e-887f-36e107c0d185",
+          "eos": false,
+          "tacs": [
+            "35046912"
+          ],
+          "aliases": "",
+          "customisationName": "SOG06_KDDI_JP",
+          "spcs": [
+            "43040602",
+            "43040603",
+            "43040605",
+            "43040606"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "9d266d6e-28fe-48da-ba01-e72e58b3d322",
+          "modelName": "XQ-CT44",
+          "hwVariantId": "e1d55aec-afa2-4f6e-9e23-4a7e8da0e983",
+          "eos": false,
+          "tacs": [
+            "35093524"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CT44_Customized_JP",
+          "spcs": [
+            "43040620",
+            "43040621",
+            "43040622",
+            "43040623"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "c1a949d2-51a1-4daf-8d6e-5e1cb510aad1",
+          "modelName": "XQ-CT54",
+          "hwVariantId": "64a97db6-5113-402d-8a4d-7cac995e25ca",
+          "eos": false,
+          "tacs": [
+            "35666018"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CT54_ALTICE_FR_PT",
+          "spcs": [
+            "43040644"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "141d8f76-a438-442b-aae8-328b9da58185",
+          "modelName": "XQ-CT62",
+          "hwVariantId": "f15b1abb-1d3a-4820-ac4e-3e18032b9bfd",
+          "eos": false,
+          "tacs": [
+            "35119411"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CT62_Customized_US",
+          "spcs": [
+            "43040660",
+            "43040662"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "8875ed65-0a4d-4ad7-a5d3-dc36fc78262c",
+          "modelName": "XQ-CT72",
+          "hwVariantId": "020992ac-e555-4e40-9076-43373b0bf2cb",
+          "eos": false,
+          "tacs": [
+            "35951038"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CT72_Customized_SEA",
+          "spcs": [
+            "43040689",
+            "43040691"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "2e8793e5-004b-45df-88f1-2c8715298545",
+      "productCode": "PDX-224",
+      "marketingName": "Xperia 5 IV",
+      "series": "5",
+      "generation": "IV",
+      "updatePlatformKey": "NAGARA",
+      "models": [
+        {
+          "modelId": "b3add22c-8792-4351-80d0-13f766a050ff",
+          "modelName": "A204SO",
+          "hwVariantId": "36756c78-d758-4a0c-b6c1-dd3ad83c4599",
+          "eos": false,
+          "tacs": [
+            "35869259"
+          ],
+          "aliases": "",
+          "customisationName": "A204SO_SoftBank_JP",
+          "spcs": [
+            "43040906",
+            "43040907",
+            "43040910",
+            "43040911"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "bed6de0d-3f24-40c3-8b4e-612f195bbaf8",
+          "modelName": "SO-54C",
+          "hwVariantId": "2823d768-999a-4d60-a2a6-863867822149",
+          "eos": false,
+          "tacs": [
+            "35233356"
+          ],
+          "aliases": "",
+          "customisationName": "SO-54C_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040890",
+            "43040891",
+            "43040893",
+            "43040894",
+            "43040895",
+            "43040897",
+            "43041005",
+            "43041006"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "8000f6e3-bec7-45f1-8677-58aac45c050a",
+          "modelName": "SOG09",
+          "hwVariantId": "75ceaafe-db12-4728-a11a-aca580f56575",
+          "eos": false,
+          "tacs": [
+            "35172736"
+          ],
+          "aliases": "",
+          "customisationName": "SOG09_KDDI_JP",
+          "spcs": [
+            "43040898",
+            "43040899",
+            "43040901",
+            "43040902",
+            "43040903",
+            "43040905"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "a787157b-a01c-4ae3-9425-b2936f87fafa",
+          "modelName": "XQ-CQ44",
+          "hwVariantId": "94d613d6-2f51-47cb-b689-7bdaebd1277c",
+          "eos": false,
+          "tacs": [
+            "35364270"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CQ44_Customized_JP",
+          "spcs": [
+            "43040918",
+            "43040919",
+            "43040921"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "75b90222-f70f-4d42-b2f6-7d4f4e018eed",
+          "modelName": "XQ-CQ54",
+          "hwVariantId": "fecd2127-88aa-4354-8022-c532871d8af6",
+          "eos": false,
+          "tacs": [
+            "35777435"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CQ54_ALTICE_FR_PT",
+          "spcs": [
+            "43040937",
+            "43040940"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "50a36001-5f9a-4292-a1e3-f41184d61fb7",
+          "modelName": "XQ-CQ62",
+          "hwVariantId": "ce312fb2-6d66-4b71-a3f7-f24825812f96",
+          "eos": false,
+          "tacs": [
+            "35368922"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CQ62_Customized_US",
+          "spcs": [
+            "43040954",
+            "43040957"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "cc871447-10e0-4161-8719-4235ccd30ac9",
+          "modelName": "XQ-CQ72",
+          "hwVariantId": "436ef125-8df0-4b88-b210-f7248a194653",
+          "eos": false,
+          "tacs": [
+            "35908127"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CQ72_Customized_SEA",
+          "spcs": [
+            "43040970"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "b67a8b25-3279-4d38-97c6-b87de3509c22",
+      "productCode": "PDX-225",
+      "marketingName": "Xperia 10 IV",
+      "series": "10",
+      "generation": "IV",
+      "updatePlatformKey": "MURRAY",
+      "models": [
+        {
+          "modelId": "5f94a345-98a3-4ec4-85a3-85d1a113fb4c",
+          "modelName": "A202SO",
+          "hwVariantId": "c42920b4-32c6-4cb9-8d6b-857b79f4ad2c",
+          "eos": false,
+          "tacs": [
+            "35365847"
+          ],
+          "aliases": "",
+          "customisationName": "A202SO_SoftBank_JP",
+          "spcs": [
+            "43040717",
+            "43040718",
+            "43040720",
+            "43040721",
+            "43040722",
+            "43040724"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "b9624fb6-0e7e-4dfc-9b8b-4a4ed0c512b2",
+          "modelName": "SO-52C",
+          "hwVariantId": "b3f12e13-6c3f-4263-973c-e7955c608b4a",
+          "eos": false,
+          "tacs": [
+            "35303032"
+          ],
+          "aliases": "",
+          "customisationName": "SO-52C_NTT_DoCoMo_JP",
+          "spcs": [
+            "43040695",
+            "43040696",
+            "43040697",
+            "43040698",
+            "43040700",
+            "43040701",
+            "43040702",
+            "43040703"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "6d4c4a39-c537-4ed3-9304-68c29bce43c3",
+          "modelName": "SOG07",
+          "hwVariantId": "847db5f1-3745-41b2-bfa0-0e0b65d90891",
+          "eos": false,
+          "tacs": [
+            "35462858"
+          ],
+          "aliases": "",
+          "customisationName": "SOG07_KDDI_JP",
+          "spcs": [
+            "43040705",
+            "43040706",
+            "43040707",
+            "43040708",
+            "43040709",
+            "43040710",
+            "43040711",
+            "43040712"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "97e5d9dc-008b-4c16-bf75-06558d5755e8",
+          "modelName": "XQ-CC44",
+          "hwVariantId": "c812d137-11b7-46a5-afa4-4cf790c44249",
+          "eos": false,
+          "tacs": [
+            "35882438"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CC44_MVNO_JP",
+          "spcs": [
+            "43040733",
+            "43040734",
+            "43041229",
+            "43041230"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "50c82cb0-4bc2-47a2-bb5f-f971ddca9268",
+          "modelName": "XQ-CC54",
+          "hwVariantId": "55303c50-5129-4f9e-98a3-f3b659aeb57c",
+          "eos": false,
+          "tacs": [
+            "35175147"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CC54_Vodafone_MCV",
+          "spcs": [
+            "43040765"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "b4bac152-410e-43fa-82d0-462acd507e9f",
+          "modelName": "XQ-CC72",
+          "hwVariantId": "0bc204eb-678b-407a-8bf7-0f3fcbd3139e",
+          "eos": false,
+          "tacs": [
+            "35121949"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-CC72_Customized_SEA",
+          "spcs": [
+            "43040785",
+            "43040788"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "d2e6c91c-1b3d-419f-bcb6-02bb299059c3",
+      "productCode": "PDX-234",
+      "marketingName": "Xperia 1 V",
+      "series": "1",
+      "generation": "V",
+      "updatePlatformKey": "YODO",
+      "models": [
+        {
+          "modelId": "31c6f795-d2ba-43c5-8bb1-453c89d0d2b6",
+          "modelName": "A301SO",
+          "hwVariantId": "e87d9da7-e10e-4cd6-8a25-e37586ae105b",
+          "eos": false,
+          "tacs": [
+            "35226254"
+          ],
+          "aliases": "",
+          "customisationName": "A301SO_SoftBank_JP",
+          "spcs": [
+            "43041028",
+            "43041029",
+            "43041299",
+            "43041300",
+            "43041301"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "192206bf-1681-4faf-8a16-cc03780a995f",
+          "modelName": "SO-51D",
+          "hwVariantId": "27acd5de-ad6b-485f-a80d-8937038ca263",
+          "eos": false,
+          "tacs": [
+            "35524357"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51D_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041013",
+            "43041014",
+            "43041017",
+            "43041018"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "01f80968-a223-49cd-812d-19c90ebcef5f",
+          "modelName": "SOG10",
+          "hwVariantId": "f6a908c4-3272-483a-8118-cab1e1286831",
+          "eos": false,
+          "tacs": [
+            "35784181"
+          ],
+          "aliases": "",
+          "customisationName": "SOG10_KDDI_JP",
+          "spcs": [
+            "43041022",
+            "43041023",
+            "43041025",
+            "43041026"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "d6f8b033-8742-4e07-87d4-8c99c0f4239c",
+          "modelName": "XQ-DQ44",
+          "hwVariantId": "a7be8ce7-629d-4e09-bc8f-675431394e09",
+          "eos": false,
+          "tacs": [
+            "35069822"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DQ44_Customized_JP",
+          "spcs": [
+            "43041034",
+            "43041035",
+            "43041036"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "6f67df55-279d-4471-b81b-ad478761b8f7",
+          "modelName": "XQ-DQ54",
+          "hwVariantId": "fd82f493-cf4d-4878-8093-a7a0048d5200",
+          "eos": false,
+          "tacs": [
+            "35004648"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DQ54_EE_UK",
+          "spcs": [
+            "43041050",
+            "43041051",
+            "43041052"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "e49a8300-ea48-47c0-940f-3dca71cc3a7a",
+          "modelName": "XQ-DQ62",
+          "hwVariantId": "e857648d-fd94-4db5-8e9b-908ac216504b",
+          "eos": false,
+          "tacs": [
+            "35851358"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DQ62_Customized_US",
+          "spcs": [
+            "43041076",
+            "43041077",
+            "43041078"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "681027ef-b90b-409e-a9b8-50565e644fc8",
+          "modelName": "XQ-DQ72",
+          "hwVariantId": "106d9e5d-4bcf-492f-a307-7acdb889ee6f",
+          "eos": false,
+          "tacs": [
+            "35669414"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DQ72_Customized_SEA",
+          "spcs": [
+            "43041099",
+            "43041101"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "e0a5769b-14b1-418b-b770-4f839259c5c6",
+      "productCode": "PDX-235",
+      "marketingName": "Xperia 10 V",
+      "series": "10",
+      "generation": "V",
+      "updatePlatformKey": "ZAMBEZI",
+      "models": [
+        {
+          "modelId": "f06d934f-b548-4d8d-8820-3804bee9ccb0",
+          "modelName": "A302SO",
+          "hwVariantId": "5e6775d8-66c9-4dd8-8640-1e6747ead568",
+          "eos": false,
+          "tacs": [
+            "35146003"
+          ],
+          "aliases": "",
+          "customisationName": "A302SO_SoftBank_JP",
+          "spcs": [
+            "43041118",
+            "43041119",
+            "43041120",
+            "43041121",
+            "43041124"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "ffad3b70-ca41-4f98-a83a-548837e530b3",
+          "modelName": "SO-52D",
+          "hwVariantId": "60d53d9b-9dd4-4e0d-85e8-84df01d827ff",
+          "eos": false,
+          "tacs": [
+            "35273245"
+          ],
+          "aliases": "",
+          "customisationName": "SO-52D_NTT_DoCoMo_JP_MLK",
+          "spcs": [
+            "43041320"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "848b2854-edd7-4e4e-867d-c5f8a1ad44f4",
+          "modelName": "SOG11",
+          "hwVariantId": "28d96af7-59d2-41e5-9319-bdeb74282099",
+          "eos": false,
+          "tacs": [
+            "35341945"
+          ],
+          "aliases": "",
+          "customisationName": "SOG11_KDDI_JP",
+          "spcs": [
+            "43041110",
+            "43041111",
+            "43041112",
+            "43041114",
+            "43041115",
+            "43041116"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "7c1e9009-3559-452f-9d9e-9572ac37952e",
+          "modelName": "XQ-DC44",
+          "hwVariantId": "763df0e8-2319-408a-a9d3-74932a1eed54",
+          "eos": false,
+          "tacs": [
+            "35309189"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DC44_Customized_JP",
+          "spcs": [
+            "43041290",
+            "43041291",
+            "43041292",
+            "43041293"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "72e097b8-cd96-4922-8261-daff1c4042ed",
+          "modelName": "XQ-DC54",
+          "hwVariantId": "b70a7743-6641-4539-85bb-64fce35ce152",
+          "eos": false,
+          "tacs": [
+            "35909579"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DC54_EE_UK",
+          "spcs": [
+            "43041150",
+            "43041151",
+            "43041152",
+            "43041153"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "72fb3cb7-ba31-4476-9c7d-aef7a1846506",
+          "modelName": "XQ-DC72",
+          "hwVariantId": "109a8289-5b44-4fd5-9ae9-349a7132637e",
+          "eos": false,
+          "tacs": [
+            "35154067"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DC72_Customized_SEA",
+          "spcs": [
+            "43041179",
+            "43041181"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "0085ff4d-fb3a-44c8-a762-8c17df5ebc18",
+      "productCode": "PDX-237",
+      "marketingName": "Xperia 5 V",
+      "series": "5",
+      "generation": "V",
+      "updatePlatformKey": "YODO",
+      "models": [
+        {
+          "modelId": "1469dc90-fdff-4465-833c-2665f77e9317",
+          "modelName": "SO-53D",
+          "hwVariantId": "c57c51d0-87a0-412c-ae09-bfb39085ca8d",
+          "eos": false,
+          "tacs": [
+            "35992580"
+          ],
+          "aliases": "",
+          "customisationName": "SO-53D_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041231",
+            "43041232",
+            "43041233",
+            "43041235",
+            "43041236",
+            "43041237"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "d12b5a9c-f92b-4a61-a296-69ab01351579",
+          "modelName": "SOG12",
+          "hwVariantId": "1e628737-816d-4162-a1bf-56824861954d",
+          "eos": false,
+          "tacs": [
+            "35219068"
+          ],
+          "aliases": "",
+          "customisationName": "SOG12_KDDI_JP",
+          "spcs": [
+            "43041239",
+            "43041240",
+            "43041241",
+            "43041242",
+            "43041243",
+            "43041244"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "eee217c3-f4b9-4361-933d-2779d4837ead",
+          "modelName": "XQ-DE44",
+          "hwVariantId": "270597bc-9b4c-4349-846c-734aca8dba51",
+          "eos": false,
+          "tacs": [
+            "35254293"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DE44_Customized_JP",
+          "spcs": [
+            "43041254",
+            "43041255",
+            "43041256"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "c2ecff3f-d818-4a04-9330-4bdd84b8e02b",
+          "modelName": "XQ-DE54",
+          "hwVariantId": "7343658f-6e66-460f-bde8-511f18d87b84",
+          "eos": false,
+          "tacs": [
+            "35947377"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DE54_O2_UK",
+          "spcs": [
+            "43041262",
+            "43041263",
+            "43041264"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "d3e13f31-2310-4da0-9391-8edadd6ecc5e",
+          "modelName": "XQ-DE72",
+          "hwVariantId": "b3a51e8d-6078-43db-b410-b3b4a7f584f5",
+          "eos": false,
+          "tacs": [
+            "35216428"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-DE72_Customized_SEA",
+          "spcs": [
+            "43041287"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "c2cb0a95-7fee-4370-8982-319473d61399",
+      "productCode": "PDX-245",
+      "marketingName": "Xperia 1 VI",
+      "series": "1",
+      "generation": "VI",
+      "updatePlatformKey": "ASAHI",
+      "models": [
+        {
+          "modelId": "60b3c0b7-71fb-401b-96a8-dee4b5499930",
+          "modelName": "A401SO",
+          "hwVariantId": "3a2ec5fa-29cd-44d9-8f1c-c6009c98a207",
+          "eos": false,
+          "tacs": [
+            "35113957"
+          ],
+          "aliases": "",
+          "customisationName": "A401SO_SoftBank_JP",
+          "spcs": [
+            "43041332",
+            "43041334",
+            "43041467"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "69c439da-db8d-4476-bd16-032ae2da5f14",
+          "modelName": "SO-51E",
+          "hwVariantId": "782fc80b-37cd-4db8-97e0-72d64d350f55",
+          "eos": false,
+          "tacs": [
+            "35127148"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51E_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041322",
+            "43041323",
+            "43041325",
+            "43041326"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "b36b9712-14b7-4f96-a1aa-231f4c2ba133",
+          "modelName": "SOG13",
+          "hwVariantId": "9c888aa6-dd1b-480a-879c-afc98fc25736",
+          "eos": false,
+          "tacs": [
+            "35548850"
+          ],
+          "aliases": "",
+          "customisationName": "SOG13_KDDI_JP",
+          "spcs": [
+            "43041328",
+            "43041329",
+            "43041330"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "ce95872f-701d-49ba-9960-62515d055bc9",
+          "modelName": "XQ-EC44",
+          "hwVariantId": "ca35bf60-53f3-45c3-9d7b-8c414bbf381e",
+          "eos": false,
+          "tacs": [
+            "35000433"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-EC44_Customized_JP",
+          "spcs": [
+            "43041336",
+            "43041337",
+            "43041338",
+            "43041339",
+            "43041509",
+            "43041510",
+            "43041511",
+            "43041512",
+            "43041513",
+            "43041514"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "7d8575e6-3f1c-4bd1-8be8-584eee5e8b26",
+          "modelName": "XQ-EC54",
+          "hwVariantId": "78cb7c28-6cb4-4141-9659-331e3268340a",
+          "eos": false,
+          "tacs": [
+            "35965166"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-EC54_Customized_EU_UK",
+          "spcs": [
+            "43041340",
+            "43041341",
+            "43041342",
+            "43041515"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "bcb67db6-a444-4d30-8be5-f1843235f78a",
+          "modelName": "XQ-EC72",
+          "hwVariantId": "2e017b3f-f61c-4403-920e-420d22b79602",
+          "eos": false,
+          "tacs": [
+            "35572338"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-EC72_Customized_SEA",
+          "spcs": [
+            "43041388",
+            "43041389",
+            "43041390"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "b47ee4ec-d9a9-4728-a8a6-4d6b44649515",
+      "productCode": "PDX-246",
+      "marketingName": "Xperia 10 VI",
+      "series": "10",
+      "generation": "VI",
+      "updatePlatformKey": "COLUMBIA",
+      "models": [
+        {
+          "modelId": "7e0a6468-e683-41f8-9524-a2bbcf785abf",
+          "modelName": "A402SO",
+          "hwVariantId": "6830b4f6-cb4f-43a3-ba50-b3e3e91781f5",
+          "eos": false,
+          "tacs": [
+            "35377866"
+          ],
+          "aliases": "",
+          "customisationName": "A402SO_SoftBank_JP",
+          "spcs": [
+            "43041408",
+            "43041409",
+            "43041410",
+            "43041414"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "05af8767-7c60-46bf-92f9-89cbde92958b",
+          "modelName": "SO-52E",
+          "hwVariantId": "0cffc2db-3fc5-4ac8-828d-ffd13dd4a843",
+          "eos": false,
+          "tacs": [
+            "35029497"
+          ],
+          "aliases": "",
+          "customisationName": "SO-52E_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041392",
+            "43041393",
+            "43041394",
+            "43041396",
+            "43041397",
+            "43041398"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "efdf1b43-6eae-4d83-b9bf-f204d2edde8e",
+          "modelName": "SOG14",
+          "hwVariantId": "12d5c45e-fedf-4a44-b742-112c65af1b76",
+          "eos": false,
+          "tacs": [
+            "35908753"
+          ],
+          "aliases": "",
+          "customisationName": "SOG14_KDDI_JP",
+          "spcs": [
+            "43041400",
+            "43041401",
+            "43041402",
+            "43041406"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "d18f37c8-4b09-4e38-88bb-f9d231c4ad04",
+          "modelName": "XQ-ES44",
+          "hwVariantId": "3c3ab7e3-51a1-4b86-a26f-9ec8bb6f5192",
+          "eos": false,
+          "tacs": [
+            "35691870"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-ES44_Customized_JP",
+          "spcs": [
+            "43041424",
+            "43041425",
+            "43041426"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "4456e18a-0514-40da-ab7c-824a980d1b02",
+          "modelName": "XQ-ES54",
+          "hwVariantId": "7608478a-acff-4bd9-96d5-c015b5745b6a",
+          "eos": false,
+          "tacs": [
+            "35819272"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-ES54_EE_UK",
+          "spcs": [
+            "43041439",
+            "43041440",
+            "43041441"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "b99991e0-e25f-4187-970f-1b89d6574f9e",
+          "modelName": "XQ-ES72",
+          "hwVariantId": "ea7d7686-1a20-4cd0-835f-3fdf7a761543",
+          "eos": false,
+          "tacs": [
+            "35144017"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-ES72_Customized_SEA",
+          "spcs": [
+            "43041463",
+            "43041465"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "0d8e9118-efa9-455a-9620-7d2bf3b7d9a7",
+      "productCode": "PDX-256",
+      "marketingName": "Xperia 1 VII",
+      "series": "1",
+      "generation": "VII",
+      "updatePlatformKey": "SHIMANTO",
+      "models": [
+        {
+          "modelId": "1d994f46-85e4-42ed-8f1a-3a5b5266c460",
+          "modelName": "A501SO",
+          "hwVariantId": "e063ec8a-1a8f-4267-a1e1-0d976d820c5b",
+          "eos": false,
+          "tacs": [
+            "35143964"
+          ],
+          "aliases": "",
+          "customisationName": "A501SO_SoftBank_JP",
+          "spcs": [
+            "43041531",
+            "43041532",
+            "43041534"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "6d3fbf13-133f-4051-a8e4-414085db5589",
+          "modelName": "SO-51F",
+          "hwVariantId": "3238c181-102f-49c7-8056-9150279a6ec9",
+          "eos": false,
+          "tacs": [
+            "35989328"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51F_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041519",
+            "43041520",
+            "43041521",
+            "43041522"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "9a787b91-fc1f-4a7a-b3ba-2f90a4a8ae94",
+          "modelName": "SOG15",
+          "hwVariantId": "7ad0d113-07a1-4841-b14b-843a8f8f3ee0",
+          "eos": false,
+          "tacs": [
+            "35466488"
+          ],
+          "aliases": "",
+          "customisationName": "SOG15_KDDI_JP",
+          "spcs": [
+            "43041525",
+            "43041526",
+            "43041527"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "da194030-5ff6-42b5-81eb-97dca330ab4f",
+          "modelName": "XQ-FS44",
+          "hwVariantId": "260e6cc5-d83a-422b-b485-540b31976709",
+          "eos": false,
+          "tacs": [
+            "35764959"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FS44_Customized_JP",
+          "spcs": [
+            "43041537",
+            "43041538",
+            "43041539",
+            "43041540",
+            "43041541",
+            "43041542",
+            "43041543",
+            "43041544",
+            "43041545"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "70c52007-3141-45a7-aaf4-65590b300688",
+          "modelName": "XQ-FS54",
+          "hwVariantId": "5f54f21a-c2c2-4294-b684-c79b5e9b6866",
+          "eos": false,
+          "tacs": [
+            "35628440"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FS54_Customized_EU_UK",
+          "spcs": [
+            "43041546",
+            "43041547",
+            "43041548"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "a5b744e1-87ef-4c2b-853e-ed9b94d767be",
+          "modelName": "XQ-FS72",
+          "hwVariantId": "8c3be44b-bd37-4ca5-9022-3cba87c923f0",
+          "eos": false,
+          "tacs": [
+            "35869183"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FS72_Customized_VN",
+          "spcs": [
+            "43041580",
+            "43041581",
+            "43041582"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "bec4c4ed-3fed-40e1-8e2a-8730fdd8c530",
+      "productCode": "PDX-257",
+      "marketingName": "Xperia 10 VII",
+      "series": "10",
+      "generation": "VII",
+      "updatePlatformKey": "ELBE",
+      "models": [
+        {
+          "modelId": "80da8255-6a50-4ad8-bd63-77621cefadcd",
+          "modelName": "A502SO",
+          "hwVariantId": "3d9c28a2-840b-407b-be82-5f4ce07f19e1",
+          "eos": false,
+          "tacs": [
+            "35114677"
+          ],
+          "aliases": "",
+          "customisationName": "A502SO_SoftBank_JP",
+          "spcs": [
+            "43041592",
+            "43041593",
+            "43041596"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "14ebe5e6-6b92-4bfa-a275-5bdecb906396",
+          "modelName": "SO-52F",
+          "hwVariantId": "1ab1eb66-1fd9-4850-aaff-7c3d5824c6fa",
+          "eos": false,
+          "tacs": [
+            "35009934"
+          ],
+          "aliases": "",
+          "customisationName": "SO-52F_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041583",
+            "43041584",
+            "43041585",
+            "43041586",
+            "43041587",
+            "43041588"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "f2281a4d-f6a4-40b4-ad7a-f0db95d8201a",
+          "modelName": "SOG16",
+          "hwVariantId": "c95cdf8e-1262-4722-b680-e6145a14873a",
+          "eos": false,
+          "tacs": [
+            "35883628"
+          ],
+          "aliases": "",
+          "customisationName": "SOG16_KDDI_JP",
+          "spcs": [
+            "43041589",
+            "43041590",
+            "43041591",
+            "43041631"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "17f77e94-c896-4213-8739-7c2b0904fa29",
+          "modelName": "XQ-FE44",
+          "hwVariantId": "cde385fb-6f2a-45db-b663-68ed8f1a5918",
+          "eos": false,
+          "tacs": [
+            "35223156"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FE44_Customized_JP",
+          "spcs": [
+            "43041598",
+            "43041599",
+            "43041600"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "dac17a9f-61ba-4667-8d6a-99aad2fdb475",
+          "modelName": "XQ-FE54",
+          "hwVariantId": "bdc27be9-7596-4062-a46c-91ef668da778",
+          "eos": false,
+          "tacs": [
+            "35835244"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FE54_Customized_EU_UK",
+          "spcs": [
+            "43041518",
+            "43041601",
+            "43041602"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "2f1eda89-b2fb-4c59-a28f-e8ce84a32cbd",
+          "modelName": "XQ-FE72",
+          "hwVariantId": "b2712e04-4c7f-4819-b8e0-d7c767319bd1",
+          "eos": false,
+          "tacs": [
+            "35176379"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-FE72_Customized_SEA",
+          "spcs": [
+            "43041609",
+            "43041610",
+            "43041611"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "27bace69-b013-48e0-8626-a960117ee75a",
+      "productCode": "PDX-267",
+      "marketingName": "Xperia 1 VIII",
+      "series": "1",
+      "generation": "VIII",
+      "updatePlatformKey": "CHIKUGO",
+      "models": [
+        {
+          "modelId": "3d1cb2cc-d729-4386-9e67-32babf474d0d",
+          "modelName": "A601SO",
+          "hwVariantId": "bfc31b84-6295-4b33-8e5c-0cf7c983c08b",
+          "eos": false,
+          "tacs": [
+            "35553956"
+          ],
+          "aliases": "",
+          "customisationName": "A601SO_SoftBank_JP",
+          "spcs": [
+            "43041645",
+            "43041646",
+            "43041647",
+            "43041648"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "0fab2cc3-07fd-4b61-b097-231b2e51b838",
+          "modelName": "SO-51G",
+          "hwVariantId": "dc2a3230-30b3-4dc4-826e-c94d850ca1c1",
+          "eos": false,
+          "tacs": [
+            "35635824"
+          ],
+          "aliases": "",
+          "customisationName": "SO-51G_NTT_DoCoMo_JP",
+          "spcs": [
+            "43041633",
+            "43041634",
+            "43041635",
+            "43041636"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "f48bed24-076b-45b6-bc04-9a47d516d6d3",
+          "modelName": "SOG17",
+          "hwVariantId": "af0879ee-c80a-4ba0-bd40-d04d49e59c7b",
+          "eos": false,
+          "tacs": [
+            "35121194"
+          ],
+          "aliases": "",
+          "customisationName": "SOG17_KDDI_JP",
+          "spcs": [
+            "43041639",
+            "43041640",
+            "43041641"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "0e88c3ac-d8ae-4f0d-afcd-0b2546cd5e45",
+          "modelName": "XQ-GE44",
+          "hwVariantId": "da644012-4449-4f89-882f-c98f62374fba",
+          "eos": false,
+          "tacs": [
+            "35140944"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-GE44_Customized_JP",
+          "spcs": [
+            "43041651",
+            "43041652",
+            "43041653",
+            "43041654",
+            "43041655",
+            "43041656",
+            "43041657",
+            "43041658",
+            "43041659",
+            "43041660",
+            "43041661",
+            "43041662",
+            "43041663",
+            "43041664",
+            "43041665",
+            "43041666"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "203aa7d5-94b4-4778-938d-ed9c2e716dc2",
+          "modelName": "XQ-GE54",
+          "hwVariantId": "c912bcae-414f-4813-8c85-0374b754cc05",
+          "eos": false,
+          "tacs": [
+            "35002806"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-GE54_Customized_EU_UK",
+          "spcs": [
+            "43041667",
+            "43041668",
+            "43041669",
+            "43041670",
+            "43041718"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "f161008d-ad05-4e8c-be75-701cff023182",
+          "modelName": "XQ-GE74",
+          "hwVariantId": "36b9139d-dbd4-44a2-b91d-e20a57bbbae5",
+          "eos": false,
+          "tacs": [
+            "35262779"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-GE74_Customized_SEA",
+          "spcs": [
+            "43041696",
+            "43041697",
+            "43041698",
+            "43041699",
+            "43041719"
+          ],
+          "spcRequired": false
+        }
+      ]
+    },
+    {
+      "productId": "6d3b412f-76c4-4efc-b991-3342cd221320",
+      "productCode": "PDX-268",
+      "marketingName": "Xperia 10 VIII",
+      "series": "10",
+      "generation": "VIII",
+      "updatePlatformKey": "ELBE2",
+      "models": [
+        {
+          "modelId": "1dfe9c23-f5f4-44d5-86bd-c54e2b049f3f",
+          "modelName": "A602SO",
+          "hwVariantId": "034a8747-661e-4104-b2ba-b2e5124dea47",
+          "eos": false,
+          "tacs": [
+            "35190674"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "fb7cae5f-aeeb-4ee8-8cce-ec52870ccd81",
+          "modelName": "SO-52G",
+          "hwVariantId": "f0338371-3b9c-4dfc-a94a-fc25b9398b57",
+          "eos": false,
+          "tacs": [
+            "35281845"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "a5defe80-0058-4031-8455-72538fd6f4be",
+          "modelName": "SOG18",
+          "hwVariantId": "8fca01d6-574d-436f-ae1d-4da1c6916ffe",
+          "eos": false,
+          "tacs": [
+            "35051648"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "47e508d3-9939-4b57-a7c3-c4ff30fdb8bc",
+          "modelName": "XQ-GH44",
+          "hwVariantId": "12b51a1c-525e-4541-ab2b-9002440da4ac",
+          "eos": false,
+          "tacs": [
+            "35842258"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "099c9771-19ed-4d0c-ac2b-7437443bc6a1",
+          "modelName": "XQ-GH54",
+          "hwVariantId": "e97ae9ca-3fda-4a3f-961e-678a9e3081b8",
+          "eos": false,
+          "tacs": [
+            "35499137"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-GH54_Customized_EU_UK",
+          "spcs": [
+            "43041632",
+            "43041732",
+            "43041733"
+          ],
+          "spcRequired": false
+        },
+        {
+          "modelId": "4a776965-4886-40fd-9489-5ae21e2fee1f",
+          "modelName": "XQ-GH74",
+          "hwVariantId": "c4295748-69e4-4e6f-a797-11dc263fc5ef",
+          "eos": false,
+          "tacs": [
+            "35583722"
+          ],
+          "aliases": "",
+          "customisationName": "XQ-GH74_Customized_TW",
+          "spcs": [
+            "43041737",
+            "43041738",
+            "43041739"
+          ],
+          "spcRequired": false
+        }
+      ]
+    }
+  ]
+}

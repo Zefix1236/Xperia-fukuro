@@ -15,6 +15,8 @@ public readonly record struct SubPageId(PageId Parent, string Value)
 public static class SubPageIds
 {
     public static readonly SubPageId DownloadInstall = new(PageIds.Download, "DownloadInstall");
+    // FORK: 固件下载子页
+    public static readonly SubPageId DownloadFirmware = new(PageIds.Download, "DownloadFirmware");
     public static readonly SubPageId DownloadMod = new(PageIds.Download, "DownloadMod");
     public static readonly SubPageId DownloadPack = new(PageIds.Download, "DownloadPack");
     public static readonly SubPageId DownloadDataPack = new(PageIds.Download, "DownloadDataPack");

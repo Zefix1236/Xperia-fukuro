@@ -30,6 +30,8 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     private bool _instanceNameEdited;
     /// <summary>当前是否显示“选择版本”阶段，仅用于判断进入页面时是否需要播放列表滑入。</summary>
     private bool _isSelectStage = true;
+    private bool _versionPreselected;
+    private JsonObject? _appliedNavigationVersion;
     /// <summary>正在执行导航同步：此期间不播放页面内的阶段切换动画。</summary>
     private bool _isEnteringPage;
     private bool _startingInstall;
@@ -85,23 +87,43 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
     /// <summary>页面级入场动画开始前同步阶段，确保列表条目参与连锁渐显。</summary>
     private void SyncStageBeforeEnterAnimation()
     {
-        if (_isSelectStage)
+        if (PageRouter.Current.Parameter is JsonObject version)
         {
-            // 已经在列表阶段：只做无动画同步，避免多余的滑入。
-            _isEnteringPage = true;
-            try
+            if (PageState == PageStates.Empty
+                && !ReferenceEquals(_appliedNavigationVersion, version))
             {
-                ShowSelectStage();
+                _isEnteringPage = true;
+                try
+                {
+                    SelectVersion(version);
+                }
+                finally
+                {
+                    _isEnteringPage = false;
+                }
+
+                _appliedNavigationVersion = version;
+                _versionPreselected = true;
             }
-            finally
-            {
-                _isEnteringPage = false;
-            }
+
+            return;
         }
-        else
+
+        if (!_isSelectStage)
+            return;
+
+        if (PageState != PageStates.Empty)
+            return;
+
+        // 在列表阶段：只做无动画同步，列表条目参与入场动画；配置阶段则保留离开时的样子。
+        _isEnteringPage = true;
+        try
         {
-            // 从配置页返回：与原版一致，列表容器滑入，同时页面级连锁渐显并行播放。
             ShowSelectStage();
+        }
+        finally
+        {
+            _isEnteringPage = false;
         }
     }
 
@@ -121,6 +143,9 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
 
     private void SyncOnNavigatedTo(PageParameter? parameter)
     {
+        if (parameter is not JsonObject)
+            _versionPreselected = false;
+
         PanBack?.ScrollToHome();
         _selector.Activate();
         GameFolders.McFolderListLoader.PreviewFinish -= _folderLoaderHandler;
@@ -131,7 +156,14 @@ public partial class PageDownloadInstall : MyPageRight, IPageView, IRefreshable
             {
                 _waitingVersionName = null;
                 VersionList.Activate();
-                SelectVersion(version);
+                if (!_versionPreselected
+                    && !ReferenceEquals(_appliedNavigationVersion, version))
+                {
+                    SelectVersion(version);
+                }
+
+                _appliedNavigationVersion ??= version;
+                _versionPreselected = false;
                 break;
             }
 

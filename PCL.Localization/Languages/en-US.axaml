@@ -730,6 +730,26 @@
     <sys:String x:Key="Download.Left.Forge">Forge</sys:String>
     <sys:String x:Key="Download.Left.Hint.Refreshing">Refreshing...</sys:String>
     <sys:String x:Key="Download.Left.Installation">Installation</sys:String>
+    <!-- FORK: 固件下载 -->
+    <sys:String x:Key="Download.Left.Firmware">Firmware download</sys:String>
+    <sys:String x:Key="Download.Left.FirmwareGroup">Firmware</sys:String>
+    <sys:String x:Key="Firmware.Page.Title">Firmware download</sys:String>
+    <sys:String x:Key="Firmware.Product">Device</sys:String>
+    <sys:String x:Key="Firmware.Model">Model / Region</sys:String>
+    <sys:String x:Key="Firmware.Query">Check firmware</sys:String>
+    <sys:String x:Key="Firmware.Version">Firmware version</sys:String>
+    <sys:String x:Key="Firmware.Files">Firmware files</sys:String>
+    <sys:String x:Key="Firmware.Output">Save to</sys:String>
+    <sys:String x:Key="Firmware.Download">Start download</sys:String>
+    <sys:String x:Key="Firmware.NoSpc">This model has no SPC and is not supported yet</sys:String>
+    <sys:String x:Key="Firmware.SelectHint">Select a device and model to check firmware</sys:String>
+    <sys:String x:Key="Firmware.Loading">Querying Sony servers…</sys:String>
+    <sys:String x:Key="Firmware.Error">Operation failed: {0}</sys:String>
+    <sys:String x:Key="Firmware.Done">Download complete: {0}</sys:String>
+    <sys:String x:Key="Firmware.Disk">Not enough disk space: need {0} GiB, available {1} GiB</sys:String>
+    <sys:String x:Key="Firmware.Android">Android {0}</sys:String>
+    <sys:String x:Key="Firmware.SelectFiles">Select at least one file</sys:String>
+    <sys:String x:Key="Firmware.NoVersions">No firmware found</sys:String>
     <sys:String x:Key="Download.Left.LabyMod">LabyMod</sys:String>
     <sys:String x:Key="Download.Left.LegacyFabric">Legacy Fabric</sys:String>
     <sys:String x:Key="Download.Left.LiteLoader">LiteLoader</sys:String>

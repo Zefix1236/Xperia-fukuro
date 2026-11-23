@@ -11,7 +11,8 @@ public sealed class PageCatalogTest
     public void CatalogShouldContainAllFeaturePages()
     {
         Assert.HasCount(11, PageCatalog.Pages);
-        Assert.AreEqual(44, PageCatalog.Pages.Sum(page => page.SubPages.Count));
+        // FORK: 新增固件下载子页
+        Assert.AreEqual(45, PageCatalog.Pages.Sum(page => page.SubPages.Count));
     }
 
     [TestMethod]
