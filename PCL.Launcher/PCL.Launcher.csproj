@@ -64,6 +64,8 @@
         <ProjectReference Include="..\PCL.Core.UI\PCL.Core.UI.csproj" />
         <ProjectReference Include="..\PCL.Launcher.Core\PCL.Launcher.Core.csproj" />
         <ProjectReference Include="..\PCL.Platform\PCL.Platform.csproj" />
+        <!-- FORK: 固件下载核心 -->
+        <ProjectReference Include="..\Flasher.Core\Flasher.Core.csproj" />
     </ItemGroup>
     <Target Name="RemovePublishPdbs" AfterTargets="Publish" Condition="'$(Configuration)' != 'Debug'">
         <ItemGroup>
