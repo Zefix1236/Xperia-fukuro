@@ -159,87 +159,144 @@ internal static class SelfTest
         Check("排版生成成功", layout is not null);
         if (layout is null) return;
 
+        var skeleton = layout.Skeleton;
         var stroke = layout.StrokeThickness;
         var anchor = layout.Anchor;
         var chevron = layout.Chevron;
         var fu = layout.FadingGlyphs.First(glyph => glyph.Text == "ふ");
         var ro = layout.FadingGlyphs.First(glyph => glyph.Text == "ろ");
-        var p = layout.FadingGlyphs.First(glyph => glyph.Text == "P");
+        var xInk = anchor.InkBounds;
+        var kInk = chevron.InkBounds;
 
+        // ---- X 骨架 ----
+        Check("X 骨架上臂斜率为负、下臂斜率为正",
+            skeleton.SlopeUpper < 0d && skeleton.SlopeLower > 0d,
+            $"m2 {skeleton.SlopeUpper:F4}，m1 {skeleton.SlopeLower:F4}");
+        Check("X 骨架拟合残差 ≤ 0.02 × S（参考字号）",
+            skeleton.ResidualUpper <= 0.02d * LogoLayout.StrokeEm * XGlyphSkeleton.ReferenceSize &&
+            skeleton.ResidualLower <= 0.02d * LogoLayout.StrokeEm * XGlyphSkeleton.ReferenceSize,
+            $"上 {skeleton.ResidualUpper:F3}，下 {skeleton.ResidualLower:F3}");
+
+        var crossingRatio = (skeleton.CrossingY - skeleton.InkTop) / skeleton.Height;
+        Check("交叉点在墨迹框上方（比例在 0.45~0.50）",
+            crossingRatio is > 0.45d and < 0.50d, $"比例 {crossingRatio:F4}");
+        Console.WriteLine($"  骨架：m1={skeleton.SlopeLower:F4}，m2={skeleton.SlopeUpper:F4}，" +
+                          $"Sx={skeleton.StrokeWidth:F2}（参考字号），交叉点比例 {crossingRatio:F4}，" +
+                          $"残差 上 {skeleton.ResidualUpper:F3} / 下 {skeleton.ResidualLower:F3}");
+
+        // ---- く 的高度与留白 ----
+        Check("く 高度 = ChevronHeightRatio × X 墨迹高",
+            Math.Abs(kInk.Height - LogoLayout.ChevronHeightRatio * xInk.Height) < 1e-6d,
+            $"{kInk.Height:F4} vs {LogoLayout.ChevronHeightRatio * xInk.Height:F4}");
+        var topMargin = kInk.Top - xInk.Top;
+        var bottomMargin = xInk.Bottom - kInk.Bottom;
+        Check("上下留白差 ≤ 0.1 × X 墨迹高",
+            Math.Abs(topMargin - bottomMargin) <= 0.1d * xInk.Height,
+            $"上 {topMargin:F4}，下 {bottomMargin:F4}");
+        Check("留白 = (1 - ChevronHeightRatio) / 2 × X 墨迹高",
+            Math.Abs(topMargin - (1d - LogoLayout.ChevronHeightRatio) / 2d * xInk.Height) < 1e-6d,
+            $"{topMargin:F4} vs {(1d - LogoLayout.ChevronHeightRatio) / 2d * xInk.Height:F4}");
+
+        // ---- 臂斜率与 X 一致（平行）----
+        var upperSlope = (layout.ChevronUpperEnd.X - layout.ChevronVertex.X)
+                         / (layout.ChevronUpperEnd.Y - layout.ChevronVertex.Y);
+        var lowerSlope = (layout.ChevronLowerEnd.X - layout.ChevronVertex.X)
+                         / (layout.ChevronLowerEnd.Y - layout.ChevronVertex.Y);
+        Check("上臂斜率 = X 上臂斜率", Math.Abs(upperSlope - skeleton.SlopeUpper) < 1e-9d,
+            $"{upperSlope:F6} vs {skeleton.SlopeUpper:F6}");
+        Check("下臂斜率 = X 下臂斜率", Math.Abs(lowerSlope - skeleton.SlopeLower) < 1e-9d,
+            $"{lowerSlope:F6} vs {skeleton.SlopeLower:F6}");
+
+        // ---- 中心线距离与沿臂的间隙 ----
+        var expectedGap = (layout.XStrokeWidth + stroke) / 2d + LogoLayout.NestGapRatio * stroke;
+        Check("中心线距离 = (Sx + S)/2 + NestGapRatio × S",
+            Math.Abs(layout.CenterlineGap - expectedGap) < 1e-9d,
+            $"{layout.CenterlineGap:F4} vs {expectedGap:F4}");
+
+        static double PerpendicularGap(LogoLayout l, bool upper, double yLayout)
+        {
+            var sk = l.Skeleton;
+            var k = l.FontSize / XGlyphSkeleton.ReferenceSize;
+            var m = upper ? sk.SlopeUpper : sk.SlopeLower;
+            var a = (upper ? sk.InterceptUpper : sk.InterceptLower) * k;
+            var xAnchor = l.Anchor.X + a + m * (yLayout - l.Anchor.Y);
+            var end = upper ? l.ChevronUpperEnd : l.ChevronLowerEnd;
+            var xChevron = end.X - l.ChevronExpandedDx + m * (yLayout - end.Y);
+            return (xChevron - xAnchor) / Math.Sqrt(1d + m * m);
+        }
+
+        var gapOk = true;
+        var maxGapError = 0d;
+        foreach (var upper in new[] { true, false })
+        {
+            var end = upper ? layout.ChevronUpperEnd : layout.ChevronLowerEnd;
+            var from = end.Y + (layout.ChevronVertex.Y - end.Y) * 0.1d;
+            var to = layout.ChevronVertex.Y + (end.Y - layout.ChevronVertex.Y) * 0.1d;
+            for (var i = 0; i <= 4; i++)
+            {
+                var y = from + (to - from) * i / 4d;
+                // PerpendicularGap 量的是两条中心线的距离，边缘间隙要再减掉两笔的半宽。
+                var gap = PerpendicularGap(layout, upper, y) - (layout.XStrokeWidth + stroke) / 2d;
+                var error = Math.Abs(gap - LogoLayout.NestGapRatio * stroke);
+                maxGapError = Math.Max(maxGapError, error);
+                if (error > 0.1d * stroke) gapOk = false;
+            }
+        }
+
+        Check("两条臂到 X 的垂直间隙 = NestGapRatio × S（误差 ≤ 0.1S）", gapOk,
+            $"最大误差 {maxGapError:F4}，S = {stroke:F3}");
+
+        // ---- 排版与字距 ----
         Check("九个字形 = X + く（自绘）+ 七个淡出字形",
-            anchor.Text == "X" && chevron.Text == "く" && layout.FadingGlyphs.Count == 7,
-            $"anchor {anchor.Text}，chevron {chevron.Text}，fading {layout.FadingGlyphs.Count}");
-        Check("宽高为正", layout.Width > 0d && layout.Height > 0d,
-            $"{layout.Width:F2} × {layout.Height:F2}");
-
-        // ---- 拉伸 / 压缩 ----
+            anchor.Text == "X" && chevron.Text == "く" && layout.FadingGlyphs.Count == 7);
         Check("X 墨迹宽 = 原始宽 × XStretch",
-            Math.Abs(anchor.InkBounds.Width - anchor.RawInk.Width * LogoLayout.XStretch) < 1e-9d,
-            $"{anchor.InkBounds.Width:F4} vs {anchor.RawInk.Width * LogoLayout.XStretch:F4}");
-        Check("X 墨迹高不变",
-            Math.Abs(anchor.InkBounds.Height - anchor.RawInk.Height) < 1e-9d);
-        Check("ふ 墨迹宽 = 原始宽 × KanaSqueeze",
-            Math.Abs(fu.InkBounds.Width - fu.RawInk.Width * LogoLayout.KanaSqueeze) < 1e-9d);
-        Check("ろ 墨迹宽 = 原始宽 × KanaSqueeze",
+            Math.Abs(xInk.Width - anchor.RawInk.Width * LogoLayout.XStretch) < 1e-9d);
+        Check("ふ / ろ 墨迹宽 = 原始宽 × KanaSqueeze",
+            Math.Abs(fu.InkBounds.Width - fu.RawInk.Width * LogoLayout.KanaSqueeze) < 1e-9d &&
             Math.Abs(ro.InkBounds.Width - ro.RawInk.Width * LogoLayout.KanaSqueeze) < 1e-9d);
-
-        // ---- 字距 ----
-        var expectedP = layout.XAdvance * LogoLayout.XStretch + LogoLayout.LatinTrackingEm * main;
-        Check("P 原点 − X 原点 = 0.05×主字号 + (XStretch−1)×X advance",
-            Math.Abs((p.X - anchor.X) - expectedP) < 1e-9d,
-            $"{p.X - anchor.X:F4} vs {expectedP:F4}");
         Check("ふ → く 墨迹间隙 = GapFuKu × 主字号",
-            Math.Abs((chevron.InkBounds.Left - fu.InkBounds.Right) - LogoLayout.GapFuKu * main) < 1e-9d,
+            Math.Abs(chevron.InkBounds.Left - fu.InkBounds.Right - LogoLayout.GapFuKu * main) < 1e-9d,
             $"{chevron.InkBounds.Left - fu.InkBounds.Right:F4}");
         Check("く → ろ 墨迹间隙 = GapKuRo × 主字号",
-            Math.Abs((ro.InkBounds.Left - chevron.InkBounds.Right) - LogoLayout.GapKuRo * main) < 1e-9d,
+            Math.Abs(ro.InkBounds.Left - chevron.InkBounds.Right - LogoLayout.GapKuRo * main) < 1e-9d,
             $"{ro.InkBounds.Left - chevron.InkBounds.Right:F4}");
 
-        // ---- 自绘 く 的几何 ----
-        var centerWidth = anchor.InkBounds.Width - stroke;
-        var centerHeight = anchor.InkBounds.Height - stroke;
-        var armWidth = centerWidth / 2d * LogoLayout.ChevronHeightRatio;
-        var armHeight = centerHeight * LogoLayout.ChevronHeightRatio;
-        Check("く 的整体尺寸 w = Wc + S",
-            Math.Abs(layout.ChevronWidth - (armWidth + stroke)) < 1e-9d,
-            $"w {layout.ChevronWidth:F4} vs {armWidth + stroke:F4}");
-        Check("く 的整体尺寸 h = Hc + S",
-            Math.Abs(layout.ChevronHeight - (armHeight + stroke)) < 1e-9d,
-            $"h {layout.ChevronHeight:F4} vs {armHeight + stroke:F4}");
-        var chevronPen = new Pen(Brushes.White, stroke, lineCap: PenLineCap.Round, lineJoin: PenLineJoin.Round);
-        Console.WriteLine($"  く Geometry.Bounds = {chevron.Geometry.Bounds}");
-        Console.WriteLine($"  く GetRenderBounds = {chevron.Geometry.GetRenderBounds(chevronPen)}");
-        Console.WriteLine($"  く 显式墨迹（本地）= (0, 0, {layout.ChevronWidth:F4}, {layout.ChevronHeight:F4})");
-        Check("く 的墨迹与自绘结果一致",
-            Math.Abs(chevron.InkBounds.Width - layout.ChevronWidth) < 1e-6d &&
-            Math.Abs(chevron.InkBounds.Height - layout.ChevronHeight) < 1e-6d);
-        Check("く 的两条臂与 X 右半边斜线斜率一致（平行）",
-            Math.Abs(armHeight / 2d / armWidth - centerHeight / centerWidth) < 1e-9d,
-            $"臂 {armHeight / 2d / armWidth:F4}，X {centerHeight / centerWidth:F4}");
-        Check("く 的尖角 = X 斜线交叉点（墨迹中心上方 ChevronTipOffsetRatio × X 墨迹高）",
-            Math.Abs(chevron.InkBounds.Center.Y
-                     - (anchor.InkBounds.Center.Y - LogoLayout.ChevronTipOffsetRatio * anchor.InkBounds.Height)) < 1e-9d,
-            $"く中心 {chevron.InkBounds.Center.Y:F4}，X 中心 {anchor.InkBounds.Center.Y:F4}");
-
-        // ---- 收起目标 ----
-        var cosAlpha = 1d / Math.Sqrt(1d + layout.ChevronTanAlpha * layout.ChevronTanAlpha);
-        var expectedCollapsedVertex = anchor.InkBounds.Center.X + 2d * stroke * LogoLayout.NestGapRatio / cosAlpha;
-        Check("收起顶点 = X 墨迹中心 + 2S×NestGapRatio/cosα",
-            Math.Abs(layout.ChevronCollapsedVertexX - expectedCollapsedVertex) < 1e-9d,
-            $"{layout.ChevronCollapsedVertexX:F4} vs {expectedCollapsedVertex:F4}");
-        Check("收起时 く 与 X 的垂直间距 = S × NestGapRatio",
-            Math.Abs((layout.ChevronCollapsedVertexX - anchor.InkBounds.Center.X) * cosAlpha
-                     - 2d * stroke * LogoLayout.NestGapRatio) < 1e-9d);
-        Check("展开顶点 = く 左边缘 + S/2",
-            Math.Abs(layout.ChevronExpandedVertexX - (chevron.InkBounds.Left + stroke / 2d)) < 1e-9d);
-
-        var pileOk = layout.FadingGlyphs.All(glyph => Math.Abs(glyph.X + glyph.CollapseDx - layout.PileX) < 1e-9d);
-        Check("七个字形收起后原点都等于 pile", pileOk, $"pile {layout.PileX:F4}");
-        Check("pile = X 原点 + X advance × XStretch × 0.33",
-            Math.Abs(layout.PileX - (anchor.X + layout.XAdvance * LogoLayout.XStretch * LogoLayout.CollapseInsideX)) < 1e-9d);
+        // ---- 收起 ----
+        Check("收起位移 = -(展开位移)",
+            Math.Abs(chevron.CollapseDx + layout.ChevronExpandedDx) < 1e-9d,
+            $"E {layout.ChevronExpandedDx:F4}，dx {chevron.CollapseDx:F4}");
+        Check("七个字形收起后原点都等于 pile",
+            layout.FadingGlyphs.All(glyph => Math.Abs(glyph.X + glyph.CollapseDx - layout.PileX) < 1e-9d),
+            $"pile {layout.PileX:F4}");
         Check("淡出字形收起时不越过 X 左边缘",
             layout.FadingGlyphs.All(glyph =>
-                glyph.X + glyph.CollapseDx + glyph.ScaleX * glyph.RawInk.Left >= anchor.InkBounds.Left - 1e-9d));
+                glyph.X + glyph.CollapseDx + glyph.ScaleX * glyph.RawInk.Left >= xInk.Left - 1e-9d));
+        Check("右端不齐 |xLow - xUp| ≤ 0.5 × S（仅记录）",
+            Math.Abs(layout.ChevronLowerEnd.X - layout.ChevronUpperEnd.X) <= 0.5d * stroke,
+            $"{Math.Abs(layout.ChevronLowerEnd.X - layout.ChevronUpperEnd.X):F4}，S = {stroke:F3}");
+
+        // ---- 多字号稳定性 ----
+        var sweepOk = true;
+        var sweepDetail = new List<string>();
+        foreach (var size in new double[] { 24d, 32d, 48d, 64d, 96d, 128d, 180d, 240d })
+        {
+            var l = LogoLayout.Build(XperiaFukuroLogo.ZenMaruGothic, size);
+            var xi = l.Anchor.InkBounds;
+            var ki = l.Chevron.InkBounds;
+            var heightRatio = ki.Height / xi.Height;
+            var marginRatio = (ki.Top - xi.Top) / xi.Height;
+            var upperGap = PerpendicularGap(l, true, (l.ChevronUpperEnd.Y + l.ChevronVertex.Y) / 2d);
+            var lowerGap = PerpendicularGap(l, false, (l.ChevronLowerEnd.Y + l.ChevronVertex.Y) / 2d);
+            var edgeGap = (upperGap + lowerGap) / 2d - (l.XStrokeWidth + l.StrokeThickness) / 2d;
+            var gapRatio = edgeGap / l.StrokeThickness;
+            if (Math.Abs(heightRatio - LogoLayout.ChevronHeightRatio) > 1e-6d ||
+                Math.Abs(marginRatio - (1d - LogoLayout.ChevronHeightRatio) / 2d) > 1e-6d ||
+                Math.Abs(gapRatio - LogoLayout.NestGapRatio) > 1e-6d)
+                sweepOk = false;
+            sweepDetail.Add($"{size:F0}:h{heightRatio:F3}/m{marginRatio:F3}/g{gapRatio:F3}");
+        }
+
+        Check("8 个字号扫描：高度比 / 留白比 / 间隙比恒定", sweepOk, string.Join(" ", sweepDetail));
 
         // ---- 尺寸与内边距 ----
         control.Measure(Size.Infinity);
@@ -264,9 +321,10 @@ internal static class SelfTest
 
         Console.WriteLine($"  常量：S={stroke / main:F4}em，NestGapRatio={LogoLayout.NestGapRatio}，" +
                           $"ChevronHeightRatio={LogoLayout.ChevronHeightRatio}，XStretch={LogoLayout.XStretch}，" +
-                          $"KanaSqueeze={LogoLayout.KanaSqueeze}，GapFuKu={LogoLayout.GapFuKu}，GapKuRo={LogoLayout.GapKuRo}");
-        Console.WriteLine($"  X 墨迹：{anchor.InkBounds}");
-        Console.WriteLine($"  く 墨迹（展开）：{chevron.InkBounds}");
+                          $"KanaSqueeze={LogoLayout.KanaSqueeze}");
+        Console.WriteLine($"  X 墨迹：{xInk}   く 墨迹（展开）：{kInk}");
+        Console.WriteLine($"  留白：上 {topMargin:F4} / 下 {bottomMargin:F4}（48px），" +
+                          $"右端不齐 {Math.Abs(layout.ChevronLowerEnd.X - layout.ChevronUpperEnd.X):F4}");
         Console.WriteLine($"  排版尺寸：{layout.Width:F2} × {layout.Height:F2}");
     }
 }

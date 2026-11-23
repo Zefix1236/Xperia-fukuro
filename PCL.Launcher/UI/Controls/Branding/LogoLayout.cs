@@ -11,8 +11,9 @@ namespace PCL.UI.Controls.Branding;
 /// </summary>
 /// <remarks>
 ///     与最早版本的差别：X 横向拉伸 <see cref="XStretch" />，ふ / ろ 横向压缩 <see cref="KanaSqueeze" />，
-///     「く」不再是字体字形，而是按 X 缩放后的墨迹框推算出来的自绘 V 形折线（笔宽 = 主字号 ×
-///     <see cref="StrokeEm" />，圆头圆角）。收起目标仍然按墨迹边缘计算。
+///     「く」不再是字体字形，而是 X 右半边骨架的平移拷贝：两臂分别落在 X 两条斜臂中心线向外平移
+///     <see cref="NestGapRatio" /> × 笔画宽的位置，各自平行、间隙恒定；上下端对 X 墨迹框的留白相等。
+///     因为 X 本身的右半边就是「上臂短、下臂长」，所以 &lt; 的两臂长度不等，这是 X 的结构，不是缺陷。
 /// </remarks>
 internal sealed class LogoLayout
 {
@@ -41,13 +42,13 @@ internal sealed class LogoLayout
     /// <summary>く 的线宽（× 主字号），记为 S。</summary>
     internal const double StrokeEm = 0.090d;
 
-    /// <summary>收起态 く 与 X 的笔画间隙（× S）。</summary>
+    /// <summary>く 与 X 两条中心线的垂直间隙，单位是 S（1 表示两笔边缘间隙 = S）。</summary>
     internal const double NestGapRatio = 1.0d;
 
-    /// <summary>く 的高度比例（两条臂的张角）。Wc 与 Hc 同步缩放，所以斜率不受影响。</summary>
+    /// <summary>く 的高度占 X 墨迹高的比例；1 表示与 X 同高（上下留白为 0），0.93 表示各留 3.5%。</summary>
     internal const double ChevronHeightRatio = 0.93d;
 
-    /// <summary>X（以及由 X 推算的 く）的横向拉伸。</summary>
+    /// <summary>X 的横向拉伸。</summary>
     internal const double XStretch = 1.21d;
 
     /// <summary>ふ / ろ 的横向压缩。</summary>
@@ -56,19 +57,10 @@ internal sealed class LogoLayout
     /// <summary>收起时七个字形平移进 X 内部的位置（× X 拉伸后的 advance）。</summary>
     internal const double CollapseInsideX = 0.33d;
 
-    /// <summary>
-    ///     く 的垂直位置相对 X 墨迹框中心的上移量（× X 墨迹高）。
-    ///     两个目标互相冲突：尖角对齐 X 斜线交叉点 → 臂间隙均匀但上下留白不均；
-    ///     对齐墨迹框中心 → 留白相等但下部间隙偏紧。实测交叉点在框中心上方 0.0234 × 高。
-    ///     优先保证两条臂的间隙均匀（用户 2026-11-22 反馈下半臂贴得更近），所以取满值；
-    ///     代价是 く 在 X 墨迹框内偏上（48px 下留白 0.23 / 1.81 DIP，24px 下 0.12 / 0.90）。
-    /// </summary>
-    internal const double ChevronTipOffsetRatio = 0.0234d;
-
     private LogoLayout(LogoGlyph anchor, LogoGlyph chevron, List<LogoGlyph> fadingGlyphs,
-        double width, double height, double strokeThickness, double fontSize,
-        double xAdvance, double pileX, double chevronExpandedVertexX, double chevronCollapsedVertexX,
-        double chevronWidth, double chevronHeight, double chevronTanAlpha)
+        double width, double height, double strokeThickness, double fontSize, double xAdvance, double pileX,
+        XGlyphSkeleton skeleton, double xStrokeWidth, double centerlineGap, double expandedDx,
+        Point chevronUpper, Point chevronVertex, Point chevronLower)
     {
         Anchor = anchor;
         Chevron = chevron;
@@ -79,17 +71,19 @@ internal sealed class LogoLayout
         FontSize = fontSize;
         XAdvance = xAdvance;
         PileX = pileX;
-        ChevronExpandedVertexX = chevronExpandedVertexX;
-        ChevronCollapsedVertexX = chevronCollapsedVertexX;
-        ChevronWidth = chevronWidth;
-        ChevronHeight = chevronHeight;
-        ChevronTanAlpha = chevronTanAlpha;
+        Skeleton = skeleton;
+        XStrokeWidth = xStrokeWidth;
+        CenterlineGap = centerlineGap;
+        ChevronExpandedDx = expandedDx;
+        ChevronUpperEnd = chevronUpper;
+        ChevronVertex = chevronVertex;
+        ChevronLowerEnd = chevronLower;
     }
 
     /// <summary>X：收起过程中不动，始终横向拉伸 <see cref="XStretch" />。</summary>
     public LogoGlyph Anchor { get; }
 
-    /// <summary>く：自绘 V 形折线，用 <see cref="StrokeThickness" /> 的圆头圆角笔画，始终使用强调色。</summary>
+    /// <summary>く：自绘折线，用 <see cref="StrokeThickness" /> 的圆头圆角笔画，始终使用强调色。</summary>
     public LogoGlyph Chevron { get; }
 
     /// <summary>收起时先绘制并淡出的七个字形：P E R I A ふ ろ。</summary>
@@ -113,20 +107,26 @@ internal sealed class LogoLayout
     /// <summary>收起时七个字形叠到的位置。</summary>
     public double PileX { get; }
 
-    /// <summary>展开时 V 形顶点的横坐标。</summary>
-    public double ChevronExpandedVertexX { get; }
+    /// <summary>X 字形骨架（参考字号下的测量结果）。</summary>
+    public XGlyphSkeleton Skeleton { get; }
 
-    /// <summary>收起时 V 形顶点的横坐标。</summary>
-    public double ChevronCollapsedVertexX { get; }
+    /// <summary>X 拉伸后的垂直笔画宽（当前字号）。</summary>
+    public double XStrokeWidth { get; }
 
-    /// <summary>く 的整体墨迹宽 w = Wc + S。</summary>
-    public double ChevronWidth { get; }
+    /// <summary>く 与 X 两条中心线的垂直距离；(Sx + S) / 2 + NestGapRatio × S。</summary>
+    public double CenterlineGap { get; }
 
-    /// <summary>く 的整体墨迹高 h = Hc + S。</summary>
-    public double ChevronHeight { get; }
+    /// <summary>展开态相对收起态（嵌在 X 里）的右移量；收起动画就是把它乘以 (1 - pe)。</summary>
+    public double ChevronExpandedDx { get; }
 
-    /// <summary>tanα = W / H，用于求 cosα。</summary>
-    public double ChevronTanAlpha { get; }
+    /// <summary>折线上端点（排版坐标）。</summary>
+    public Point ChevronUpperEnd { get; }
+
+    /// <summary>折线尖角（排版坐标）。</summary>
+    public Point ChevronVertex { get; }
+
+    /// <summary>折线下端点（排版坐标）。</summary>
+    public Point ChevronLowerEnd { get; }
 
     /// <summary>X 的墨迹范围（归一化坐标）。</summary>
     public Rect AnchorInk => Anchor.InkBounds;
@@ -193,25 +193,43 @@ internal sealed class LogoLayout
             Advance = shaped[6].Text.WidthIncludingTrailingWhitespace
         };
 
-        // 5) く：从 X 缩放后的墨迹框推算 V 形折线。
-        var xInk = xGlyph.InkBounds;
-        var centerLineWidth = Math.Max(xInk.Width - stroke, 1e-3d);
-        var centerLineHeight = Math.Max(xInk.Height - stroke, 1e-3d);
-        var chevronArmHeight = centerLineHeight * ChevronHeightRatio;
-        var chevronArmWidth = centerLineWidth / 2d * ChevronHeightRatio;
-        var chevronWidth = chevronArmWidth + stroke;
-        var chevronHeight = chevronArmHeight + stroke;
-        var chevronGeometry = BuildChevronGeometry(stroke, chevronArmWidth, chevronArmHeight, chevronHeight);
+        // 5) く：X 右半边骨架的平移拷贝。
+        var skeleton = XGlyphSkeleton.For(fontFamily);
+        var scale = fontSize / XGlyphSkeleton.ReferenceSize;
+        var xStroke = skeleton.StrokeWidth * scale;
+        var aUpper = skeleton.InterceptUpper * scale;
+        var aLower = skeleton.InterceptLower * scale;
+        var mUpper = skeleton.SlopeUpper;
+        var mLower = skeleton.SlopeLower;
 
-        var chevron = new LogoGlyph("く", true, chevronGeometry, 1d,
-            new Rect(0d, 0d, chevronWidth, chevronHeight))
+        var centerlineGap = (xStroke + stroke) / 2d + NestGapRatio * stroke;
+        var shiftUpper = centerlineGap * Math.Sqrt(1d + mUpper * mUpper);
+        var shiftLower = centerlineGap * Math.Sqrt(1d + mLower * mLower);
+
+        var yVertex = ((aLower + shiftLower) - (aUpper + shiftUpper)) / (mUpper - mLower);
+        var xVertex = aUpper + shiftUpper + mUpper * yVertex;
+
+        var margin = (1d - ChevronHeightRatio) * (skeleton.InkBottom - skeleton.InkTop) * scale / 2d;
+        var yUp = skeleton.InkTop * scale + stroke / 2d + margin;
+        var yLow = skeleton.InkBottom * scale - stroke / 2d - margin;
+        var xUp = aUpper + shiftUpper + mUpper * yUp;
+        var xLow = aLower + shiftLower + mLower * yLow;
+
+        var chevronGeometry = BuildChevronGeometry(
+            new Point(xUp, yUp), new Point(xVertex, yVertex), new Point(xLow, yLow));
+        var chevronInk = new Rect(
+            xVertex - stroke / 2d,
+            yUp - stroke / 2d,
+            Math.Max(xUp, xLow) + stroke / 2d - (xVertex - stroke / 2d),
+            yLow - yUp + stroke);
+
+        var chevron = new LogoGlyph("く", true, chevronGeometry, 1d, chevronInk)
         {
-            X = fu.InkBounds.Right + GapFuKu * mainSize,
-            // 垂直：尖角对齐 X 两条斜线的交叉点（比墨迹中心略高），不参与假名的上提。
-            Y = xInk.Center.Y - chevronHeight / 2d - ChevronTipOffsetRatio * xInk.Height
+            X = fu.InkBounds.Right + GapFuKu * mainSize - chevronInk.Left,
+            Y = xGlyph.Y
         };
 
-        // 6) ろ：假名字号 + 横向压缩，左墨迹边缘挨着 く 的右墨迹边缘。
+        // 6) ろ：假名字号 + 横向压缩，左墨迹边缘挨着 く 展开后的右墨迹边缘。
         var ro = new LogoGlyph(texts[7], true, shaped[7].Geometry, KanaSqueeze)
         {
             X = chevron.InkBounds.Right + GapKuRo * mainSize - KanaSqueeze * shaped[7].Geometry.Bounds.Left,
@@ -258,28 +276,27 @@ internal sealed class LogoLayout
         ro.CollapseDx = pile - ro.X;
         fadingGlyphs.Add(ro);
 
-        // 9) く 的收起位移：顶点横坐标按 S 与 X 的斜边角度推算。
-        var anchorInk = xGlyph.InkBounds;
-        var tanAlpha = centerLineWidth / centerLineHeight;
-        var cosAlpha = 1d / Math.Sqrt(1d + tanAlpha * tanAlpha);
-        var expandedVertexX = chevron.X + stroke / 2d;
-        var collapsedVertexX = anchorInk.Center.X + 2d * stroke * NestGapRatio / cosAlpha;
-        chevron.CollapseDx = collapsedVertexX - expandedVertexX;
+        // 9) 收起态 く 恰好嵌在 X 右半边：平移量 = -(展开位移)。
+        var expandedDx = chevron.X - xGlyph.X;
+        chevron.CollapseDx = -expandedDx;
+
+        var upper = new Point(chevron.X + xUp, chevron.Y + yUp);
+        var vertex = new Point(chevron.X + xVertex, chevron.Y + yVertex);
+        var lower = new Point(chevron.X + xLow, chevron.Y + yLow);
 
         return new LogoLayout(xGlyph, chevron, fadingGlyphs,
-            maxRight - minLeft, maxBottom - minTop, stroke, mainSize,
-            xAdvance, pile, expandedVertexX, collapsedVertexX,
-            chevronWidth, chevronHeight, tanAlpha);
+            maxRight - minLeft, maxBottom - minTop, stroke, mainSize, xAdvance, pile,
+            skeleton, xStroke, centerlineGap, expandedDx, upper, vertex, lower);
     }
 
-    private static StreamGeometry BuildChevronGeometry(double stroke, double armWidth, double armHeight, double height)
+    private static StreamGeometry BuildChevronGeometry(Point upper, Point vertex, Point lower)
     {
         var geometry = new StreamGeometry();
         using (var context = geometry.Open())
         {
-            context.BeginFigure(new Point(stroke / 2d + armWidth, stroke / 2d), false);
-            context.LineTo(new Point(stroke / 2d, height / 2d), true);
-            context.LineTo(new Point(stroke / 2d + armWidth, stroke / 2d + armHeight), true);
+            context.BeginFigure(upper, false);
+            context.LineTo(vertex, true);
+            context.LineTo(lower, true);
             context.EndFigure(false);
         }
 

@@ -51,6 +51,7 @@ internal static class FrameRenderer
 
         failures += RenderTitleBarStripes(directory, scale);
         failures += RenderHiRes(directory, accent);
+        failures += RenderMeasure(directory, accent);
         if (failures > 0) Console.WriteLine($"  有 {failures} 帧渲染为空");
 
         return failures;
@@ -184,6 +185,42 @@ internal static class FrameRenderer
             Console.WriteLine($"  {name,-16} {length,8} bytes  {pixelSize.Width}×{pixelSize.Height}");
         }
 
+        return failures;
+    }
+
+    /// <summary>按验收标准在 24 / 48 / 240 字号下渲染展开与收起两态，供像素测量。</summary>
+    private static int RenderMeasure(string directory, IBrush accent)
+    {
+        var failures = 0;
+
+        foreach (var (fontSize, scale) in new[] { (24d, 6d), (48d, 4d), (240d, 1.5d) })
+        {
+            var control = new XperiaFukuroLogo
+            {
+                FontSize = fontSize,
+                Foreground = Brushes.White,
+                Accent = accent
+            };
+            control.Measure(Size.Infinity);
+            control.Arrange(new Rect(control.DesiredSize));
+
+            var pixelSize = new PixelSize(
+                Math.Max(1, (int)Math.Ceiling(control.DesiredSize.Width * scale)),
+                Math.Max(1, (int)Math.Ceiling(control.DesiredSize.Height * scale)));
+
+            foreach (var (frame, state) in new[] { (0d, "expanded"), (18d, "collapsed") })
+            {
+                control.SeekFrame(frame);
+                using var bitmap = new RenderTargetBitmap(pixelSize, new Vector(96d * scale, 96d * scale));
+                bitmap.Render(control);
+
+                var path = Path.Combine(directory, $"m{fontSize:F0}-{state}.png");
+                bitmap.Save(path);
+                if (new FileInfo(path).Length <= 0) failures++;
+            }
+        }
+
+        Console.WriteLine($"  验收用图：24 / 48 / 240 各两态");
         return failures;
     }
 }

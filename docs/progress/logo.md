@@ -12,46 +12,65 @@
 | 文件 | 内容 |
 | --- | --- |
 | `PCL.Launcher/UI/Controls/Branding/XperiaFukuroLogo.cs` | 自绘控件，继承 `Control`；四个 StyledProperty：`FontSize` / `FontFamily` / `Foreground` / `Accent`，外加 `FollowPointer`；`FontSize`、`FontFamily` 变化触发重新排版 |
-| `PCL.Launcher/UI/Controls/Branding/LogoLayout.cs` | 九个字形的静态排版、X 拉伸、ふ/ろ 压缩、自绘 V 形几何与收起目标 |
+| `PCL.Launcher/UI/Controls/Branding/LogoLayout.cs` | 九个字形的静态排版、X 拉伸、ふ/ろ 压缩、`<` 的骨架几何与收起目标 |
+| `PCL.Launcher/UI/Controls/Branding/XGlyphSkeleton.cs` | X 右半边骨架测量（参考字号 1000、FillContains 扫描、按字体族缓存） |
 | `PCL.Launcher/UI/Controls/Branding/LogoPlayhead.cs` | 播放头：`frame` 0..18、30 单位/秒、cubic-bezier(0.77, 0, 0.175, 1) 二分 24 次 |
 | `PCL.Launcher/Assets/Fonts/ZenMaruGothic-Medium.subset.ttf` | Zen Maru Gothic Medium 的 9 字形子集（3 KB，OFL-1.1），同目录 `ZenMaruGothic-OFL.txt` |
 | `LogoDemo/` | 独立演示项目（不在 `.slnx` 里），链接控件源码、内嵌同一份字体；`--selftest` 自测、`--frames` 渲染静帧、`--sequence` 输出逐帧 PNG |
 
-### 2026-11-22 第二轮：く 改成自绘 V 形 + X 拉伸 + ふ/ろ 压缩
+### 2026-11-23 第三轮：く 改成 X 右半边骨架的平移拷贝
 
-播放头模型、缓动曲线、淡出时机、触摸/悬停逻辑都没动，只改排版与绘制。
+按另一段对话给出的方案重做。不再用"对称 V + 在交叉点与框中心之间二选一"，而是把 X 右半边的
+两条中心线各自向外平移，得到一条**上臂短、下臂长**的 `<` —— 这正是 X 自身的结构，所以
+"臂间隙均匀"和"上下留白相等"可以同时成立。
 
-常量（`LogoLayout` 里的 `const`）：
+#### X 骨架测量（`XGlyphSkeleton`）
 
-| 名称 | 值 | 含义 |
+- 在字号 1000 下 `BuildGeometry`，取墨迹上下缘；在 0.20 / 0.33 / 0.67 / 0.80 高度处、
+  从右往左 0.5 步长扫 `FillContains`，取最右一段墨迹的中心与横向宽（× `XStretch`），
+  拟合两条中心线 `x = a + m·y`；0.26 / 0.74 高度做残差自检。- 交叉点 `yc = (a1 − a2) / (m2 − m1)`，
+  笔画宽 `Sx = 平均(wh / sqrt(1 + m²))`。结果按字体族缓存，与字号无关。
+
+实测（Zen Maru Gothic Medium，参考字号 1000）：
+
+| 量 | 实测 | 说明 |
 | --- | --- | --- |
-| `StrokeEm` | 0.090 | く 的线宽 = 主字号 × 此值（S） |
-| `NestGapRatio` | 1.0 | 收起态 く 与 X 的笔画间隙 = S × 此值 |
-| `ChevronHeightRatio` | 1.0 | く 的高度比例 |
-| `XStretch` | 1.21 | X（及由它推算的 く）横向拉伸 |
-| `KanaSqueeze` | 0.94 | ふ / ろ 横向压缩 |
-| `GapFuKu` | 0.145 | ふ 与 く 的墨迹间隙（× 主字号） |
-| `GapKuRo` | 0.145 | く 与 ろ 的墨迹间隙（× 主字号） |
-| `KanaScale` | 0.82 | 假名字号比例（沿用） |
-| `KanaLiftEm` | 0.07 | 假名上提（× 假名字号，沿用） |
-| `LatinTrackingEm` | 0.05 | 英文字距（× 主字号，沿用） |
-| `LatinToKanaTrackingEm` | 0.14 | A → ふ 间距（× 假名字号，按 advance，沿用） |
-| `CollapseInsideX` | 0.33 | 七个字形收起后叠放位置（× X 拉伸后的 advance） |
-| `ChevronTipOffsetRatio` | 0.0234 | く 尖角相对 X 墨迹中心的上移量（× X 墨迹高），对齐两条斜线的实际交叉点；优先保证臂间隙均匀，代价是框内偏上 |
+| `m1`（右下臂） | 0.7580 | 拉伸后斜率 |
+| `m2`（右上臂） | −0.7613 | 拉伸后斜率 |
+| `Sx` | 100.81 | = 0.1008 em，比 `StrokeEm`(0.09) 粗 |
+| 交叉点比例 | 0.4760 | (yc − top) / H，理论 (b−a)/(2(a+b)) ≈ 0.477 |
+| 残差 | ≤ 0.02 × S | 上下各一条自检行 |
 
-排版要点：
+#### `<` 的几何
 
-- X 用 `ScaleX(1.21)`，缩放原点在它自己的排版原点；P 的原点 = `X.advance × 1.21 + 0.05 × 主字号`。
-- ふ / ろ 用 `ScaleX(0.94)`，缩放原点在各自排版原点；字距按墨迹边缘算。
-- く 是自绘折线：从 X 缩放后的墨迹框推 `W = 宽 − S`、`H = 高 − S`，`Hc = H`、`Wc = W/2`，
-  `w = Wc + S`、`h = Hc + S`；三点 `(S/2+Wc, S/2) → (S/2, h/2) → (S/2+Wc, S/2+Hc)`，
-  `StreamGeometry` + 圆头圆角 `Pen`（粗细 S），不填充、用 `Accent`；垂直中心对齐 X 墨迹中心。
-- 收起：七个字形叠到 `pile = X 原点 + X.advance × 1.21 × 0.33`；く 的顶点从
-  `左边缘 + S/2` 移到 `X 墨迹中心 + 2S×NestGapRatio/cosα`，`tanα = W/H`。
-- 垂直：X 的两条斜线交叉点比墨迹框中心高 0.0234 × 墨迹高（圆角字形不对称）。这里对齐交叉点：
-  臂间隙均匀（实测 50/50、47/47 @1.5x），代价是 く 在 X 框内偏上（48px 留白 0.23 / 1.81 DIP）。
-  试过对齐框中心（留白相等，但下部间隙紧 14%）和折中（各差一半），用户反馈间隙不均更明显，
-  所以优先间隙。
+- `S = 0.09 × 字号`；`dperp = (Sx + S) / 2 + NestGapRatio × S`
+- `d_i = dperp × sqrt(1 + m_i²)`（把中心线水平平移这么多，垂直间隙就正好是 `NestGapRatio × S`）
+- 尖角：`yv = ((a1+d1) − (a2+d2)) / (m2 − m1)`，`xv = a2 + d2 + m2·yv`
+- 上下端：`margin = (1 − ChevronHeightRatio)/2 × H`，`yUp = top + S/2 + margin`，
+  `yLow = bottom − S/2 − margin`，x 由各自的线给出
+- 三点 `(xUp,yUp) → (xv,yv) → (xLow,yLow)`，`Pen` 粗细 S、圆头圆角、不填充
+
+#### 动画
+
+收起态折线**不动**（它本来就嵌在 X 右半边）；展开态整体右移
+`E = (ふ 墨迹右缘 + GapFuKu × 字号) − (折线左缘)`，每帧 `tx = E × (1 − pe)`，垂直不动。
+
+#### 已知代价（非 bug）
+
+两臂右端不齐：48px 下 `|xLow − xUp| = 1.16 DIP`（≈ 0.27S），因为 X 自身就是上窄下宽。
+这是设计要求里的"嵌套同形"，不动它。
+
+#### 验收（渲染实测）
+
+| 字号 | 纵横留白 | 高度比 | 上臂斜率 | 下臂斜率 | 上臂间隙 | 下臂间隙 | 间隙差 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 24 | 3 / 3 px | 0.941 | −0.763 | +0.766 | 0.92S | 0.92S | 0.00S |
+| 48 | 4 / 5 px | 0.933 | −0.767 | +0.763 | 0.94S | 0.92S | 0.02S |
+| 240 | 9 / 9 px | 0.929 | −0.762 | +0.758 | 0.97S | 0.95S | 0.02S |
+
+- 斜率构造值 −0.7613 / +0.7580，像素拟合差 ≤ 0.006；
+- 间隙用阈值 alpha>8 量，抗锯齿会两边各吃掉约 0.5px；补偿 1px 后是 0.98–1.00 S；
+- 高度比 0.93 ± 1px 取整；右端不齐 1.16 DIP ≤ 0.5S。
 
 ### 行为（未变部分）
 
