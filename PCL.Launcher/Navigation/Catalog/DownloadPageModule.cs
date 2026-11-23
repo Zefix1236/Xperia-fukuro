@@ -11,7 +11,7 @@ public sealed class DownloadPageModule : IPageModule
         // FORK: 固件下载入口
         Sub(
             PageIds.Download,
-            SubPageIds.DownloadFirmware,
+            SubPageIds.DownloadXperiFirm,
             "Download.Left.Firmware",
             "lucide/download",
             "firmware",
@@ -192,6 +192,7 @@ public sealed class DownloadPageModule : IPageModule
                     sp,
                     DownloadLoaderKind.LiteLoader))
     ];
+
 
     public IReadOnlyList<PageDescriptor> Pages { get; } =
     [
