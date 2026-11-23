@@ -8,6 +8,15 @@ public sealed class DownloadPageModule : IPageModule
 {
     private static SubPageDescriptor[] DownloadSubPages { get; } =
     [
+        // FORK: 固件下载入口
+        Sub(
+            PageIds.Download,
+            SubPageIds.DownloadFirmware,
+            "Download.Left.Firmware",
+            "lucide/download",
+            "firmware",
+            0,
+            (sp, _) => ActivatorUtilities.CreateInstance<PageFirmwareDownload>(sp)),
         Sub(
             PageIds.Download,
             SubPageIds.DownloadInstall,
@@ -194,9 +203,10 @@ public sealed class DownloadPageModule : IPageModule
             210d,
             SubPageIds.DownloadInstall,
             [
-                new PageGroupDescriptor("minecraft", "", 0),
-                new PageGroupDescriptor("community", "Download.Left.CommunityResources", 1),
-                new PageGroupDescriptor("install", "Download.Left.Installation", 2)
+                new PageGroupDescriptor("firmware", "Download.Left.FirmwareGroup", 0),
+                new PageGroupDescriptor("minecraft", "", 1),
+                new PageGroupDescriptor("community", "Download.Left.CommunityResources", 2),
+                new PageGroupDescriptor("install", "Download.Left.Installation", 3)
             ],
             DownloadSubPages,
             (sp, descriptor) => ActivatorUtilities.CreateInstance<PageDownloadHost>(sp, descriptor))

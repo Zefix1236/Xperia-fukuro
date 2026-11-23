@@ -691,6 +691,26 @@
     <sys:String x:Key="Download.Left.Forge">Forge</sys:String>
     <sys:String x:Key="Download.Left.Hint.Refreshing">正在重新整理……</sys:String>
     <sys:String x:Key="Download.Left.Installation">安裝套件</sys:String>
+    <!-- FORK: 固件下载 -->
+    <sys:String x:Key="Download.Left.Firmware">韌體下載</sys:String>
+    <sys:String x:Key="Download.Left.FirmwareGroup">韌體</sys:String>
+    <sys:String x:Key="Firmware.Page.Title">韌體下載</sys:String>
+    <sys:String x:Key="Firmware.Product">機型</sys:String>
+    <sys:String x:Key="Firmware.Model">型號 / 區域</sys:String>
+    <sys:String x:Key="Firmware.Query">查詢韌體</sys:String>
+    <sys:String x:Key="Firmware.Version">韌體版本</sys:String>
+    <sys:String x:Key="Firmware.Files">韌體檔案</sys:String>
+    <sys:String x:Key="Firmware.Output">儲存到</sys:String>
+    <sys:String x:Key="Firmware.Download">開始下載</sys:String>
+    <sys:String x:Key="Firmware.NoSpc">該型號缺少 SPC，暫不支援</sys:String>
+    <sys:String x:Key="Firmware.SelectHint">選擇機型和型號後查詢韌體</sys:String>
+    <sys:String x:Key="Firmware.Loading">正在查詢 Sony 伺服器…</sys:String>
+    <sys:String x:Key="Firmware.Error">操作失敗：{0}</sys:String>
+    <sys:String x:Key="Firmware.Done">下載完成：{0}</sys:String>
+    <sys:String x:Key="Firmware.Disk">磁碟空間不足：需要 {0} GiB，可用 {1} GiB</sys:String>
+    <sys:String x:Key="Firmware.Android">Android {0}</sys:String>
+    <sys:String x:Key="Firmware.SelectFiles">請至少選擇一個檔案</sys:String>
+    <sys:String x:Key="Firmware.NoVersions">找不到可用韌體</sys:String>
     <sys:String x:Key="Download.Left.LabyMod">LabyMod</sys:String>
     <sys:String x:Key="Download.Left.LegacyFabric">Legacy Fabric</sys:String>
     <sys:String x:Key="Download.Left.LiteLoader">LiteLoader</sys:String>

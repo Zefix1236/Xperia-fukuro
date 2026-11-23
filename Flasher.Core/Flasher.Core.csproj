@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>15.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Flasher.Core</RootNamespace>
+        <AssemblyName>Flasher.Core</AssemblyName>
+        <Description>Sony Xperia 固件查询与下载核心库</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Catalog/Data/devices.sony.json">
+            <LogicalName>Flasher.Core.Catalog.Data.devices.sony.json</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+</Project>
