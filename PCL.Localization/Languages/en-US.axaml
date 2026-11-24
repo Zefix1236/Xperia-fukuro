@@ -755,6 +755,8 @@
     <sys:String x:Key="Firmware.Other">Other versions</sys:String>
     <sys:String x:Key="Firmware.Favorites">Favorites</sys:String>
     <sys:String x:Key="Firmware.Favorites.Empty">Click the heart on the right of a model to pin frequently used models here.</sys:String>
+    <sys:String x:Key="Firmware.Search.Clear">Clear</sys:String>
+    <sys:String x:Key="Firmware.Year.Format">Year: {0}</sys:String>
     <sys:String x:Key="Firmware.Search.Hint">Search model or code</sys:String>
     <sys:String x:Key="Firmware.Year.All">All years</sys:String>
     <sys:String x:Key="Firmware.Model.Count">{0} models</sys:String>

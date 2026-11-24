@@ -16,8 +16,11 @@ namespace PCL.Views.Pages.Download;
 public sealed class PageFirmwareDownload : MyPageRight
 {
     private readonly SonyCatalog _catalog = SonyCatalog.LoadEmbedded();
-    private readonly MyTextBox _searchBox;
-    private readonly MyComboBox _yearBox;
+    private readonly TextBox _searchBox;
+    private readonly Border _searchBorder;
+    private readonly MyIconButton _clearButton;
+    private readonly Button _yearButton;
+    private readonly TextBlock _yearText;
     private readonly MyCard _favoritesCard;
     private readonly StackPanel _favoritesPanel;
     private readonly TextBlock _favoritesEmpty;
@@ -41,40 +44,111 @@ public sealed class PageFirmwareDownload : MyPageRight
             .OrderByDescending(year => year)
             .ToList();
 
-        _searchBox = new MyTextBox
+        _searchBox = new TextBox
         {
-            Height = 32d,
-            HintText = Lang.Text("Firmware.Search.Hint")
+            Watermark = Lang.Text("Firmware.Search.Hint"),
+            FontSize = 13d,
+            Height = 22d,
+            MinHeight = 0d,
+            Padding = new Thickness(0d),
+            BorderThickness = new Thickness(0d),
+            Background = Brushes.Transparent,
+            Foreground = Brush("ColorBrush1", Brushes.Black),
+            VerticalContentAlignment = VerticalAlignment.Center,
+            FocusAdorner = null
         };
-        _yearBox = new MyComboBox
+        _clearButton = new MyIconButton
         {
-            Width = 130d,
-            Height = 32d,
-            Margin = new Thickness(10d, 0d, 0d, 0d)
+            SvgIcon = "lucide/x",
+            Theme = MyIconButton.Themes.Color,
+            Width = 18d,
+            Height = 18d,
+            IsVisible = false,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(4d, 0d, 8d, 0d)
         };
-        var years = new List<string> { Lang.Text("Firmware.Year.All") };
-        years.AddRange(_years.Select(year => year.ToString()));
-        _yearBox.ItemsSource = years;
-        _yearBox.SelectedIndex = 0;
+        ToolTip.SetTip(_clearButton, Lang.Text("Firmware.Search.Clear"));
+        _clearButton.Click += (_, _) =>
+        {
+            _searchBox.Text = "";
+            _searchBox.Focus();
+        };
 
-        var searchContent = new StackPanel
+        _yearText = new TextBlock
         {
-            Margin = new Thickness(20d, 18d, 18d, 16d)
+            Text = FormatYear(),
+            FontSize = 12d,
+            Foreground = Brush("ColorBrush1", Brushes.Black),
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        var yearArrow = new SvgIcon
+        {
+            Icon = "lucide/chevron-right",
+            Width = 12d,
+            Height = 12d,
+            IconBrush = Brush("ColorBrush2", Brushes.Gray),
+            VerticalAlignment = VerticalAlignment.Center,
+            RenderTransform = new RotateTransform(90d),
+            RenderTransformOrigin = new RelativePoint(0.5d, 0.5d, RelativeUnit.Relative)
+        };
+        _yearButton = new Button
+        {
+            Background = Brushes.Transparent,
+            BorderBrush = Brush("ColorBrush6", new SolidColorBrush(Color.Parse("#D5DEEA"))),
+            BorderThickness = new Thickness(1d),
+            CornerRadius = new CornerRadius(6d),
+            Padding = new Thickness(10d, 2d, 10d, 2d),
+            Height = 22d,
+            VerticalAlignment = VerticalAlignment.Center,
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            Content = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Spacing = 4d,
+                Children = { _yearText, yearArrow }
+            }
+        };
+        _yearButton.Flyout = CreateYearFlyout();
+
+        var searchIcon = new SvgIcon
+        {
+            Icon = "lucide/search",
+            Width = 16d,
+            Height = 16d,
+            IconBrush = Brush("ColorBrush2", Brushes.Gray),
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(0d, 0d, 8d, 0d)
         };
         var searchGrid = new Grid
         {
-            ColumnDefinitions = new ColumnDefinitions("*,Auto")
+            ColumnDefinitions = new ColumnDefinitions("Auto,*,Auto,Auto")
         };
+        searchGrid.Children.Add(searchIcon);
+        Grid.SetColumn(_searchBox, 1);
         searchGrid.Children.Add(_searchBox);
-        Grid.SetColumn(_yearBox, 1);
-        searchGrid.Children.Add(_yearBox);
-        searchContent.Children.Add(searchGrid);
+        Grid.SetColumn(_clearButton, 2);
+        searchGrid.Children.Add(_clearButton);
+        Grid.SetColumn(_yearButton, 3);
+        searchGrid.Children.Add(_yearButton);
+
+        _searchBorder = new Border
+        {
+            BorderThickness = new Thickness(1d),
+            BorderBrush = Brushes.Transparent,
+            CornerRadius = new CornerRadius(8d),
+            Padding = new Thickness(14d, 8d, 14d, 8d),
+            Child = searchGrid
+        };
         var searchCard = new MyCard
         {
             Margin = new Thickness(20d, 20d, 20d, 0d),
+            Height = 40d,
+            CornerRadius = new CornerRadius(8d),
             UseAnimation = false
         };
-        searchCard.Children.Add(searchContent);
+        searchCard.Children.Add(_searchBorder);
+        _searchBox.GotFocus += (_, _) => _searchBorder.BorderBrush = FocusBorderBrush();
+        _searchBox.LostFocus += (_, _) => _searchBorder.BorderBrush = Brushes.Transparent;
 
         _favoritesPanel = new StackPanel { Spacing = 2d };
         _favoritesEmpty = new TextBlock
@@ -162,19 +236,52 @@ public sealed class PageFirmwareDownload : MyPageRight
         Child = scroll;
         PanScroll = scroll;
 
-        _searchBox.TextChanged += (_, _) => ApplyFilter();
-        _yearBox.SelectionChanged += (_, _) => OnYearChanged();
+        _searchBox.TextChanged += (_, _) =>
+        {
+            _clearButton.IsVisible = !string.IsNullOrEmpty(_searchBox.Text);
+            ApplyFilter();
+        };
         ApplyFilter();
     }
 
     public event Action<SonyProduct>? ProductSelected;
 
-    private void OnYearChanged()
+    private MenuFlyout CreateYearFlyout()
     {
-        _year = _yearBox.SelectedIndex <= 0
-            ? 0
-            : _years[_yearBox.SelectedIndex - 1];
+        var flyout = new MenuFlyout();
+        var all = new MenuItem { Header = Lang.Text("Firmware.Year.All") };
+        all.Click += (_, _) => SetYear(0);
+        flyout.Items.Add(all);
+        foreach (var year in _years)
+        {
+            var item = new MenuItem { Header = year.ToString() };
+            item.Click += (_, _) => SetYear(year);
+            flyout.Items.Add(item);
+        }
+
+        return flyout;
+    }
+
+    private void SetYear(int year)
+    {
+        _year = year;
+        _yearText.Text = FormatYear();
         ApplyFilter();
+    }
+
+    private string FormatYear()
+    {
+        var value = _year == 0
+            ? Lang.Text("Firmware.Year.All")
+            : _year.ToString();
+        return Lang.Text("Firmware.Year.Format", value);
+    }
+
+    private IBrush FocusBorderBrush()
+    {
+        return Brush("ColorBrush4", Brushes.DodgerBlue) is ISolidColorBrush solid
+            ? new SolidColorBrush(solid.Color) { Opacity = 0.45d }
+            : Brushes.DodgerBlue;
     }
 
     private void ApplyFilter()

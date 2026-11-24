@@ -716,6 +716,8 @@
     <sys:String x:Key="Firmware.Other">其他版本</sys:String>
     <sys:String x:Key="Firmware.Favorites">收藏夾</sys:String>
     <sys:String x:Key="Firmware.Favorites.Empty">點擊機型右側的愛心，常用機型會固定在這裡。</sys:String>
+    <sys:String x:Key="Firmware.Search.Clear">清除</sys:String>
+    <sys:String x:Key="Firmware.Year.Format">年份：{0}</sys:String>
     <sys:String x:Key="Firmware.Search.Hint">搜尋機型或代號</sys:String>
     <sys:String x:Key="Firmware.Year.All">全部年份</sys:String>
     <sys:String x:Key="Firmware.Model.Count">{0} 款</sys:String>
