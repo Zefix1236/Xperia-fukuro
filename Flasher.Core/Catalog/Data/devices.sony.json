@@ -141,7 +141,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2021
     },
     {
       "productId": "92490172-5ffd-44fe-9e8c-0b0aa448c5ce",
@@ -283,7 +284,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2021
     },
     {
       "productId": "d346a60f-2f39-4f7a-b9c3-682518671f21",
@@ -416,7 +418,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2021
     },
     {
       "productId": "ef04596b-e008-4936-8582-376be0ebe7ac",
@@ -546,7 +549,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2022
     },
     {
       "productId": "2e8793e5-004b-45df-88f1-2c8715298545",
@@ -680,7 +684,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2022
     },
     {
       "productId": "b67a8b25-3279-4d38-97c6-b87de3509c22",
@@ -803,7 +808,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2022
     },
     {
       "productId": "d2e6c91c-1b3d-419f-bcb6-02bb299059c3",
@@ -935,7 +941,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2023
     },
     {
       "productId": "e0a5769b-14b1-418b-b770-4f839259c5c6",
@@ -1051,7 +1058,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2023
     },
     {
       "productId": "0085ff4d-fb3a-44c8-a762-8c17df5ebc18",
@@ -1150,7 +1158,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2023
     },
     {
       "productId": "c2cb0a95-7fee-4370-8982-319473d61399",
@@ -1271,7 +1280,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2024
     },
     {
       "productId": "b47ee4ec-d9a9-4728-a8a6-4d6b44649515",
@@ -1387,7 +1397,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2024
     },
     {
       "productId": "0d8e9118-efa9-455a-9620-7d2bf3b7d9a7",
@@ -1506,7 +1517,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2025
     },
     {
       "productId": "bec4c4ed-3fed-40e1-8e2a-8730fdd8c530",
@@ -1622,7 +1634,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2025
     },
     {
       "productId": "27bace69-b013-48e0-8626-a960117ee75a",
@@ -1753,7 +1766,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2026
     },
     {
       "productId": "6d3b412f-76c4-4efc-b991-3342cd221320",
@@ -1849,7 +1863,8 @@
           ],
           "spcRequired": false
         }
-      ]
+      ],
+      "releaseYear": 2026
     }
   ]
 }

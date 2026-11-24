@@ -753,6 +753,17 @@
     <sys:String x:Key="Download.Firmware.Xperia10VIII">Xperia 10 VIII</sys:String>
     <sys:String x:Key="Firmware.Latest">最新版本</sys:String>
     <sys:String x:Key="Firmware.Other">其他版本</sys:String>
+    <sys:String x:Key="Firmware.Favorites">收藏夹</sys:String>
+    <sys:String x:Key="Firmware.Favorites.Empty">点击机型右侧的爱心，常用机型会固定在这里。</sys:String>
+    <sys:String x:Key="Firmware.Search.Hint">搜索机型或代号</sys:String>
+    <sys:String x:Key="Firmware.Year.All">全部年份</sys:String>
+    <sys:String x:Key="Firmware.Model.Count">{0} 款</sys:String>
+    <sys:String x:Key="Firmware.Tag.Latest">最新</sys:String>
+    <sys:String x:Key="Firmware.NoMatch">没有匹配的机型</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.1">旗舰</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.5">紧凑旗舰</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.10">中端</sys:String>
+    <sys:String x:Key="Firmware.Favorite.Tip">收藏 / 取消收藏</sys:String>
     <sys:String x:Key="Firmware.Page.Title">固件下载</sys:String>
     <sys:String x:Key="Firmware.Product">机型</sys:String>
     <sys:String x:Key="Firmware.Model">型号 / 区域</sys:String>

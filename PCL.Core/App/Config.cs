@@ -221,6 +221,13 @@ public static partial class Config
         [ConfigItem<string>("UiMotdFont", "", ConfigSource.Local)] public partial string MotdFont { get; set; }
 
         /// <summary>
+        /// XperiFirm 收藏的机型代号（逗号分隔）。
+        /// </summary>
+        // FORK: 固件下载收藏夹
+        [ConfigItem<string>("UiFirmwareFavorites", "", ConfigSource.Local)]
+        public partial string FirmwareFavorites { get; set; }
+
+        /// <summary>
         /// 详细实例分类。
         /// </summary>
         [ConfigItem<bool>("DetailedInstanceClassification", false, ConfigSource.Local)] public partial bool DetailedInstanceClassification {  get; set; }

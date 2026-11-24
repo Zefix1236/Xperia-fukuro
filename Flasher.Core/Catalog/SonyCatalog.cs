@@ -144,6 +144,9 @@ public sealed class SonyProduct
     [JsonPropertyName("updatePlatformKey")]
     public string? UpdatePlatformKey { get; init; }
 
+    [JsonPropertyName("releaseYear")]
+    public int ReleaseYear { get; init; }
+
     [JsonPropertyName("models")]
     public List<SonyModel> Models { get; init; } = [];
 

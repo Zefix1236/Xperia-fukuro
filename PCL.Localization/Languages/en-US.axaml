@@ -753,6 +753,17 @@
     <sys:String x:Key="Download.Firmware.Xperia10VIII">Xperia 10 VIII</sys:String>
     <sys:String x:Key="Firmware.Latest">Latest version</sys:String>
     <sys:String x:Key="Firmware.Other">Other versions</sys:String>
+    <sys:String x:Key="Firmware.Favorites">Favorites</sys:String>
+    <sys:String x:Key="Firmware.Favorites.Empty">Click the heart on the right of a model to pin frequently used models here.</sys:String>
+    <sys:String x:Key="Firmware.Search.Hint">Search model or code</sys:String>
+    <sys:String x:Key="Firmware.Year.All">All years</sys:String>
+    <sys:String x:Key="Firmware.Model.Count">{0} models</sys:String>
+    <sys:String x:Key="Firmware.Tag.Latest">New</sys:String>
+    <sys:String x:Key="Firmware.NoMatch">No matching models</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.1">Flagship</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.5">Compact flagship</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.10">Mid-range</sys:String>
+    <sys:String x:Key="Firmware.Favorite.Tip">Favorite / unfavorite</sys:String>
     <sys:String x:Key="Firmware.Page.Title">Firmware download</sys:String>
     <sys:String x:Key="Firmware.Product">Device</sys:String>
     <sys:String x:Key="Firmware.Model">Model / Region</sys:String>
