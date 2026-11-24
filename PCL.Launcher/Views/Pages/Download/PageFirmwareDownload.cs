@@ -101,6 +101,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             Height = 22d,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalContentAlignment = HorizontalAlignment.Center,
+            FocusAdorner = null,
             Content = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -133,7 +134,7 @@ public sealed class PageFirmwareDownload : MyPageRight
 
         _searchBorder = new Border
         {
-            BorderThickness = new Thickness(1d),
+            BorderThickness = new Thickness(0d),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(8d),
             Padding = new Thickness(14d, 8d, 14d, 8d),
@@ -147,8 +148,6 @@ public sealed class PageFirmwareDownload : MyPageRight
             UseAnimation = false
         };
         searchCard.Children.Add(_searchBorder);
-        _searchBox.GotFocus += (_, _) => _searchBorder.BorderBrush = FocusBorderBrush();
-        _searchBox.LostFocus += (_, _) => _searchBorder.BorderBrush = Brushes.Transparent;
 
         _favoritesPanel = new StackPanel { Spacing = 2d };
         _favoritesEmpty = new TextBlock
@@ -275,13 +274,6 @@ public sealed class PageFirmwareDownload : MyPageRight
             ? Lang.Text("Firmware.Year.All")
             : _year.ToString();
         return Lang.Text("Firmware.Year.Format", value);
-    }
-
-    private IBrush FocusBorderBrush()
-    {
-        return Brush("ColorBrush4", Brushes.DodgerBlue) is ISolidColorBrush solid
-            ? new SolidColorBrush(solid.Color) { Opacity = 0.45d }
-            : Brushes.DodgerBlue;
     }
 
     private void ApplyFilter()
