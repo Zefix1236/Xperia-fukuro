@@ -52,11 +52,14 @@ public sealed class PageFirmwareDownload : MyPageRight
             MinHeight = 0d,
             Padding = new Thickness(0d),
             BorderThickness = new Thickness(0d),
+            BorderBrush = Brushes.Transparent,
             Background = Brushes.Transparent,
             Foreground = Brush("ColorBrush1", Brushes.Black),
+            CaretBrush = Brush("ColorBrush1", Brushes.Black),
             VerticalContentAlignment = VerticalAlignment.Center,
             FocusAdorner = null
         };
+        _searchBox.Classes.Add("SearchInput");
         _clearButton = new MyIconButton
         {
             SvgIcon = "lucide/x",
@@ -86,7 +89,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             Icon = "lucide/chevron-right",
             Width = 12d,
             Height = 12d,
-            IconBrush = Brush("ColorBrush2", Brushes.Gray),
+            IconBrush = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             RenderTransform = new RotateTransform(90d),
             RenderTransformOrigin = new RelativePoint(0.5d, 0.5d, RelativeUnit.Relative)
@@ -116,7 +119,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             Icon = "lucide/search",
             Width = 16d,
             Height = 16d,
-            IconBrush = Brush("ColorBrush2", Brushes.Gray),
+            IconBrush = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(0d, 0d, 8d, 0d)
         };

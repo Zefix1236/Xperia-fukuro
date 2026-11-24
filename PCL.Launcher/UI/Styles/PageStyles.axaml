@@ -21,6 +21,27 @@
         <Setter Property="TextTrimming"
                 Value="CharacterEllipsis" />
     </Style>
+    <Style Selector="TextBox.SearchInput">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="FocusAdorner"
+                Value="{x:Null}" />
+    </Style>
+    <Style Selector="TextBox.SearchInput /template/ Border#PART_BorderElement">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="BoxShadow"
+                Value="0 0 0 0 #00000000" />
+    </Style>
+
     <Style Selector="Button">
         <Setter Property="FontFamily"
                 Value="{DynamicResource LaunchFontFamily}" />
