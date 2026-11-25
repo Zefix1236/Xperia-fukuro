@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -400,23 +399,7 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private void SetFavoritesTitle(int count)
     {
-        _favoritesCard.Title = string.Empty;
-        var inlines = _favoritesCard.Inlines;
-        inlines.Clear();
-        inlines.Add(
-            new InlineUIContainer
-            {
-                Child = new SvgIcon
-                {
-                    Icon = "lucide/heart-filled",
-                    Width = 14d,
-                    Height = 14d,
-                    Margin = new Thickness(0d, 0d, 4d, 0d),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    IconBrush = Brush("ColorBrushRedLight", Brushes.Red)
-                }
-            });
-        inlines.Add(new Run($" {Lang.Text("Firmware.Favorites")}  {count}"));
+        _favoritesCard.Title = $"{Lang.Text("Firmware.Favorites")}  {count}";
     }
 
     private string BuildSeriesTitle(SeriesCard series, int count)
