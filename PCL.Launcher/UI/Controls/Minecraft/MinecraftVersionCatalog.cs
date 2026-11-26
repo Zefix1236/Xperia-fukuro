@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using PCL.Views.Pages.Download;
 
 // FORK: 版本数据未变化时不重建列表，见 docs/FORK-PATCHES.md
@@ -150,20 +151,14 @@ internal sealed class MinecraftVersionCatalog(
         foreach (var name in installed)
             _installedVersions.Add(name);
 
-        if (_items.Count == 0)
-            return;
-        if (GameDownload.dlClientListLoader.output.Value?["versions"] is not JsonArray versions)
-            return;
-
         try
         {
-            foreach (var node in versions)
+            foreach (var item in host.GetVisualDescendants().OfType<MyListItem>())
             {
-                if (node is not JsonObject version)
+                if (item.Tag is not JsonObject version)
                     continue;
                 var versionId = version["id"]?.ToString();
-                if (string.IsNullOrEmpty(versionId)
-                    || !_items.TryGetValue(versionId, out var item))
+                if (string.IsNullOrEmpty(versionId))
                     continue;
                 DownloadVersionList.ApplyVersionTags(
                     item,
