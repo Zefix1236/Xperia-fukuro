@@ -371,6 +371,7 @@ public sealed class PageFirmwareDownload : MyPageRight
     private void ApplyFilter()
     {
         var filtering = IsFiltering();
+        var searching = !string.IsNullOrWhiteSpace(_searchBox.Text);
         var anySeries = false;
 
         foreach (var series in _series)
@@ -386,7 +387,8 @@ public sealed class PageFirmwareDownload : MyPageRight
             anySeries |= visible.Count > 0;
         }
 
-        var favoriteCount = RebuildFavorites();
+        _favoritesCard.IsVisible = !searching;
+        var favoriteCount = searching ? 0 : RebuildFavorites();
         _noMatch.IsVisible = filtering && !anySeries && favoriteCount == 0;
     }
 
