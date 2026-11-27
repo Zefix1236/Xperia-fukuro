@@ -15,6 +15,9 @@ namespace PCL.Views.Pages.Download;
 public sealed class PageFirmwareDownload : MyPageRight
 {
     private readonly SonyCatalog _catalog = SonyCatalog.LoadEmbedded();
+    private static readonly FontFamily SearchFont = new(
+        "Noto Sans CJK SC, Source Han Sans SC, Microsoft YaHei UI, Segoe UI, PingFang SC, Noto Sans");
+
     private readonly TextBox _searchBox;
     private readonly TextBlock _searchPlaceholder;
     private readonly Border _searchBorder;
@@ -47,7 +50,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         _searchBox = new TextBox
         {
             FontSize = 16d,
-            FontWeight = FontWeight.SemiBold,
+            FontFamily = SearchFont,
+            FontWeight = FontWeight.Bold,
             Height = 38d,
             MinHeight = 0d,
             Padding = new Thickness(0d),
@@ -64,7 +68,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         {
             Text = Lang.Text("Firmware.Search.Hint"),
             FontSize = 16d,
-            FontWeight = FontWeight.SemiBold,
+            FontFamily = SearchFont,
+            FontWeight = FontWeight.Bold,
             Foreground = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             IsHitTestVisible = false
