@@ -1,0 +1,88 @@
+using Flasher.Core.Catalog;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Flasher.Core.Test;
+
+[TestClass]
+public sealed class SonyProductSearchTests
+{
+    private static readonly SonyCatalog Catalog = SonyCatalog.LoadEmbedded();
+
+    [TestMethod]
+    public void NormalizeDropsSeparatorsAndCase()
+    {
+        Assert.AreEqual("pdx245", SonyProductSearch.Normalize("PDX-245"));
+        Assert.AreEqual("xqec44", SonyProductSearch.Normalize("XQ-EC44"));
+        Assert.AreEqual("xperia1iii", SonyProductSearch.Normalize("Xperia 1 III"));
+        Assert.AreEqual("马克3", SonyProductSearch.Normalize("马克 3"));
+    }
+
+    [TestMethod]
+    public void MatchesProductCodeWithOrWithoutSeparator()
+    {
+        var product = Get("PDX-245");
+
+        Assert.IsTrue(SonyProductSearch.Matches(product, "pdx245"));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "pdx 245"));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "PDX-245"));
+    }
+
+    [TestMethod]
+    public void MatchesModelCodeWithOrWithoutSeparator()
+    {
+        var product = Get("PDX-245");
+
+        Assert.IsTrue(SonyProductSearch.Matches(product, "xqec44"));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "XQ-EC44"));
+    }
+
+    [TestMethod]
+    public void MatchesRomanAndArabicGenerationWithoutCrossMatchingSeries()
+    {
+        var oneThree = Get("PDX-215");
+        var tenThree = Get("PDX-213");
+
+        Assert.IsTrue(SonyProductSearch.Matches(oneThree, "xperia 1 3"));
+        Assert.IsFalse(SonyProductSearch.Matches(tenThree, "xperia 1 3"));
+
+        Assert.IsTrue(SonyProductSearch.Matches(tenThree, "xperia 10 3"));
+        Assert.IsFalse(SonyProductSearch.Matches(oneThree, "xperia 10 3"));
+    }
+
+    [TestMethod]
+    public void MatchesMarkAliases()
+    {
+        var oneThree = Get("PDX-215");
+        var tenThree = Get("PDX-213");
+
+        Assert.IsTrue(SonyProductSearch.Matches(oneThree, "mark 3"));
+        Assert.IsTrue(SonyProductSearch.Matches(tenThree, "mark 3"));
+        Assert.IsTrue(SonyProductSearch.Matches(oneThree, "马克3"));
+    }
+
+    [TestMethod]
+    public void MatchesMultipleTermsInOneField()
+    {
+        var product = Get("PDX-245");
+
+        Assert.IsTrue(SonyProductSearch.Matches(product, "xperia 1 vi"));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "1 vi"));
+    }
+
+    [TestMethod]
+    public void YearFilterIsAndCondition()
+    {
+        var product = Get("PDX-215");
+
+        Assert.IsTrue(SonyProductSearch.Matches(product, "1", 2021));
+        Assert.IsFalse(SonyProductSearch.Matches(product, "1", 2022));
+        Assert.IsFalse(SonyProductSearch.Matches(product, "", 2022));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "", 2021));
+    }
+
+    private static SonyProduct Get(string productCode)
+    {
+        return Catalog.FindProduct(productCode)
+            ?? throw new AssertFailedException($"Missing product {productCode}");
+    }
+}

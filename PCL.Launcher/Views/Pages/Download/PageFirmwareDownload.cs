@@ -459,17 +459,7 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private bool Matches(SonyProduct product)
     {
-        if (_year > 0 && product.ReleaseYear != _year)
-            return false;
-
-        var keyword = _searchBox.Text?.Trim();
-        if (string.IsNullOrEmpty(keyword))
-            return true;
-
-        return product.MarketingName.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-            || product.ProductCode.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-            || product.Models.Any(model =>
-                model.ModelName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        return SonyProductSearch.Matches(product, _searchBox.Text, _year);
     }
 
     private bool IsFiltering()
