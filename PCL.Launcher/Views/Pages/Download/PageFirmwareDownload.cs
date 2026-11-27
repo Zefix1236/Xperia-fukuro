@@ -46,8 +46,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         _searchBox = new TextBox
         {
             Watermark = Lang.Text("Firmware.Search.Hint"),
-            FontSize = 13d,
-            Height = 22d,
+            FontSize = 14d,
+            Height = 30d,
             MinHeight = 0d,
             Padding = new Thickness(0d),
             BorderThickness = new Thickness(0d),
@@ -63,8 +63,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         {
             SvgIcon = "lucide/x",
             Theme = MyIconButton.Themes.Color,
-            Width = 18d,
-            Height = 18d,
+            Width = 20d,
+            Height = 20d,
             IsVisible = false,
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(4d, 0d, 8d, 0d)
@@ -86,8 +86,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         var yearArrow = new SvgIcon
         {
             Icon = "lucide/chevron-right",
-            Width = 12d,
-            Height = 12d,
+            Width = 14d,
+            Height = 14d,
             IconBrush = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             RenderTransform = new RotateTransform(90d),
@@ -99,8 +99,8 @@ public sealed class PageFirmwareDownload : MyPageRight
             BorderBrush = Brush("ColorBrush6", new SolidColorBrush(Color.Parse("#D5DEEA"))),
             BorderThickness = new Thickness(1d),
             CornerRadius = new CornerRadius(6d),
-            Padding = new Thickness(10d, 2d, 10d, 2d),
-            Height = 22d,
+            Padding = new Thickness(10d, 4d, 10d, 4d),
+            Height = 26d,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalContentAlignment = HorizontalAlignment.Center,
             FocusAdorner = null,
@@ -116,8 +116,8 @@ public sealed class PageFirmwareDownload : MyPageRight
         var searchIcon = new SvgIcon
         {
             Icon = "lucide/search",
-            Width = 16d,
-            Height = 16d,
+            Width = 18d,
+            Height = 18d,
             IconBrush = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(0d, 0d, 8d, 0d)
@@ -139,13 +139,13 @@ public sealed class PageFirmwareDownload : MyPageRight
             BorderThickness = new Thickness(0d),
             BorderBrush = Brushes.Transparent,
             CornerRadius = new CornerRadius(8d),
-            Padding = new Thickness(14d, 8d, 14d, 8d),
+            Padding = new Thickness(14d, 9d, 14d, 9d),
             Child = searchGrid
         };
         var searchCard = new MyCard
         {
             Margin = new Thickness(20d, 20d, 20d, 0d),
-            Height = 40d,
+            Height = 48d,
             CornerRadius = new CornerRadius(8d),
             UseAnimation = false
         };
