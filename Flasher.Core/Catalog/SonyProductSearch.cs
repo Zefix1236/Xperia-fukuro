@@ -18,8 +18,15 @@ public static class SonyProductSearch
         {
             if (terms.Count == 1)
             {
-                if (field.Compact.Contains(terms[0], StringComparison.Ordinal))
+                if (IsAsciiDigits(terms[0]))
+                {
+                    if (field.Tokens.Contains(terms[0], StringComparer.Ordinal))
+                        return true;
+                }
+                else if (field.Compact.Contains(terms[0], StringComparison.Ordinal))
+                {
                     return true;
+                }
             }
             else if (terms.All(term => field.Tokens.Contains(term, StringComparer.Ordinal)))
             {
@@ -81,6 +88,7 @@ public static class SonyProductSearch
         var series = product.Series;
         yield return CreateField($"Xperia {series} {generation}");
         yield return CreateField($"{series} {generation}");
+        yield return CreateField($"{series}{generation}");
         yield return CreateField($"Xperia {series} Mark {generation}");
         yield return CreateField($"{series} Mark {generation}");
         yield return CreateField($"Mark {generation}");
@@ -118,6 +126,11 @@ public static class SonyProductSearch
             tokens.Add(token.ToString());
             token.Clear();
         }
+    }
+
+    private static bool IsAsciiDigits(string value)
+    {
+        return value.Length > 0 && value.All(ch => ch is >= '0' and <= '9');
     }
 
     private static bool IsSeparator(char ch)

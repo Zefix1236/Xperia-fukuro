@@ -61,6 +61,22 @@ public sealed class SonyProductSearchTests
     }
 
     [TestMethod]
+    public void NumericShorthandMatchesOnlyItsSeriesAndGeneration()
+    {
+        var matches = Catalog.Products
+            .Where(product => SonyProductSearch.Matches(product, "15"))
+            .Select(product => product.ProductCode)
+            .ToList();
+        CollectionAssert.AreEqual(new[] { "PDX-234" }, matches);
+
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-234"), "1 5"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-215"), "215"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-215"), "15"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-256"), "sog15"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-256"), "15"));
+    }
+
+    [TestMethod]
     public void MatchesMultipleTermsInOneField()
     {
         var product = Get("PDX-245");
