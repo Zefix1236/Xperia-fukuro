@@ -7,7 +7,7 @@
 ## 已完成
 
 - 确认协议：`match/v2` → `software-service/gen2` → `/api/file/{contentId}` → `/filestorage/..._partN`。
-- 确认不需要反编译 XperiFirm：
+- 协议来源是对 XperiFirm 5.8.1 的逆向分析（运行日志、mitmproxy 抓包、9 份 XML 响应）；此前写成“不需要反编译”是错误结论，现已删除：
   - 设备 ID 来自公开的 `https://app.swup.update.sony.net/ess-distribution/public/api/product/v2`；
   - SPC 来自 XDA 社区表（post-90753534）；
   - match 不带 SPC 会返回 `SPC_UNKNOWN`，带 SPC 正常。
