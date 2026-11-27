@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Flasher.Core.Catalog;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
@@ -30,6 +33,7 @@ public sealed class PageFirmwareDownload : MyPageRight
     private readonly HashSet<string> _favorites = [];
     private readonly HashSet<string> _latestCodes = [];
     private readonly List<int> _years;
+    private TopLevel? _topLevel;
     private int _year;
 
     public PageFirmwareDownload()
@@ -257,6 +261,81 @@ public sealed class PageFirmwareDownload : MyPageRight
     }
 
     public event Action<SonyProduct>? ProductSelected;
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        _topLevel = TopLevel.GetTopLevel(this);
+        _topLevel?.AddHandler(
+            InputElement.KeyDownEvent,
+            OnPageKeyDown,
+            RoutingStrategies.Tunnel);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _topLevel?.RemoveHandler(InputElement.KeyDownEvent, OnPageKeyDown);
+        _topLevel = null;
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnPageKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (!IsEffectivelyVisible || e.Handled)
+            return;
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control)
+            || e.KeyModifiers.HasFlag(KeyModifiers.Alt)
+            || e.KeyModifiers.HasFlag(KeyModifiers.Meta))
+            return;
+
+        var focused = _topLevel?.FocusManager?.GetFocusedElement();
+        if (focused is TextBox)
+            return;
+
+        var character = KeyToCharacter(e.Key, e.KeyModifiers.HasFlag(KeyModifiers.Shift));
+        if (!character.HasValue)
+            return;
+
+        _searchBox.Focus();
+        _searchBox.Text = (_searchBox.Text ?? string.Empty) + character.Value;
+        _searchBox.CaretIndex = _searchBox.Text.Length;
+        e.Handled = true;
+    }
+
+    private static char? KeyToCharacter(Key key, bool shift)
+    {
+        var code = (int)key;
+        if (code >= (int)Key.A && code <= (int)Key.Z)
+        {
+            var letter = (char)('a' + code - (int)Key.A);
+            return shift ? char.ToUpperInvariant(letter) : letter;
+        }
+
+        if (code >= (int)Key.D0 && code <= (int)Key.D9)
+        {
+            var index = code - (int)Key.D0;
+            return shift ? ")!@#$%^&*("[index] : (char)('0' + index);
+        }
+
+        if (code >= (int)Key.NumPad0 && code <= (int)Key.NumPad9)
+            return (char)('0' + code - (int)Key.NumPad0);
+
+        return key switch
+        {
+            Key.OemMinus => shift ? '_' : '-',
+            Key.OemPlus => shift ? '+' : '=',
+            Key.OemComma => shift ? '<' : ',',
+            Key.OemPeriod => shift ? '>' : '.',
+            Key.OemQuestion => shift ? '?' : '/',
+            Key.OemSemicolon => shift ? ':' : ';',
+            Key.OemQuotes => shift ? '"' : '\'',
+            Key.OemOpenBrackets => shift ? '{' : '[',
+            Key.OemCloseBrackets => shift ? '}' : ']',
+            Key.OemPipe => shift ? '|' : '\\',
+            Key.OemTilde => shift ? '~' : '`',
+            _ => null
+        };
+    }
 
     private MenuFlyout CreateYearFlyout()
     {
