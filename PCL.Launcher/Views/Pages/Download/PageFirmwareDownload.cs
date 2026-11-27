@@ -47,6 +47,7 @@ public sealed class PageFirmwareDownload : MyPageRight
         _searchBox = new TextBox
         {
             FontSize = 16d,
+            FontWeight = FontWeight.Medium,
             Height = 38d,
             MinHeight = 0d,
             Padding = new Thickness(0d),
@@ -63,6 +64,7 @@ public sealed class PageFirmwareDownload : MyPageRight
         {
             Text = Lang.Text("Firmware.Search.Hint"),
             FontSize = 16d,
+            FontWeight = FontWeight.Medium,
             Foreground = Brush("ColorBrushGray4", Brushes.Gray),
             VerticalAlignment = VerticalAlignment.Center,
             IsHitTestVisible = false
