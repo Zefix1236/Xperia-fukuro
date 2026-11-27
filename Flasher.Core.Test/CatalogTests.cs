@@ -11,8 +11,8 @@ public sealed class CatalogTests
     {
         var catalog = SonyCatalog.LoadEmbedded();
 
-        Assert.AreEqual(15, catalog.Products.Count);
-        Assert.AreEqual(93, catalog.Products.Sum(product => product.Models.Count));
+        Assert.AreEqual(21, catalog.Products.Count);
+        Assert.AreEqual(131, catalog.Products.Sum(product => product.Models.Count));
         Assert.AreEqual(89, catalog.EnumerateModels().Count(pair => pair.Model.HasSpc));
 
         var xperia1Vi = catalog.FindProduct("PDX-245");

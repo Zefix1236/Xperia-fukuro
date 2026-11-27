@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-23",
+  "generatedAt": "2026-11-28",
   "sources": [
     {
       "name": "Sony ESS product/v2",
       "url": "https://app.swup.update.sony.net/ess-distribution/public/api/product/v2",
-      "fetchedAt": "2026-11-23",
+      "fetchedAt": "2026-11-28",
       "note": "产品、型号、HW 变体、TAC；不含 SPC"
     },
     {
@@ -18,11 +18,573 @@
   ],
   "products": [
     {
+      "productId": "1672b129-0c20-4216-b9c7-91a30e0e6bbe",
+      "productCode": "Bahamut",
+      "marketingName": "Xperia 5",
+      "series": "5",
+      "generation": "I",
+      "releaseYear": 2019,
+      "updatePlatformKey": "KUMANO2",
+      "models": [
+        {
+          "modelId": "fe93b4b9-6ff3-4b59-8e6a-6c16f80bd410",
+          "modelName": "901SO",
+          "hwVariantId": "14c5ed66-6ccb-483a-8dbb-934b25d96957",
+          "eos": false,
+          "tacs": [
+            "35766310"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "9b4d4078-7ca4-46bf-9083-208615dc7306",
+          "modelName": "J8210",
+          "hwVariantId": "6bf13c53-b780-4b02-a0ad-c1fce8e059da",
+          "eos": false,
+          "tacs": [
+            "35781810"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "2ddf259d-a329-41fc-af6e-c133471835f7",
+          "modelName": "J8270",
+          "hwVariantId": "085088ec-5747-4fd3-905b-19daa5ffe718",
+          "eos": false,
+          "tacs": [
+            "35782510"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "0083d725-fcc7-4044-bcda-59911e21d897",
+          "modelName": "J9210",
+          "hwVariantId": "0d938400-914c-4c22-811c-059d19a58d59",
+          "eos": false,
+          "tacs": [
+            "35781910"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "d83bb002-0192-4fef-a89b-225f624102c5",
+          "modelName": "J9260",
+          "hwVariantId": "40a89782-046e-4844-9c61-cf16c0ed76cf",
+          "eos": false,
+          "tacs": [
+            "35884510"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "82f9f674-a447-446c-a764-64f5b8a4d01a",
+          "modelName": "SO-01M",
+          "hwVariantId": "5a62eafd-4257-45d7-bb38-bd96f8e55254",
+          "eos": false,
+          "tacs": [
+            "35594710"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "daf6154e-cf46-4f04-aa14-3f86856fbb95",
+          "modelName": "SOV41",
+          "hwVariantId": "23b87b90-3c45-4084-b543-bf730d38232a",
+          "eos": false,
+          "tacs": [
+            "35766210"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
+      "productId": "6229ba51-fdfe-4b29-af36-519a6ecbfadf",
+      "productCode": "Griffin",
+      "marketingName": "Xperia 1",
+      "series": "1",
+      "generation": "I",
+      "releaseYear": 2019,
+      "updatePlatformKey": "KUMANO",
+      "models": [
+        {
+          "modelId": "4a5dfc13-628a-4aa1-8f44-e48174ac8eee",
+          "modelName": "802SO",
+          "hwVariantId": "465e4612-58a1-49c1-b5d7-b77f7ef46e27",
+          "eos": false,
+          "tacs": [
+            "35512710"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "888df180-e60a-4588-9064-bee99818618e",
+          "modelName": "J8110",
+          "hwVariantId": "81ecbdd2-79dc-4bf6-a4a6-4b34a2320396",
+          "eos": false,
+          "tacs": [
+            "35495010"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "1b11ca63-16e4-466f-ae76-de0717cf0d11",
+          "modelName": "J8170",
+          "hwVariantId": "81ecbdd2-79dc-4bf6-a4a6-4b34a2320396",
+          "eos": false,
+          "tacs": [
+            "35495010"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "208ff0d3-a03f-4c76-91b3-f2c82418f498",
+          "modelName": "J9110",
+          "hwVariantId": "75160fab-ea26-4374-8e9c-d7762eeb9958",
+          "eos": false,
+          "tacs": [
+            "35498510"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "15122624-d037-4879-bb03-0daee59436bb",
+          "modelName": "J9150",
+          "hwVariantId": "85028cee-f3dd-4f39-ba3d-48d77019c554",
+          "eos": false,
+          "tacs": [
+            "35967210"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "d2781be5-a949-4879-8cf4-4abe22dcc810",
+          "modelName": "J9180",
+          "hwVariantId": "4a087e01-2ba8-42de-b01d-f5b9b34201bf",
+          "eos": false,
+          "tacs": [
+            "35948310"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "c6b71fa0-18fc-4dc5-b08d-8576e793a3af",
+          "modelName": "SO-03L",
+          "hwVariantId": "17be9e57-10a0-4ace-bbd6-031893c7fc56",
+          "eos": false,
+          "tacs": [
+            "35293910"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "36665530-2caa-4cb0-a6f9-51dd7e6a2fe2",
+          "modelName": "SOV40",
+          "hwVariantId": "18409aa1-0416-447c-b07f-6bc91a06b3b5",
+          "eos": false,
+          "tacs": [
+            "35510610"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
+      "productId": "aca0b46c-5e24-4918-90c0-4baba13bee6f",
+      "productCode": "Kirin",
+      "marketingName": "Xperia 10",
+      "series": "10",
+      "generation": "I",
+      "releaseYear": 2019,
+      "updatePlatformKey": "GANGES",
+      "models": [
+        {
+          "modelId": "817794e9-adfb-46d1-80cd-22f5cc65b51b",
+          "modelName": "I3113",
+          "hwVariantId": "4ad2e8af-328d-4fa5-b5ba-4798820687a5",
+          "eos": false,
+          "tacs": [
+            "35202810"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "db25a15c-c0b2-43f2-a1dd-687d42b44b20",
+          "modelName": "I3123",
+          "hwVariantId": "4b61bb86-1430-499f-9717-37f0a90872f0",
+          "eos": false,
+          "tacs": [
+            "35203010"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "fe2415d1-c0fa-4b17-ade3-d3d80597d2f6",
+          "modelName": "I4113",
+          "hwVariantId": "1ce91e97-5b1a-47df-ba3c-f22be826006b",
+          "eos": false,
+          "tacs": [
+            "35202910"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "57d6847a-3d18-40fc-a088-ff616e005cd8",
+          "modelName": "I4193",
+          "hwVariantId": "024e82d3-94e8-4d54-9f47-1aa69ade0289",
+          "eos": false,
+          "tacs": [
+            "35209110"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
+      "productId": "9f31fc84-849a-48d8-808e-35eb9ccf633d",
+      "productCode": "PDX-201",
+      "marketingName": "Xperia 10 II",
+      "series": "10",
+      "generation": "II",
+      "releaseYear": 2020,
+      "updatePlatformKey": "SEINE",
+      "models": [
+        {
+          "modelId": "02d19a8e-47db-4b6f-98de-381299c43b33",
+          "modelName": "A001SO",
+          "hwVariantId": "b6e6552c-6f01-467e-9f95-e3d721446668",
+          "eos": false,
+          "tacs": [
+            "35364711"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "f8b57722-4ed5-4a4b-87b0-cf6483e4dfa2",
+          "modelName": "SO-41A",
+          "hwVariantId": "951a0890-00fe-4cf7-bd91-d3e29fc36c5b",
+          "eos": false,
+          "tacs": [
+            "35199711"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "0c15a12a-c4d4-425b-b5aa-b31bd333b286",
+          "modelName": "SOV43",
+          "hwVariantId": "52e06514-f656-4f66-8e9f-0b332b7c7f89",
+          "eos": false,
+          "tacs": [
+            "35549511"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "b4eb6a16-3b06-449a-a895-e1289d1d3486",
+          "modelName": "XQ-AU42",
+          "hwVariantId": "d4126dae-3324-4e03-b49f-270092f6de4d",
+          "eos": false,
+          "tacs": [
+            "35544911"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "f94c3c34-fd5d-46f7-ad84-e200e7cd36ff",
+          "modelName": "XQ-AU51",
+          "hwVariantId": "61f7cd84-2f6b-4637-881d-025af9d67015",
+          "eos": false,
+          "tacs": [
+            "35494911"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "af6adc1e-550e-4004-92cf-9ea30a32f883",
+          "modelName": "XQ-AU52",
+          "hwVariantId": "9e7ce17d-e7e9-41e4-a3b7-b0015ae70dc7",
+          "eos": false,
+          "tacs": [
+            "35506911"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
+      "productId": "4eeb10b3-26db-44ce-abd6-e0ed7d86bf5f",
+      "productCode": "PDX-203",
+      "marketingName": "Xperia 1 II",
+      "series": "1",
+      "generation": "II",
+      "releaseYear": 2020,
+      "updatePlatformKey": "EDO",
+      "models": [
+        {
+          "modelId": "1ef8fd52-44db-476e-8219-f2135a74cb79",
+          "modelName": "SO-51A",
+          "hwVariantId": "36c39136-dbe4-44c8-bc62-2d0dd5b6ff7a",
+          "eos": false,
+          "tacs": [
+            "35071973",
+            "35955510"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "e8ed9b8c-7389-4e6b-a013-700210e882d3",
+          "modelName": "SOG01",
+          "hwVariantId": "715a2fa1-1ea0-4820-8515-95982ed96cf2",
+          "eos": false,
+          "tacs": [
+            "35400411"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "d0e7f9b4-a796-4f8a-a38a-836f59e4d356",
+          "modelName": "XQ-AT42",
+          "hwVariantId": "6162003c-ac8b-450f-9f17-df24165752d0",
+          "eos": false,
+          "tacs": [
+            "35129005"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "fac483f1-77d8-4bfb-8fd4-cc62db675c9c",
+          "modelName": "XQ-AT51",
+          "hwVariantId": "a52bb505-513f-4e43-8929-8cac821934fe",
+          "eos": false,
+          "tacs": [
+            "35254911"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "fc168763-0787-488c-ae43-ca60b0d8cb20",
+          "modelName": "XQ-AT52",
+          "hwVariantId": "b7ead531-5b6a-4bae-ab3a-e2ca385a7e5e",
+          "eos": false,
+          "tacs": [
+            "35353811"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "54ccaf2b-2a66-4bc3-b1f6-e2917d952566",
+          "modelName": "XQ-AT72",
+          "hwVariantId": "15907dfe-9e5e-4910-aec6-9ea2aab8f5a4",
+          "eos": false,
+          "tacs": [
+            "35111809"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
+      "productId": "f6155e17-cdea-47fe-9aea-4836aa987ffd",
+      "productCode": "PDX-206",
+      "marketingName": "Xperia 5 II",
+      "series": "5",
+      "generation": "II",
+      "releaseYear": 2020,
+      "updatePlatformKey": "EDO2",
+      "models": [
+        {
+          "modelId": "111eeb16-5b10-44d3-910a-ecf9bd13c340",
+          "modelName": "A002SO",
+          "hwVariantId": "ca93f21b-9e5d-4516-921e-d750740f2d8f",
+          "eos": false,
+          "tacs": [
+            "35141335"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "d5612d86-1df1-4c77-a898-5fef998e3885",
+          "modelName": "SO-52A",
+          "hwVariantId": "2770e57a-4a42-42f2-a183-dee9f8b183bb",
+          "eos": false,
+          "tacs": [
+            "35574811"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "04270e1a-62cf-4fc0-8b41-4f4461828283",
+          "modelName": "SOG02",
+          "hwVariantId": "f926b100-971d-43f8-9fe4-5f3dac1231b5",
+          "eos": false,
+          "tacs": [
+            "35376696"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "cc775c46-e26d-4de5-a0f6-087fcaac7f10",
+          "modelName": "XQ-AS42",
+          "hwVariantId": "27b7035e-5eca-46af-b7d4-23a513387033",
+          "eos": false,
+          "tacs": [
+            "35460077"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "708fca56-9bf4-4faa-b4da-674a00a20571",
+          "modelName": "XQ-AS52",
+          "hwVariantId": "0620e4a1-a086-4998-a3df-1941f7956854",
+          "eos": false,
+          "tacs": [
+            "35306123"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "5839cb90-b1be-45da-92cf-6bdbe4eebafb",
+          "modelName": "XQ-AS62",
+          "hwVariantId": "08b045db-62df-4f37-b2d1-8aaa3257c245",
+          "eos": false,
+          "tacs": [
+            "35500230"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        },
+        {
+          "modelId": "cff00c83-b997-4752-b937-87e35ac24314",
+          "modelName": "XQ-AS72",
+          "hwVariantId": "f158a313-5613-469c-aebf-f18fd06d31f4",
+          "eos": false,
+          "tacs": [
+            "35119115"
+          ],
+          "aliases": "",
+          "customisationName": null,
+          "spcs": [],
+          "spcRequired": true
+        }
+      ]
+    },
+    {
       "productId": "a4695c79-c54a-4ecf-9a90-5333a1855931",
       "productCode": "PDX-213",
       "marketingName": "Xperia 10 III",
       "series": "10",
       "generation": "III",
+      "releaseYear": 2021,
       "updatePlatformKey": "LENA",
       "models": [
         {
@@ -141,8 +703,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2021
+      ]
     },
     {
       "productId": "92490172-5ffd-44fe-9e8c-0b0aa448c5ce",
@@ -150,6 +711,7 @@
       "marketingName": "Xperia 5 III",
       "series": "5",
       "generation": "III",
+      "releaseYear": 2021,
       "updatePlatformKey": "SAGAMI",
       "models": [
         {
@@ -284,8 +846,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2021
+      ]
     },
     {
       "productId": "d346a60f-2f39-4f7a-b9c3-682518671f21",
@@ -293,6 +854,7 @@
       "marketingName": "Xperia 1 III",
       "series": "1",
       "generation": "III",
+      "releaseYear": 2021,
       "updatePlatformKey": "SAGAMI",
       "models": [
         {
@@ -418,8 +980,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2021
+      ]
     },
     {
       "productId": "ef04596b-e008-4936-8582-376be0ebe7ac",
@@ -427,6 +988,7 @@
       "marketingName": "Xperia 1 IV",
       "series": "1",
       "generation": "IV",
+      "releaseYear": 2022,
       "updatePlatformKey": "NAGARA",
       "models": [
         {
@@ -549,8 +1111,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2022
+      ]
     },
     {
       "productId": "2e8793e5-004b-45df-88f1-2c8715298545",
@@ -558,6 +1119,7 @@
       "marketingName": "Xperia 5 IV",
       "series": "5",
       "generation": "IV",
+      "releaseYear": 2022,
       "updatePlatformKey": "NAGARA",
       "models": [
         {
@@ -684,8 +1246,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2022
+      ]
     },
     {
       "productId": "b67a8b25-3279-4d38-97c6-b87de3509c22",
@@ -693,6 +1254,7 @@
       "marketingName": "Xperia 10 IV",
       "series": "10",
       "generation": "IV",
+      "releaseYear": 2022,
       "updatePlatformKey": "MURRAY",
       "models": [
         {
@@ -808,8 +1370,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2022
+      ]
     },
     {
       "productId": "d2e6c91c-1b3d-419f-bcb6-02bb299059c3",
@@ -817,6 +1378,7 @@
       "marketingName": "Xperia 1 V",
       "series": "1",
       "generation": "V",
+      "releaseYear": 2023,
       "updatePlatformKey": "YODO",
       "models": [
         {
@@ -941,8 +1503,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2023
+      ]
     },
     {
       "productId": "e0a5769b-14b1-418b-b770-4f839259c5c6",
@@ -950,6 +1511,7 @@
       "marketingName": "Xperia 10 V",
       "series": "10",
       "generation": "V",
+      "releaseYear": 2023,
       "updatePlatformKey": "ZAMBEZI",
       "models": [
         {
@@ -1058,8 +1620,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2023
+      ]
     },
     {
       "productId": "0085ff4d-fb3a-44c8-a762-8c17df5ebc18",
@@ -1067,6 +1628,7 @@
       "marketingName": "Xperia 5 V",
       "series": "5",
       "generation": "V",
+      "releaseYear": 2023,
       "updatePlatformKey": "YODO",
       "models": [
         {
@@ -1158,8 +1720,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2023
+      ]
     },
     {
       "productId": "c2cb0a95-7fee-4370-8982-319473d61399",
@@ -1167,6 +1728,7 @@
       "marketingName": "Xperia 1 VI",
       "series": "1",
       "generation": "VI",
+      "releaseYear": 2024,
       "updatePlatformKey": "ASAHI",
       "models": [
         {
@@ -1280,8 +1842,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2024
+      ]
     },
     {
       "productId": "b47ee4ec-d9a9-4728-a8a6-4d6b44649515",
@@ -1289,6 +1850,7 @@
       "marketingName": "Xperia 10 VI",
       "series": "10",
       "generation": "VI",
+      "releaseYear": 2024,
       "updatePlatformKey": "COLUMBIA",
       "models": [
         {
@@ -1397,8 +1959,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2024
+      ]
     },
     {
       "productId": "0d8e9118-efa9-455a-9620-7d2bf3b7d9a7",
@@ -1406,6 +1967,7 @@
       "marketingName": "Xperia 1 VII",
       "series": "1",
       "generation": "VII",
+      "releaseYear": 2025,
       "updatePlatformKey": "SHIMANTO",
       "models": [
         {
@@ -1517,8 +2079,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2025
+      ]
     },
     {
       "productId": "bec4c4ed-3fed-40e1-8e2a-8730fdd8c530",
@@ -1526,6 +2087,7 @@
       "marketingName": "Xperia 10 VII",
       "series": "10",
       "generation": "VII",
+      "releaseYear": 2025,
       "updatePlatformKey": "ELBE",
       "models": [
         {
@@ -1634,8 +2196,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2025
+      ]
     },
     {
       "productId": "27bace69-b013-48e0-8626-a960117ee75a",
@@ -1643,6 +2204,7 @@
       "marketingName": "Xperia 1 VIII",
       "series": "1",
       "generation": "VIII",
+      "releaseYear": 2026,
       "updatePlatformKey": "CHIKUGO",
       "models": [
         {
@@ -1766,8 +2328,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2026
+      ]
     },
     {
       "productId": "6d3b412f-76c4-4efc-b991-3342cd221320",
@@ -1775,6 +2336,7 @@
       "marketingName": "Xperia 10 VIII",
       "series": "10",
       "generation": "VIII",
+      "releaseYear": 2026,
       "updatePlatformKey": "ELBE2",
       "models": [
         {
@@ -1863,8 +2425,7 @@
           ],
           "spcRequired": false
         }
-      ],
-      "releaseYear": 2026
+      ]
     }
   ]
 }

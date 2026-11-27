@@ -198,15 +198,17 @@ public sealed class PageFirmwareDownload : MyPageRight
         content.Children.Add(searchCard);
         content.Children.Add(_favoritesCard);
 
-        foreach (var (series, titleKey, descriptionKey) in new[]
-                 {
-                     ("1", "Download.Firmware.Series1", "Firmware.Series.Description.1"),
-                     ("5", "Download.Firmware.Series5", "Firmware.Series.Description.5"),
-                     ("10", "Download.Firmware.Series10", "Firmware.Series.Description.10")
-                 })
+        var seriesGroups = _catalog.Products
+            .GroupBy(product => product.Series)
+            .OrderBy(group => SeriesOrder(group.Key))
+            .ThenBy(group => group.Key, StringComparer.Ordinal)
+            .ToList();
+        foreach (var group in seriesGroups)
         {
-            var products = _catalog.Products
-                .Where(product => string.Equals(product.Series, series, StringComparison.Ordinal))
+            var series = group.Key;
+            var titleKey = $"Download.Firmware.Series{series}";
+            var descriptionKey = $"Firmware.Series.Description.{series}";
+            var products = group
                 .OrderBy(product => product.ReleaseYear)
                 .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
                 .ToList();
