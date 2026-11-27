@@ -288,6 +288,23 @@ public sealed class PageFirmwareDownload : MyPageRight
             || e.KeyModifiers.HasFlag(KeyModifiers.Meta))
             return;
 
+        if (e.Key == Key.Escape)
+        {
+            if (!string.IsNullOrEmpty(_searchBox.Text))
+            {
+                _searchBox.Text = string.Empty;
+                _topLevel?.FocusManager?.Focus(null);
+                e.Handled = true;
+            }
+            else if (_searchBox.IsFocused)
+            {
+                _topLevel?.FocusManager?.Focus(null);
+                e.Handled = true;
+            }
+
+            return;
+        }
+
         var focused = _topLevel?.FocusManager?.GetFocusedElement();
         if (focused is TextBox)
             return;
