@@ -33,6 +33,8 @@ public sealed class PageFirmwareDownload : MyPageRight
     private readonly HashSet<string> _favorites = [];
     private readonly HashSet<string> _latestCodes = [];
     private readonly List<int> _years;
+    private MyScrollViewer? _listScroll;
+    private FirmwareDownloadDetailView? _detailView;
     private TopLevel? _topLevel;
     private int _year;
 
@@ -248,6 +250,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
             Content = content
         };
+        _listScroll = scroll;
         Child = scroll;
         PanScroll = scroll;
 
@@ -472,8 +475,26 @@ public sealed class PageFirmwareDownload : MyPageRight
     private void OpenProduct(SonyProduct product)
     {
         ProductSelected?.Invoke(product);
-        LauncherCommon.Log($"XperiFirm 选择机型：{product.MarketingName} - {product.ProductCode}");
-        // TODO: 二级页面完成后在这里跳转。
+        _detailView = new FirmwareDownloadDetailView(product, ShowList);
+        Child = _detailView;
+        PanScroll = _detailView.Scroll;
+    }
+
+    private void ShowList()
+    {
+        _detailView?.Cancel();
+        _detailView = null;
+        if (_listScroll is null)
+            return;
+        Child = _listScroll;
+        PanScroll = _listScroll;
+    }
+
+    public override void OnNavigatedFrom()
+    {
+        _detailView?.Cancel();
+        _detailView = null;
+        base.OnNavigatedFrom();
     }
 
     private bool Matches(SonyProduct product)
