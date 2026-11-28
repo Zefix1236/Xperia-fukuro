@@ -37,6 +37,20 @@ public sealed class SonyProductSearchTests
     }
 
     [TestMethod]
+    public void BareSeriesNumberMatchesOnlyBaseModel()
+    {
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Griffin"), "1"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-234"), "1"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-213"), "1"));
+
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Bahamut"), "5"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-237"), "5"));
+
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Kirin"), "10"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-235"), "10"));
+    }
+
+    [TestMethod]
     public void MatchesRomanAndArabicGenerationWithoutCrossMatchingSeries()
     {
         var oneThree = Get("PDX-215");
@@ -111,8 +125,8 @@ public sealed class SonyProductSearchTests
     {
         var product = Get("PDX-215");
 
-        Assert.IsTrue(SonyProductSearch.Matches(product, "1", 2021));
-        Assert.IsFalse(SonyProductSearch.Matches(product, "1", 2022));
+        Assert.IsTrue(SonyProductSearch.Matches(product, "1iii", 2021));
+        Assert.IsFalse(SonyProductSearch.Matches(product, "1iii", 2022));
         Assert.IsFalse(SonyProductSearch.Matches(product, "", 2022));
         Assert.IsTrue(SonyProductSearch.Matches(product, "", 2021));
     }

@@ -15,6 +15,12 @@ public static class SonyProductSearch
         if (terms.Count == 0)
             return true;
 
+        if (terms.Count == 1 && IsBaseSeriesNumber(terms[0]))
+            return string.Equals(
+                Normalize(product.MarketingName),
+                $"xperia{terms[0]}",
+                StringComparison.Ordinal);
+
         foreach (var field in EnumerateFields(product))
         {
             if (terms.Count == 1)
@@ -129,6 +135,11 @@ public static class SonyProductSearch
             tokens.Add(token.ToString());
             token.Clear();
         }
+    }
+
+    private static bool IsBaseSeriesNumber(string value)
+    {
+        return value is "1" or "5" or "10";
     }
 
     private static bool IsGenerationShorthand(string value)
