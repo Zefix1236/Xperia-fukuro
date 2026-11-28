@@ -19,7 +19,6 @@ public sealed class PageFirmwareDownload : MyPageRight
 {
     private readonly SonyCatalog _catalog = SonyCatalog.LoadEmbedded();
     private readonly TextBox _searchBox;
-    private readonly TextBlock _searchPlaceholder;
     private readonly Border _searchBorder;
     private readonly MyIconButton _clearButton;
     private readonly Button _yearButton;
@@ -50,6 +49,7 @@ public sealed class PageFirmwareDownload : MyPageRight
 
         _searchBox = new TextBox
         {
+            Watermark = Lang.Text("Firmware.Search.Hint"),
             FontSize = 16d,
             Height = 38d,
             MinHeight = 0d,
@@ -63,14 +63,6 @@ public sealed class PageFirmwareDownload : MyPageRight
             FocusAdorner = null
         };
         _searchBox.Classes.Add("SearchInput");
-        _searchPlaceholder = new TextBlock
-        {
-            Text = Lang.Text("Firmware.Search.Hint"),
-            FontSize = 16d,
-            Foreground = Brush("ColorBrushGray4", Brushes.Gray),
-            VerticalAlignment = VerticalAlignment.Center,
-            IsHitTestVisible = false
-        };
         _clearButton = new MyIconButton
         {
             SvgIcon = "lucide/x",
@@ -141,8 +133,6 @@ public sealed class PageFirmwareDownload : MyPageRight
         searchGrid.Children.Add(searchIcon);
         Grid.SetColumn(_searchBox, 1);
         searchGrid.Children.Add(_searchBox);
-        Grid.SetColumn(_searchPlaceholder, 1);
-        searchGrid.Children.Add(_searchPlaceholder);
         Grid.SetColumn(_clearButton, 2);
         searchGrid.Children.Add(_clearButton);
         Grid.SetColumn(_yearButton, 3);
@@ -279,7 +269,6 @@ public sealed class PageFirmwareDownload : MyPageRight
         _searchBox.TextChanged += (_, _) =>
         {
             _clearButton.IsVisible = !string.IsNullOrEmpty(_searchBox.Text);
-            _searchPlaceholder.IsVisible = string.IsNullOrEmpty(_searchBox.Text);
             ApplyFilter();
         };
         ApplyFilter();
