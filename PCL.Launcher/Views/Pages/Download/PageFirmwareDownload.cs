@@ -206,8 +206,16 @@ public sealed class PageFirmwareDownload : MyPageRight
         foreach (var group in seriesGroups)
         {
             var series = group.Key;
-            var titleKey = $"Download.Firmware.Series{series}";
-            var descriptionKey = $"Firmware.Series.Description.{series}";
+            var title = series switch
+            {
+                "1" => Lang.Text("Download.Firmware.Series1"),
+                "5" => Lang.Text("Download.Firmware.Series5"),
+                "10" => Lang.Text("Download.Firmware.Series10"),
+                _ => series
+            };
+            var description = series is "1" or "5" or "10"
+                ? Lang.Text($"Firmware.Series.Description.{series}")
+                : string.Empty;
             var products = group
                 .OrderBy(product => product.ReleaseYear)
                 .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
@@ -229,7 +237,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             card.Children.Add(panel);
             card.IsSwapped = true;
             ApplyTitleFont(card);
-            _series.Add(new SeriesCard(series, titleKey, descriptionKey, products, card, panel));
+            _series.Add(new SeriesCard(series, title, description, products, card, panel));
             content.Children.Add(card);
         }
 
@@ -505,8 +513,10 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private string BuildSeriesTitle(SeriesCard series, int count)
     {
-        return $"{Lang.Text(series.TitleKey)} · {Lang.Text(series.DescriptionKey)}"
-            + $"  {Lang.Text("Firmware.Model.Count", count)}";
+        var title = string.IsNullOrEmpty(series.Description)
+            ? series.Title
+            : $"{series.Title} · {series.Description}";
+        return $"{title}  {Lang.Text("Firmware.Model.Count", count)}";
     }
 
     private void ComputeLatest()
@@ -573,8 +583,8 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private sealed record SeriesCard(
         string Series,
-        string TitleKey,
-        string DescriptionKey,
+        string Title,
+        string Description,
         List<SonyProduct> Products,
         MyCard Card,
         StackPanel Panel);

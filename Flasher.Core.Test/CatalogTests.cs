@@ -11,9 +11,9 @@ public sealed class CatalogTests
     {
         var catalog = SonyCatalog.LoadEmbedded();
 
-        Assert.AreEqual(21, catalog.Products.Count);
-        Assert.AreEqual(131, catalog.Products.Sum(product => product.Models.Count));
-        Assert.AreEqual(89, catalog.EnumerateModels().Count(pair => pair.Model.HasSpc));
+        Assert.AreEqual(42, catalog.Products.Count);
+        Assert.AreEqual(210, catalog.Products.Sum(product => product.Models.Count));
+        Assert.AreEqual(108, catalog.EnumerateModels().Count(pair => pair.Model.HasSpc));
 
         var xperia1Vi = catalog.FindProduct("PDX-245");
         Assert.IsNotNull(xperia1Vi);
@@ -22,13 +22,13 @@ public sealed class CatalogTests
         var xqEc44 = xperia1Vi.Models.Single(model => model.ModelName == "XQ-EC44");
         Assert.IsTrue(xqEc44.HasSpc);
         Assert.AreEqual(10, xqEc44.Spcs.Count);
-        Assert.AreEqual("XQ-EC44_Customized_JP", xqEc44.CustomisationName);
+        Assert.AreEqual("Customized JP", xqEc44.CustomisationName);
 
         var tenViii = catalog.FindProduct("PDX-268");
         Assert.IsNotNull(tenViii);
         var xqGh44 = tenViii.Models.Single(model => model.ModelName == "XQ-GH44");
-        Assert.IsTrue(xqGh44.SpcRequired);
-        Assert.IsFalse(xqGh44.HasSpc);
+        Assert.IsFalse(xqGh44.SpcRequired);
+        Assert.IsTrue(xqGh44.HasSpc);
     }
 
     [TestMethod]

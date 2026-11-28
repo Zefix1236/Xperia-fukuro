@@ -153,6 +153,15 @@ public sealed class SonyProduct
     public string DisplayName => $"{MarketingName}（{ProductCode}）";
 }
 
+public sealed class SonyCustomization
+{
+    [JsonPropertyName("name")]
+    public string Name { get; init; } = "";
+
+    [JsonPropertyName("spc")]
+    public string Spc { get; init; } = "";
+}
+
 public sealed class SonyModel
 {
     [JsonPropertyName("modelId")]
@@ -181,6 +190,9 @@ public sealed class SonyModel
 
     [JsonPropertyName("spcRequired")]
     public bool SpcRequired { get; init; }
+
+    [JsonPropertyName("customizations")]
+    public List<SonyCustomization> Customizations { get; init; } = [];
 
     public bool HasSpc => Spcs.Count > 0;
 
