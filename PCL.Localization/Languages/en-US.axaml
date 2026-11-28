@@ -762,6 +762,8 @@
     <sys:String x:Key="Firmware.Model.Count">{0} models</sys:String>
     <sys:String x:Key="Firmware.Tag.Latest">New</sys:String>
     <sys:String x:Key="Firmware.NoMatch">No matching models</sys:String>
+    <sys:String x:Key="Firmware.Series.Other">Other models</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.Other">Ace / PRO / XZ / XA / L / Z</sys:String>
     <sys:String x:Key="Firmware.Series.Description.1">Flagship</sys:String>
     <sys:String x:Key="Firmware.Series.Description.5">Compact flagship</sys:String>
     <sys:String x:Key="Firmware.Series.Description.10">Mid-range</sys:String>

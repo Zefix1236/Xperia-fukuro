@@ -198,31 +198,40 @@ public sealed class PageFirmwareDownload : MyPageRight
         content.Children.Add(searchCard);
         content.Children.Add(_favoritesCard);
 
-        var seriesGroups = _catalog.Products
-            .GroupBy(product => product.Series)
-            .OrderBy(group => SeriesOrder(group.Key))
-            .ThenBy(group => group.Key, StringComparer.Ordinal)
-            .ToList();
-        foreach (var group in seriesGroups)
+        var primarySeries = new[] { "1", "5", "10" };
+        var seriesGroups = new List<(string Series, string Title, string Description, List<SonyProduct> Products)>();
+        foreach (var series in primarySeries)
         {
-            var series = group.Key;
-            var title = series switch
-            {
-                "1" => Lang.Text("Download.Firmware.Series1"),
-                "5" => Lang.Text("Download.Firmware.Series5"),
-                "10" => Lang.Text("Download.Firmware.Series10"),
-                _ => series
-            };
-            var description = series is "1" or "5" or "10"
-                ? Lang.Text($"Firmware.Series.Description.{series}")
-                : string.Empty;
-            var products = group
+            var products = _catalog.Products
+                .Where(product => string.Equals(product.Series, series, StringComparison.Ordinal))
                 .OrderBy(product => product.ReleaseYear)
                 .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
                 .ToList();
             if (products.Count == 0)
                 continue;
+            seriesGroups.Add((
+                series,
+                Lang.Text($"Download.Firmware.Series{series}"),
+                Lang.Text($"Firmware.Series.Description.{series}"),
+                products));
+        }
 
+        var otherProducts = _catalog.Products
+            .Where(product => !primarySeries.Contains(product.Series))
+            .OrderBy(product => product.ReleaseYear)
+            .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
+            .ToList();
+        if (otherProducts.Count > 0)
+        {
+            seriesGroups.Add((
+                "other",
+                Lang.Text("Firmware.Series.Other"),
+                Lang.Text("Firmware.Series.Description.Other"),
+                otherProducts));
+        }
+
+        foreach (var group in seriesGroups)
+        {
             var panel = new StackPanel
             {
                 Margin = new Thickness(20d, MyCard.SwapedHeight, 18d, 12d),
@@ -237,7 +246,13 @@ public sealed class PageFirmwareDownload : MyPageRight
             card.Children.Add(panel);
             card.IsSwapped = true;
             ApplyTitleFont(card);
-            _series.Add(new SeriesCard(series, title, description, products, card, panel));
+            _series.Add(new SeriesCard(
+                group.Series,
+                group.Title,
+                group.Description,
+                group.Products,
+                card,
+                panel));
             content.Children.Add(card);
         }
 
@@ -521,7 +536,8 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private void ComputeLatest()
     {
-        foreach (var group in _catalog.Products.GroupBy(product => product.Series))
+        foreach (var group in _catalog.Products.GroupBy(product =>
+                     product.Series is "1" or "5" or "10" ? product.Series : "other"))
         {
             var latestYear = group.Max(product => product.ReleaseYear);
             foreach (var product in group.Where(product => product.ReleaseYear == latestYear))
@@ -577,6 +593,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             "1" => 0,
             "5" => 1,
             "10" => 2,
+            "other" => 3,
             _ => 3
         };
     }
