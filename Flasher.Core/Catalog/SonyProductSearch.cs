@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Flasher.Core.Catalog;
 
@@ -18,7 +19,7 @@ public static class SonyProductSearch
         {
             if (terms.Count == 1)
             {
-                if (IsAsciiDigits(terms[0]))
+                if (IsAsciiDigits(terms[0]) || IsGenerationShorthand(terms[0]))
                 {
                     if (field.Tokens.Contains(terms[0], StringComparer.Ordinal))
                         return true;
@@ -86,6 +87,8 @@ public static class SonyProductSearch
             yield break;
 
         var series = product.Series;
+        yield return CreateField(product.Generation);
+        yield return CreateField($"{series}{product.Generation}");
         yield return CreateField($"Xperia {series} {generation}");
         yield return CreateField($"{series} {generation}");
         yield return CreateField($"{series}{generation}");
@@ -126,6 +129,14 @@ public static class SonyProductSearch
             tokens.Add(token.ToString());
             token.Clear();
         }
+    }
+
+    private static bool IsGenerationShorthand(string value)
+    {
+        return Regex.IsMatch(
+            value,
+            "^(?:i|ii|iii|iv|v|vi|vii|viii|ix|x|(?:1|5|10)(?:i|ii|iii|iv|v|vi|vii|viii|ix|x))$",
+            RegexOptions.CultureInvariant);
     }
 
     private static bool IsAsciiDigits(string value)
