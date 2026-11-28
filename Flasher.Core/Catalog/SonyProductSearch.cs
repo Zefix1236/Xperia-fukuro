@@ -38,7 +38,19 @@ public static class SonyProductSearch
                 return string.Equals(product.Generation, term, StringComparison.OrdinalIgnoreCase);
         }
 
-        foreach (var field in EnumerateFields(product))
+        if (MatchesFields(EnumerateMarketingFields(product), terms))
+            return true;
+        if (terms.Count == 1 && LooksLikeModelCode(terms[0]))
+            return MatchesFields(EnumerateModelFields(product), terms);
+        if (terms.Count > 1 && terms.Any(LooksLikeModelCode))
+            return MatchesFields(EnumerateModelFields(product), terms);
+
+        return false;
+    }
+
+    private static bool MatchesFields(IEnumerable<SearchField> fields, List<string> terms)
+    {
+        foreach (var field in fields)
         {
             if (terms.Count == 1)
             {
@@ -59,6 +71,14 @@ public static class SonyProductSearch
         }
 
         return false;
+    }
+
+    private static bool LooksLikeModelCode(string term)
+    {
+        return Regex.IsMatch(
+            term,
+            "^(?:xq|so|sog|pdx|a\\d)",
+            RegexOptions.CultureInvariant);
     }
 
     /// <summary>归一化：全角转半角、小写，并移除空白、连字符等分隔符。</summary>
@@ -97,13 +117,10 @@ public static class SonyProductSearch
         return terms;
     }
 
-    private static IEnumerable<SearchField> EnumerateFields(SonyProduct product)
+    private static IEnumerable<SearchField> EnumerateMarketingFields(SonyProduct product)
     {
         yield return CreateField(product.MarketingName);
         yield return CreateField(product.ProductCode);
-
-        foreach (var model in product.Models)
-            yield return CreateField(model.ModelName);
 
         var generation = RomanToNumber(product.Generation);
         if (generation <= 0)
@@ -120,6 +137,12 @@ public static class SonyProductSearch
         yield return CreateField($"Mark {generation}");
         yield return CreateField($"MK {generation}");
         yield return CreateField($"马克{generation}");
+    }
+
+    private static IEnumerable<SearchField> EnumerateModelFields(SonyProduct product)
+    {
+        foreach (var model in product.Models)
+            yield return CreateField(model.ModelName);
     }
 
     private static SearchField CreateField(string value)
