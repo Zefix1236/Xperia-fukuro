@@ -59,7 +59,7 @@ public static class SonyProductSearch
                     if (field.Tokens.Contains(terms[0], StringComparer.Ordinal))
                         return true;
                 }
-                else if (field.Compact.Contains(terms[0], StringComparison.Ordinal))
+                else if (MatchesFieldTerm(field, terms[0]))
                 {
                     return true;
                 }
@@ -71,6 +71,20 @@ public static class SonyProductSearch
         }
 
         return false;
+    }
+
+    private static bool MatchesFieldTerm(SearchField field, string term)
+    {
+        if (field.Compact.StartsWith(term, StringComparison.Ordinal)
+            || field.Tokens.Any(token => token.StartsWith(term, StringComparison.Ordinal)))
+            return true;
+
+        return term.Length > 1
+            && char.IsAsciiDigit(term[0])
+            && Regex.IsMatch(
+                field.Compact,
+                $"(?<!\\d){Regex.Escape(term)}",
+                RegexOptions.CultureInvariant);
     }
 
     private static bool LooksLikeModelCode(string term)
