@@ -54,6 +54,15 @@ public sealed class SonyProductSearchTests
     }
 
     [TestMethod]
+    public void BareNumberAlsoMatchesLegacyModelNumbers()
+    {
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Akari"), "2"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Pioneer"), "2"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("Ranger"), "2"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-234"), "2"));
+    }
+
+    [TestMethod]
     public void MatchesRomanAndArabicGenerationWithoutCrossMatchingSeries()
     {
         var oneThree = Get("PDX-215");

@@ -19,7 +19,16 @@ public static class SonyProductSearch
         {
             var term = terms[0];
             if (term is "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9")
-                return RomanToNumber(product.Generation) == int.Parse(term);
+            {
+                var number = int.Parse(term);
+                if (RomanToNumber(product.Generation) == number)
+                    return true;
+                return product.Series is not ("1" or "5" or "10")
+                    && Regex.IsMatch(
+                        product.MarketingName,
+                        $"(?<!\\d){number}(?!\\d)",
+                        RegexOptions.CultureInvariant);
+            }
             if (term == "10")
                 return string.Equals(product.Series, "10", StringComparison.Ordinal);
             if (TryParseSeriesGeneration(term, out var series, out var generation))
