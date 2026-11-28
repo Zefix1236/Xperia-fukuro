@@ -723,6 +723,8 @@
     <sys:String x:Key="Firmware.Model.Count">{0} 款</sys:String>
     <sys:String x:Key="Firmware.Tag.Latest">最新</sys:String>
     <sys:String x:Key="Firmware.NoMatch">沒有符合的機型</sys:String>
+    <sys:String x:Key="Firmware.Series.Xz">Xperia XZ</sys:String>
+    <sys:String x:Key="Firmware.Series.Description.Xz">早期旗艦</sys:String>
     <sys:String x:Key="Firmware.Series.Other">其他機型</sys:String>
     <sys:String x:Key="Firmware.Series.Description.Other">Ace / PRO / XZ / XA / L / Z</sys:String>
     <sys:String x:Key="Firmware.Series.Description.1">旗艦</sys:String>

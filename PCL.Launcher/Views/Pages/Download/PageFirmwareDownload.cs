@@ -198,36 +198,36 @@ public sealed class PageFirmwareDownload : MyPageRight
         content.Children.Add(searchCard);
         content.Children.Add(_favoritesCard);
 
-        var primarySeries = new[] { "1", "5", "10" };
+        var grouped = _catalog.Products
+            .GroupBy(GroupKey)
+            .ToDictionary(group => group.Key, group => group.ToList());
         var seriesGroups = new List<(string Series, string Title, string Description, List<SonyProduct> Products)>();
-        foreach (var series in primarySeries)
+        foreach (var series in new[] { "1", "5", "10", "xz", "other" })
         {
-            var products = _catalog.Products
-                .Where(product => string.Equals(product.Series, series, StringComparison.Ordinal))
+            if (!grouped.TryGetValue(series, out var groups))
+                continue;
+            var products = groups
                 .OrderBy(product => product.ReleaseYear)
                 .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
                 .ToList();
             if (products.Count == 0)
                 continue;
-            seriesGroups.Add((
-                series,
-                Lang.Text($"Download.Firmware.Series{series}"),
-                Lang.Text($"Firmware.Series.Description.{series}"),
-                products));
-        }
 
-        var otherProducts = _catalog.Products
-            .Where(product => !primarySeries.Contains(product.Series))
-            .OrderBy(product => product.ReleaseYear)
-            .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
-            .ToList();
-        if (otherProducts.Count > 0)
-        {
-            seriesGroups.Add((
-                "other",
-                Lang.Text("Firmware.Series.Other"),
-                Lang.Text("Firmware.Series.Description.Other"),
-                otherProducts));
+            var title = series switch
+            {
+                "1" => Lang.Text("Download.Firmware.Series1"),
+                "5" => Lang.Text("Download.Firmware.Series5"),
+                "10" => Lang.Text("Download.Firmware.Series10"),
+                "xz" => Lang.Text("Firmware.Series.Xz"),
+                _ => Lang.Text("Firmware.Series.Other")
+            };
+            var description = series switch
+            {
+                "1" or "5" or "10" => Lang.Text($"Firmware.Series.Description.{series}"),
+                "xz" => Lang.Text("Firmware.Series.Description.Xz"),
+                _ => Lang.Text("Firmware.Series.Description.Other")
+            };
+            seriesGroups.Add((series, title, description, products));
         }
 
         foreach (var group in seriesGroups)
@@ -438,7 +438,7 @@ public sealed class PageFirmwareDownload : MyPageRight
     {
         var visible = Favorites()
             .Where(Matches)
-            .OrderBy(product => SeriesOrder(product.Series))
+            .OrderBy(product => SeriesOrder(GroupKey(product)))
             .ThenBy(product => product.ReleaseYear)
             .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
             .ToList();
@@ -536,8 +536,7 @@ public sealed class PageFirmwareDownload : MyPageRight
 
     private void ComputeLatest()
     {
-        foreach (var group in _catalog.Products.GroupBy(product =>
-                     product.Series is "1" or "5" or "10" ? product.Series : "other"))
+        foreach (var group in _catalog.Products.GroupBy(GroupKey))
         {
             var latestYear = group.Max(product => product.ReleaseYear);
             foreach (var product in group.Where(product => product.ReleaseYear == latestYear))
@@ -586,6 +585,17 @@ public sealed class PageFirmwareDownload : MyPageRight
                 : fallback;
     }
 
+    private static string GroupKey(SonyProduct product)
+    {
+        if (product.Series is "1" or "5" or "10")
+            return product.Series;
+        if (product.MarketingName is "Xperia PRO" or "Xperia PRO-I")
+            return "1";
+        if (product.Series.StartsWith("Xperia XZ", StringComparison.Ordinal))
+            return "xz";
+        return "other";
+    }
+
     private static int SeriesOrder(string series)
     {
         return series switch
@@ -593,8 +603,9 @@ public sealed class PageFirmwareDownload : MyPageRight
             "1" => 0,
             "5" => 1,
             "10" => 2,
-            "other" => 3,
-            _ => 3
+            "xz" => 3,
+            "other" => 4,
+            _ => 4
         };
     }
 
