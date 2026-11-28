@@ -59,6 +59,7 @@ public sealed class SonyProductSearchTests
         Assert.IsTrue(SonyProductSearch.Matches(Get("Apollo"), "2c"));
         Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-225"), "2c"));
         Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-225"), "so52c"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-234"), "dq"));
     }
 
     [TestMethod]

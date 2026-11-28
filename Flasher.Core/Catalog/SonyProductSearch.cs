@@ -75,10 +75,12 @@ public static class SonyProductSearch
 
     private static bool LooksLikeModelCode(string term)
     {
-        return Regex.IsMatch(
-            term,
-            "^(?:xq|so|sog|pdx|a\\d)",
-            RegexOptions.CultureInvariant);
+        if (Regex.IsMatch(
+                term,
+                "^(?:xq|so|sog|pdx|a\\d)",
+                RegexOptions.CultureInvariant))
+            return true;
+        return term.Length >= 2 && term.All(char.IsLetter);
     }
 
     /// <summary>归一化：全角转半角、小写，并移除空白、连字符等分隔符。</summary>
