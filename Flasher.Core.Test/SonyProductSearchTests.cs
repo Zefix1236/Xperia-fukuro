@@ -15,6 +15,7 @@ public sealed class SonyProductSearchTests
         Assert.AreEqual("xqec44", SonyProductSearch.Normalize("XQ-EC44"));
         Assert.AreEqual("xperia1iii", SonyProductSearch.Normalize("Xperia 1 III"));
         Assert.AreEqual("马克3", SonyProductSearch.Normalize("马克 3"));
+        Assert.AreEqual("15", SonyProductSearch.Normalize("1!5!"));
     }
 
     [TestMethod]
@@ -124,6 +125,8 @@ public sealed class SonyProductSearchTests
         var oneFour = Get("PDX-223");
 
         Assert.IsTrue(SonyProductSearch.Matches(oneFive, "1v"));
+        Assert.IsTrue(SonyProductSearch.Matches(oneFive, "1!5!"));
+        Assert.IsFalse(SonyProductSearch.Matches(oneSix, "1!5!"));
         Assert.IsFalse(SonyProductSearch.Matches(oneSix, "1v"));
         Assert.IsFalse(SonyProductSearch.Matches(oneFour, "1v"));
 

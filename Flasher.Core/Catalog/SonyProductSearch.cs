@@ -256,7 +256,7 @@ public static class SonyProductSearch
 
     private static bool IsSeparator(char ch)
     {
-        return char.IsWhiteSpace(ch) || ch is '-' or '_' or '·' or '—' or '–';
+        return !char.IsLetterOrDigit(ch);
     }
 
     private static int RomanToNumber(string generation)
