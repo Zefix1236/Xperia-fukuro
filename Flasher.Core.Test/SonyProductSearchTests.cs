@@ -95,6 +95,9 @@ public sealed class SonyProductSearchTests
         Assert.IsTrue(SonyProductSearch.Matches(oneThree, "mark 3"));
         Assert.IsTrue(SonyProductSearch.Matches(tenThree, "mark 3"));
         Assert.IsTrue(SonyProductSearch.Matches(oneThree, "马克3"));
+        Assert.IsTrue(SonyProductSearch.Matches(oneThree, "马克三"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-234"), "马克五"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-223"), "马克五"));
     }
 
     [TestMethod]

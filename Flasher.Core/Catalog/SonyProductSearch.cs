@@ -153,6 +153,13 @@ public static class SonyProductSearch
         yield return CreateField($"Mark {generation}");
         yield return CreateField($"MK {generation}");
         yield return CreateField($"马克{generation}");
+        yield return CreateField($"马克 {generation}");
+        var chinese = ChineseGeneration(generation);
+        if (chinese is not null)
+        {
+            yield return CreateField($"马克{chinese}");
+            yield return CreateField($"马克 {chinese}");
+        }
     }
 
     private static IEnumerable<SearchField> EnumerateModelFields(SonyProduct product)
@@ -191,6 +198,24 @@ public static class SonyProductSearch
             tokens.Add(token.ToString());
             token.Clear();
         }
+    }
+
+    private static string? ChineseGeneration(int generation)
+    {
+        return generation switch
+        {
+            1 => "一",
+            2 => "二",
+            3 => "三",
+            4 => "四",
+            5 => "五",
+            6 => "六",
+            7 => "七",
+            8 => "八",
+            9 => "九",
+            10 => "十",
+            _ => null
+        };
     }
 
     private static bool TryParseSeriesGeneration(string value, out string series, out string generation)
