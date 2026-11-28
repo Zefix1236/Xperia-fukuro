@@ -207,7 +207,7 @@ public sealed class PageFirmwareDownload : MyPageRight
             if (!grouped.TryGetValue(series, out var groups))
                 continue;
             var products = groups
-                .OrderBy(product => product.ReleaseYear)
+                .OrderByDescending(product => product.ReleaseYear)
                 .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
                 .ToList();
             if (products.Count == 0)
@@ -439,7 +439,7 @@ public sealed class PageFirmwareDownload : MyPageRight
         var visible = Favorites()
             .Where(Matches)
             .OrderBy(product => SeriesOrder(GroupKey(product)))
-            .ThenBy(product => product.ReleaseYear)
+            .ThenByDescending(product => product.ReleaseYear)
             .ThenBy(product => product.MarketingName, StringComparer.Ordinal)
             .ToList();
 
