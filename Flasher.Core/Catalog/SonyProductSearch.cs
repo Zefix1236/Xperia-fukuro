@@ -18,8 +18,10 @@ public static class SonyProductSearch
         if (terms.Count == 1)
         {
             var term = terms[0];
-            if (term is "1" or "5" or "10")
-                return string.Equals(product.Series, term, StringComparison.Ordinal);
+            if (term is "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9")
+                return RomanToNumber(product.Generation) == int.Parse(term);
+            if (term == "10")
+                return string.Equals(product.Series, "10", StringComparison.Ordinal);
             if (TryParseSeriesGeneration(term, out var series, out var generation))
                 return string.Equals(product.Series, series, StringComparison.Ordinal)
                     && string.Equals(product.Generation, generation, StringComparison.OrdinalIgnoreCase);

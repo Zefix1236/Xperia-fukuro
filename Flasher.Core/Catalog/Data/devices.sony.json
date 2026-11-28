@@ -4522,7 +4522,7 @@
       "productCode": "Griffin",
       "marketingName": "Xperia 1",
       "series": "1",
-      "generation": "",
+      "generation": "I",
       "releaseYear": 2019,
       "updatePlatformKey": null,
       "models": [
@@ -4629,7 +4629,7 @@
       "productCode": "Bahamut",
       "marketingName": "Xperia 5",
       "series": "5",
-      "generation": "",
+      "generation": "I",
       "releaseYear": 2019,
       "updatePlatformKey": null,
       "models": [
@@ -4806,7 +4806,7 @@
       "productCode": "Mermaid",
       "marketingName": "Xperia 10 Plus",
       "series": "10",
-      "generation": "",
+      "generation": "I",
       "releaseYear": 2019,
       "updatePlatformKey": null,
       "models": [
@@ -4865,7 +4865,7 @@
       "productCode": "Kirin",
       "marketingName": "Xperia 10",
       "series": "10",
-      "generation": "",
+      "generation": "I",
       "releaseYear": 2019,
       "updatePlatformKey": null,
       "models": [
