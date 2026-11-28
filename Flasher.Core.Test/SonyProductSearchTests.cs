@@ -37,17 +37,19 @@ public sealed class SonyProductSearchTests
     }
 
     [TestMethod]
-    public void BareSeriesNumberMatchesOnlyBaseModel()
+    public void BareSeriesNumberMatchesWholeSeries()
     {
         Assert.IsTrue(SonyProductSearch.Matches(Get("Griffin"), "1"));
-        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-234"), "1"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-234"), "1"));
         Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-213"), "1"));
 
         Assert.IsTrue(SonyProductSearch.Matches(Get("Bahamut"), "5"));
-        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-237"), "5"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-237"), "5"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-234"), "5"));
 
         Assert.IsTrue(SonyProductSearch.Matches(Get("Kirin"), "10"));
-        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-235"), "10"));
+        Assert.IsTrue(SonyProductSearch.Matches(Get("PDX-235"), "10"));
+        Assert.IsFalse(SonyProductSearch.Matches(Get("PDX-234"), "10"));
     }
 
     [TestMethod]

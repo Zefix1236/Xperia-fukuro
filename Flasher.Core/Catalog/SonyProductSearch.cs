@@ -15,11 +15,17 @@ public static class SonyProductSearch
         if (terms.Count == 0)
             return true;
 
-        if (terms.Count == 1 && IsBaseSeriesNumber(terms[0]))
-            return string.Equals(
-                Normalize(product.MarketingName),
-                $"xperia{terms[0]}",
-                StringComparison.Ordinal);
+        if (terms.Count == 1)
+        {
+            var term = terms[0];
+            if (term is "1" or "5" or "10")
+                return string.Equals(product.Series, term, StringComparison.Ordinal);
+            if (TryParseSeriesGeneration(term, out var series, out var generation))
+                return string.Equals(product.Series, series, StringComparison.Ordinal)
+                    && string.Equals(product.Generation, generation, StringComparison.OrdinalIgnoreCase);
+            if (IsRomanGeneration(term))
+                return string.Equals(product.Generation, term, StringComparison.OrdinalIgnoreCase);
+        }
 
         foreach (var field in EnumerateFields(product))
         {
@@ -137,9 +143,27 @@ public static class SonyProductSearch
         }
     }
 
-    private static bool IsBaseSeriesNumber(string value)
+    private static bool TryParseSeriesGeneration(string value, out string series, out string generation)
     {
-        return value is "1" or "5" or "10";
+        var match = Regex.Match(
+            value,
+            "^(1|5|10)(VIII|VII|VI|IV|V|III|II|I)$",
+            RegexOptions.CultureInvariant);
+        if (!match.Success)
+        {
+            series = string.Empty;
+            generation = string.Empty;
+            return false;
+        }
+
+        series = match.Groups[1].Value;
+        generation = match.Groups[2].Value;
+        return true;
+    }
+
+    private static bool IsRomanGeneration(string value)
+    {
+        return value is "i" or "ii" or "iii" or "iv" or "v" or "vi" or "vii" or "viii" or "ix" or "x";
     }
 
     private static bool IsGenerationShorthand(string value)
